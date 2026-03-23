@@ -1,8 +1,6 @@
 services:
   app:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: ghcr.io/romartm/freesslcert.net/api:latest
     container_name: freesslcert-api
     env_file: .env
     environment:
