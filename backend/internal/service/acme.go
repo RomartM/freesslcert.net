@@ -1,0 +1,614 @@
+package service
+
+import (
+	"context"
+	"crypto"
+	"crypto/ecdsa"
+	"crypto/elliptic"
+	"crypto/rand"
+	"crypto/rsa"
+	"crypto/x509"
+	"encoding/json"
+	"encoding/pem"
+	"fmt"
+	"log/slog"
+	"os"
+	"path/filepath"
+	"strings"
+	"sync"
+	"time"
+
+	"github.com/go-acme/lego/v4/certcrypto"
+	"github.com/go-acme/lego/v4/certificate"
+	"github.com/go-acme/lego/v4/lego"
+	"github.com/go-acme/lego/v4/registration"
+	"github.com/google/uuid"
+
+	"github.com/freesslcert/freesslcert/internal/config"
+	"github.com/freesslcert/freesslcert/internal/model"
+	"github.com/freesslcert/freesslcert/internal/repository"
+)
+
+// acmeUser implements the lego registration.User interface.
+type acmeUser struct {
+	Email        string                 `json:"email"`
+	Registration *registration.Resource `json:"registration"`
+	key          crypto.PrivateKey
+}
+
+func (u *acmeUser) GetEmail() string                        { return u.Email }
+func (u *acmeUser) GetRegistration() *registration.Resource { return u.Registration }
+func (u *acmeUser) GetPrivateKey() crypto.PrivateKey        { return u.key }
+
+// manualHTTPProvider captures HTTP-01 challenge details for the user to provision manually.
+type manualHTTPProvider struct {
+	mu         sync.Mutex
+	challenges map[string]model.Challenge // domain -> challenge
+	presented  chan struct{}
+}
+
+func newManualHTTPProvider() *manualHTTPProvider {
+	return &manualHTTPProvider{
+		challenges: make(map[string]model.Challenge),
+		presented:  make(chan struct{}, 100),
+	}
+}
+
+func (p *manualHTTPProvider) Present(domain, token, keyAuth string) error {
+	p.mu.Lock()
+	p.challenges[domain] = model.Challenge{
+		Domain:      domain,
+		Type:        model.ChallengeHTTP01,
+		Token:       token,
+		KeyAuth:     keyAuth,
+		Status:      model.StatusPending,
+		FilePath:    "/.well-known/acme-challenge/" + token,
+		FileContent: keyAuth,
+	}
+	p.mu.Unlock()
+	p.presented <- struct{}{}
+	return nil
+}
+
+func (p *manualHTTPProvider) CleanUp(domain, token, keyAuth string) error {
+	p.mu.Lock()
+	delete(p.challenges, domain)
+	p.mu.Unlock()
+	return nil
+}
+
+func (p *manualHTTPProvider) GetChallenges() []model.Challenge {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	result := make([]model.Challenge, 0, len(p.challenges))
+	for _, c := range p.challenges {
+		result = append(result, c)
+	}
+	return result
+}
+
+// manualDNSProvider captures DNS-01 challenge details.
+type manualDNSProvider struct {
+	mu         sync.Mutex
+	challenges map[string]model.Challenge
+	presented  chan struct{}
+}
+
+func newManualDNSProvider() *manualDNSProvider {
+	return &manualDNSProvider{
+		challenges: make(map[string]model.Challenge),
+		presented:  make(chan struct{}, 100),
+	}
+}
+
+func (p *manualDNSProvider) Present(domain, token, keyAuth string) error {
+	// For DNS-01, the domain already has the _acme-challenge prefix from lego.
+	fqdn := fmt.Sprintf("_acme-challenge.%s", domain)
+	p.mu.Lock()
+	p.challenges[domain] = model.Challenge{
+		Domain:      domain,
+		Type:        model.ChallengeDNS01,
+		Token:       token,
+		KeyAuth:     keyAuth,
+		Status:      model.StatusPending,
+		RecordName:  fqdn,
+		RecordValue: keyAuth, // lego passes the encoded value
+	}
+	p.mu.Unlock()
+	p.presented <- struct{}{}
+	return nil
+}
+
+func (p *manualDNSProvider) CleanUp(domain, token, keyAuth string) error {
+	p.mu.Lock()
+	delete(p.challenges, domain)
+	p.mu.Unlock()
+	return nil
+}
+
+func (p *manualDNSProvider) GetChallenges() []model.Challenge {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	result := make([]model.Challenge, 0, len(p.challenges))
+	for _, c := range p.challenges {
+		result = append(result, c)
+	}
+	return result
+}
+
+func (p *manualDNSProvider) Timeout() (time.Duration, time.Duration) {
+	return 120 * time.Second, 5 * time.Second
+}
+
+// obtainResult carries the outcome of a background lego Obtain call.
+type obtainResult struct {
+	Resource *certificate.Resource
+	Err      error
+}
+
+// orderState holds ephemeral ACME state for an in-flight order.
+type orderState struct {
+	PrivateKey crypto.PrivateKey
+	Domains    []string
+	KeyType    string
+	httpProv   *manualHTTPProvider
+	dnsProv    *manualDNSProvider
+	resultCh   chan *obtainResult
+}
+
+// ACMEService orchestrates ACME certificate issuance via the lego library.
+type ACMEService struct {
+	user   *acmeUser
+	cfg    *config.Config
+	repo   repository.CertificateRepository
+	logger *slog.Logger
+	orders sync.Map // map[orderID]*orderState
+}
+
+// NewACMEService initialises the ACME client, registering a new account when
+// no persisted account data is found in ACMEDataDir.
+func NewACMEService(ctx context.Context, cfg *config.Config, repo repository.CertificateRepository, logger *slog.Logger) (*ACMEService, error) {
+	if err := os.MkdirAll(cfg.ACMEDataDir, 0o700); err != nil {
+		return nil, fmt.Errorf("create acme data dir: %w", err)
+	}
+
+	user, err := loadOrCreateUser(cfg)
+	if err != nil {
+		return nil, fmt.Errorf("load or create acme user: %w", err)
+	}
+
+	// Register the account if not already registered.
+	if user.Registration == nil {
+		legoCfg := lego.NewConfig(user)
+		legoCfg.CADirURL = cfg.ACMEDirectoryURL
+		legoCfg.Certificate.KeyType = certcrypto.RSA2048
+
+		client, err := lego.NewClient(legoCfg)
+		if err != nil {
+			return nil, fmt.Errorf("create lego client for registration: %w", err)
+		}
+
+		reg, err := client.Registration.Register(registration.RegisterOptions{TermsOfServiceAgreed: true})
+		if err != nil {
+			return nil, fmt.Errorf("register acme account: %w", err)
+		}
+		user.Registration = reg
+		if err := saveUser(cfg, user); err != nil {
+			return nil, fmt.Errorf("save acme user after registration: %w", err)
+		}
+		logger.Info("registered new ACME account", "email", user.Email)
+	} else {
+		logger.Info("loaded existing ACME account", "email", user.Email)
+	}
+
+	return &ACMEService{
+		user:   user,
+		cfg:    cfg,
+		repo:   repo,
+		logger: logger,
+	}, nil
+}
+
+// CreateOrder creates a new certificate order, generates a private key for the
+// certificate, starts the ACME Obtain flow in the background, and returns the
+// order with real challenge information from the ACME server.
+func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequest) (*model.CertificateOrder, error) {
+	orderID := uuid.New().String()
+
+	privKey, err := generatePrivateKey(req.KeyType)
+	if err != nil {
+		return nil, fmt.Errorf("generate private key: %w", err)
+	}
+
+	httpProv := newManualHTTPProvider()
+	dnsProv := newManualDNSProvider()
+	resultCh := make(chan *obtainResult, 1)
+
+	state := &orderState{
+		PrivateKey: privKey,
+		Domains:    req.Domains,
+		KeyType:    req.KeyType,
+		httpProv:   httpProv,
+		dnsProv:    dnsProv,
+		resultCh:   resultCh,
+	}
+
+	// Configure a fresh lego client per order with the custom providers.
+	legoCfg := lego.NewConfig(s.user)
+	legoCfg.CADirURL = s.cfg.ACMEDirectoryURL
+	legoCfg.Certificate.KeyType = mapKeyType(req.KeyType)
+
+	client, err := lego.NewClient(legoCfg)
+	if err != nil {
+		return nil, fmt.Errorf("create lego client for order: %w", err)
+	}
+
+	// Determine if any domain requires DNS-01 (wildcard domains).
+	needsDNS := false
+	for _, d := range req.Domains {
+		if strings.HasPrefix(d, "*.") {
+			needsDNS = true
+			break
+		}
+	}
+
+	if needsDNS {
+		if err := client.Challenge.SetDNS01Provider(dnsProv); err != nil {
+			return nil, fmt.Errorf("set DNS-01 provider: %w", err)
+		}
+	} else {
+		if err := client.Challenge.SetHTTP01Provider(httpProv); err != nil {
+			return nil, fmt.Errorf("set HTTP-01 provider: %w", err)
+		}
+	}
+
+	// Start the Obtain flow in background.
+	go func() {
+		resource, obtainErr := client.Certificate.Obtain(certificate.ObtainRequest{
+			Domains:    req.Domains,
+			Bundle:     true,
+			PrivateKey: privKey,
+		})
+		resultCh <- &obtainResult{Resource: resource, Err: obtainErr}
+	}()
+
+	// Wait for challenges to be presented by lego (up to 30 seconds).
+	var challenges []model.Challenge
+	timeout := time.After(30 * time.Second)
+	expectedCount := len(req.Domains)
+
+	for len(challenges) < expectedCount {
+		select {
+		case <-timeout:
+			// Return whatever challenges we have.
+			goto done
+		case <-httpProv.presented:
+			challenges = httpProv.GetChallenges()
+		case <-dnsProv.presented:
+			challenges = dnsProv.GetChallenges()
+		}
+	}
+done:
+
+	// If no challenges were captured, check if Obtain already completed with an error.
+	if len(challenges) == 0 {
+		select {
+		case result := <-resultCh:
+			if result.Err != nil {
+				return nil, fmt.Errorf("ACME order failed: %w", result.Err)
+			}
+		default:
+			// Still running, return empty challenges (shouldn't happen normally).
+		}
+	}
+
+	now := time.Now().UTC()
+	order := &model.CertificateOrder{
+		ID:              orderID,
+		Domains:         req.Domains,
+		CertificateType: req.CertificateType,
+		KeyType:         req.KeyType,
+		Status:          model.StatusPending,
+		CreatedAt:       now,
+		PurgeAfter:      now.Add(24 * time.Hour),
+		Challenges:      challenges,
+	}
+
+	if err := s.repo.Create(ctx, order); err != nil {
+		return nil, fmt.Errorf("persist certificate order: %w", err)
+	}
+
+	s.orders.Store(orderID, state)
+
+	s.logger.Info("created certificate order",
+		"order_id", orderID,
+		"domains", req.Domains,
+		"challenges", len(challenges),
+	)
+
+	return order, nil
+}
+
+// ValidateChallenge updates the challenge status for a given domain within an
+// order. The actual ACME validation is handled by lego in the background
+// Obtain goroutine; this method updates the DB status so the API can track
+// progress.
+func (s *ACMEService) ValidateChallenge(ctx context.Context, orderID string, domain string) error {
+	order, err := s.repo.GetByID(ctx, orderID)
+	if err != nil {
+		return fmt.Errorf("get order for validation: %w", err)
+	}
+
+	found := false
+	for i := range order.Challenges {
+		if order.Challenges[i].Domain == domain {
+			order.Challenges[i].Status = model.ChallengeStatusValid
+			found = true
+			break
+		}
+	}
+	if !found {
+		return fmt.Errorf("domain %s in order %s: %w", domain, orderID, model.ErrNotFound)
+	}
+
+	if err := s.repo.UpdateChallenges(ctx, orderID, order.Challenges); err != nil {
+		return fmt.Errorf("update challenges: %w", err)
+	}
+
+	// Check if all challenges are satisfied and update order status.
+	allValid := true
+	for _, ch := range order.Challenges {
+		if ch.Status != model.ChallengeStatusValid {
+			allValid = false
+			break
+		}
+	}
+	if allValid {
+		if err := s.repo.UpdateStatus(ctx, orderID, model.StatusValidating); err != nil {
+			return fmt.Errorf("update order status to validating: %w", err)
+		}
+	}
+
+	s.logger.Info("validated challenge", "order_id", orderID, "domain", domain)
+	return nil
+}
+
+// FinalizeCertificate waits for the background Obtain goroutine to complete
+// and retrieves the issued certificate from the ACME CA.
+func (s *ACMEService) FinalizeCertificate(ctx context.Context, orderID string) (*model.CertificateOrder, error) {
+	order, err := s.repo.GetByID(ctx, orderID)
+	if err != nil {
+		return nil, fmt.Errorf("get order for finalization: %w", err)
+	}
+
+	val, ok := s.orders.Load(orderID)
+	if !ok {
+		return nil, fmt.Errorf("no in-memory state for order %s: %w", orderID, model.ErrNotFound)
+	}
+	state := val.(*orderState)
+
+	// Wait for the background Obtain to complete (with timeout).
+	select {
+	case result := <-state.resultCh:
+		if result.Err != nil {
+			_ = s.repo.UpdateStatus(ctx, orderID, model.StatusFailed)
+			return nil, fmt.Errorf("obtain certificate from ACME: %w", result.Err)
+		}
+
+		now := time.Now().UTC()
+		expiry := now.Add(90 * 24 * time.Hour) // Let's Encrypt certs are 90 days.
+
+		privKeyPEM, encErr := encodePrivateKey(state.PrivateKey)
+		if encErr != nil {
+			return nil, fmt.Errorf("encode private key: %w", encErr)
+		}
+
+		order.Certificate = string(result.Resource.Certificate)
+		order.PrivateKey = privKeyPEM
+		order.CABundle = string(result.Resource.IssuerCertificate)
+		order.Status = model.StatusIssued
+		order.IssuedAt = &now
+		order.ExpiresAt = &expiry
+
+		if err := s.repo.UpdateCertificate(ctx, order); err != nil {
+			return nil, fmt.Errorf("persist issued certificate: %w", err)
+		}
+
+		s.orders.Delete(orderID)
+		s.logger.Info("certificate issued", "order_id", orderID, "domains", order.Domains)
+		return order, nil
+
+	case <-time.After(5 * time.Minute):
+		_ = s.repo.UpdateStatus(ctx, orderID, model.StatusFailed)
+		s.orders.Delete(orderID)
+		return nil, fmt.Errorf("certificate obtain timed out: %w", model.ErrOrderNotReady)
+
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	}
+}
+
+// RevokeCertificate revokes a previously issued certificate.
+func (s *ACMEService) RevokeCertificate(ctx context.Context, orderID string) error {
+	order, err := s.repo.GetByID(ctx, orderID)
+	if err != nil {
+		return fmt.Errorf("get order for revocation: %w", err)
+	}
+
+	if order.Status != model.StatusIssued {
+		return fmt.Errorf("order %s is not issued (status=%s): %w", orderID, order.Status, model.ErrInvalidInput)
+	}
+
+	if order.Certificate != "" {
+		block, _ := pem.Decode([]byte(order.Certificate))
+		if block != nil {
+			// Create a one-off client for revocation.
+			legoCfg := lego.NewConfig(s.user)
+			legoCfg.CADirURL = s.cfg.ACMEDirectoryURL
+
+			client, clientErr := lego.NewClient(legoCfg)
+			if clientErr != nil {
+				return fmt.Errorf("create lego client for revocation: %w", clientErr)
+			}
+			if err := client.Certificate.Revoke(block.Bytes); err != nil {
+				return fmt.Errorf("revoke certificate with ACME: %w", err)
+			}
+		}
+	}
+
+	if err := s.repo.UpdateStatus(ctx, orderID, model.StatusRevoked); err != nil {
+		return fmt.Errorf("update status to revoked: %w", err)
+	}
+
+	s.logger.Info("certificate revoked", "order_id", orderID)
+	return nil
+}
+
+// StartCleanup runs a background goroutine that periodically removes stale
+// entries from the in-memory orders map.
+func (s *ACMEService) StartCleanup(ctx context.Context) {
+	go func() {
+		ticker := time.NewTicker(1 * time.Hour)
+		defer ticker.Stop()
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case <-ticker.C:
+				// Clean up orders that are no longer active in the DB.
+				s.orders.Range(func(key, value any) bool {
+					orderID := key.(string)
+					order, err := s.repo.GetByID(context.Background(), orderID)
+					if err != nil || order.Status == model.StatusIssued || order.Status == model.StatusFailed || order.Status == model.StatusRevoked {
+						s.orders.Delete(key)
+					}
+					return true
+				})
+			}
+		}
+	}()
+}
+
+// --- helpers ----------------------------------------------------------------
+
+func mapKeyType(keyType string) certcrypto.KeyType {
+	switch keyType {
+	case "rsa-2048":
+		return certcrypto.RSA2048
+	case "rsa-4096":
+		return certcrypto.RSA4096
+	case "ecdsa-p256":
+		return certcrypto.EC256
+	case "ecdsa-p384":
+		return certcrypto.EC384
+	default:
+		return certcrypto.RSA2048
+	}
+}
+
+func generatePrivateKey(keyType string) (crypto.PrivateKey, error) {
+	switch keyType {
+	case "rsa-2048":
+		return rsa.GenerateKey(rand.Reader, 2048)
+	case "rsa-4096":
+		return rsa.GenerateKey(rand.Reader, 4096)
+	case "ecdsa-p256":
+		return ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	case "ecdsa-p384":
+		return ecdsa.GenerateKey(elliptic.P384(), rand.Reader)
+	default:
+		return nil, fmt.Errorf("unsupported key type: %s", keyType)
+	}
+}
+
+func encodePrivateKey(key crypto.PrivateKey) (string, error) {
+	switch k := key.(type) {
+	case *rsa.PrivateKey:
+		block := &pem.Block{
+			Type:  "RSA PRIVATE KEY",
+			Bytes: x509.MarshalPKCS1PrivateKey(k),
+		}
+		return string(pem.EncodeToMemory(block)), nil
+	case *ecdsa.PrivateKey:
+		der, err := x509.MarshalECPrivateKey(k)
+		if err != nil {
+			return "", fmt.Errorf("marshal ecdsa key: %w", err)
+		}
+		block := &pem.Block{
+			Type:  "EC PRIVATE KEY",
+			Bytes: der,
+		}
+		return string(pem.EncodeToMemory(block)), nil
+	default:
+		return "", fmt.Errorf("unsupported key type %T", key)
+	}
+}
+
+// loadOrCreateUser loads a persisted ACME user or creates a new one.
+func loadOrCreateUser(cfg *config.Config) (*acmeUser, error) {
+	keyPath := filepath.Join(cfg.ACMEDataDir, "account.key")
+	regPath := filepath.Join(cfg.ACMEDataDir, "account.json")
+
+	user := &acmeUser{Email: cfg.ACMEEmail}
+
+	// Try to load existing key.
+	keyData, err := os.ReadFile(keyPath)
+	if err == nil {
+		block, _ := pem.Decode(keyData)
+		if block != nil {
+			privKey, err := x509.ParseECPrivateKey(block.Bytes)
+			if err != nil {
+				// Try RSA.
+				rsaKey, rsaErr := x509.ParsePKCS1PrivateKey(block.Bytes)
+				if rsaErr != nil {
+					return nil, fmt.Errorf("parse account key: %w (ecdsa: %v)", rsaErr, err)
+				}
+				user.key = rsaKey
+			} else {
+				user.key = privKey
+			}
+		}
+	}
+
+	if user.key == nil {
+		// Generate a new ECDSA P-256 key for the account.
+		privKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+		if err != nil {
+			return nil, fmt.Errorf("generate account key: %w", err)
+		}
+		user.key = privKey
+
+		der, err := x509.MarshalECPrivateKey(privKey)
+		if err != nil {
+			return nil, fmt.Errorf("marshal account key: %w", err)
+		}
+		block := &pem.Block{Type: "EC PRIVATE KEY", Bytes: der}
+		if err := os.WriteFile(keyPath, pem.EncodeToMemory(block), 0o600); err != nil {
+			return nil, fmt.Errorf("write account key: %w", err)
+		}
+	}
+
+	// Try to load registration.
+	regData, err := os.ReadFile(regPath)
+	if err == nil {
+		var reg registration.Resource
+		if err := json.Unmarshal(regData, &reg); err == nil {
+			user.Registration = &reg
+		}
+	}
+
+	return user, nil
+}
+
+// saveUser persists the account registration data.
+func saveUser(cfg *config.Config, user *acmeUser) error {
+	regPath := filepath.Join(cfg.ACMEDataDir, "account.json")
+	data, err := json.MarshalIndent(user.Registration, "", "  ")
+	if err != nil {
+		return fmt.Errorf("marshal registration: %w", err)
+	}
+	if err := os.WriteFile(regPath, data, 0o600); err != nil {
+		return fmt.Errorf("write registration: %w", err)
+	}
+	return nil
+}

@@ -1,0 +1,66 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/**'
+      - 'deploy/**'
+      - 'docker-compose.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache-dependency-path: backend/go.sum
+      - name: Run tests
+        run: cd backend && go test ./... -v -race
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: cd backend && docker build -t freesslcert-api:${{ github.sha }} .
+
+      - name: Save Docker image
+        run: docker save freesslcert-api:${{ github.sha }} | gzip > image.tar.gz
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Deploy via Tailscale SSH
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          HOST: ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/key && chmod 600 ~/.ssh/key
+          SSH="ssh -o StrictHostKeyChecking=no -i ~/.ssh/key"
+          SCP="scp -o StrictHostKeyChecking=no -i ~/.ssh/key"
+
+          $SSH $HOST 'test -f /opt/freesslcert/.env'
+
+          $SCP image.tar.gz $HOST:/opt/freesslcert/
+          $SCP docker-compose.yml $HOST:/opt/freesslcert/
+          $SCP deploy/nginx/nginx.conf $HOST:/opt/freesslcert/deploy/nginx/
+          $SCP -r deploy/nginx/conf.d/ $HOST:/opt/freesslcert/deploy/nginx/
+
+          $SSH $HOST << 'DEPLOY'
+          cd /opt/freesslcert
+          docker load < image.tar.gz
+          docker tag freesslcert-api:${{ github.sha }} freesslcert-api:latest
+          docker compose up -d --no-build
+          rm image.tar.gz
+          DEPLOY

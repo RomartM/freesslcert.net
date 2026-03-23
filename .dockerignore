@@ -1,0 +1,17 @@
+.git
+.github
+.claude
+.secrets
+*.md
+.env
+.env.*
+!.env.example
+node_modules
+frontend/node_modules
+**/*_test.go
+**/testdata
+deploy/
+docker-compose*.yml
+Makefile
+.vscode
+.idea
