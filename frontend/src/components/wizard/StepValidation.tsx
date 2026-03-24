@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useWizardStore } from "@/stores/wizard-store";
 import { useValidationPolling } from "@/hooks/useValidationPolling";
@@ -27,12 +27,11 @@ export function StepValidation() {
   const setValidationMethod = useWizardStore((s) => s.setValidationMethod);
   const setChallenges = useWizardStore((s) => s.setChallenges);
   const setCertificateData = useWizardStore((s) => s.setCertificateData);
-
-  const [hasAutoAdvanced, setHasAutoAdvanced] = useState(false);
+  const reset = useWizardStore((s) => s.reset);
 
   const isWildcard = certificateType === "wildcard";
 
-  const { data: pollingData } = useValidationPolling(orderId);
+  const { data: pollingData, error: pollingError } = useValidationPolling(orderId);
 
   const validateMutation = useMutation({
     mutationFn: async () => {
@@ -56,42 +55,15 @@ export function StepValidation() {
     }
   }, [pollingData, setChallenges]);
 
-  // Auto-advance when all domains are validated
+  // Auto-advance: when polling detects "issued" status
   useEffect(() => {
-    if (hasAutoAdvanced) return;
+    if (!pollingData) return;
 
-    const allValid =
-      challenges.length > 0 &&
-      challenges.every((c) => c.status === "valid");
-
-    if (allValid && pollingData) {
-      setHasAutoAdvanced(true);
-
-      if (pollingData.status === "issued" && pollingData.certificate) {
-        setCertificateData(pollingData);
-        setStep("download");
-      } else if (pollingData.status !== "failed" && orderId) {
-        // Finalize the order to get the certificate
-        certificatesApi
-          .finalizeOrder(orderId)
-          .then((finalData) => {
-            setCertificateData(finalData);
-            setStep("download");
-          })
-          .catch(() => {
-            // Reset auto-advance flag so user can retry
-            setHasAutoAdvanced(false);
-          });
-      }
+    if (pollingData.status === "issued" && pollingData.certificate) {
+      setCertificateData(pollingData);
+      setStep("download");
     }
-  }, [
-    challenges,
-    pollingData,
-    orderId,
-    hasAutoAdvanced,
-    setCertificateData,
-    setStep,
-  ]);
+  }, [pollingData, setCertificateData, setStep]);
 
   const handleMethodChange = (method: ValidationMethod) => {
     if (isWildcard && method === "http-01") return;
@@ -106,15 +78,32 @@ export function StepValidation() {
     setStep("domain");
   };
 
+  const handleTryAgain = () => {
+    reset();
+  };
+
   const allValid =
     challenges.length > 0 && challenges.every((c) => c.status === "valid");
+  const someValid =
+    challenges.length > 0 && challenges.some((c) => c.status === "valid");
   const hasFailures = challenges.some((c) => c.status === "invalid");
+  const orderStatus = pollingData?.status;
 
   const filteredChallenges = challenges.filter(
     (c) => c.type === validationMethod
   );
   const displayChallenges =
     filteredChallenges.length > 0 ? filteredChallenges : challenges;
+
+  // Derive status message
+  let statusMessage: string | null = null;
+  if (orderStatus === "pending" && !someValid) {
+    statusMessage = "Complete the steps above to verify your domain";
+  } else if (orderStatus === "pending" && someValid && !allValid) {
+    statusMessage = "Verifying your domain...";
+  } else if (orderStatus === "validating" || (orderStatus === "pending" && allValid)) {
+    statusMessage = "Let's Encrypt is issuing your certificate...";
+  }
 
   return (
     <div className="space-y-6">
@@ -172,17 +161,59 @@ export function StepValidation() {
         </Alert>
       )}
 
-      {allValid && (
-        <Alert>
-          <CheckCircle2 className="size-4 text-success" />
-          <AlertTitle>All domains verified</AlertTitle>
+      {pollingError && (
+        <Alert variant="destructive">
+          <AlertTriangle className="size-4" />
+          <AlertTitle>Polling error</AlertTitle>
           <AlertDescription>
-            Generating your certificate. You will be redirected shortly.
+            Failed to check order status. Please refresh the page and try again.
           </AlertDescription>
         </Alert>
       )}
 
-      {!allValid && (
+      {orderStatus === "failed" && (
+        <Alert variant="destructive">
+          <AlertTriangle className="size-4" />
+          <AlertTitle>Certificate issuance failed</AlertTitle>
+          <AlertDescription>
+            Let's Encrypt was unable to issue your certificate. Please start over and try again.
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {statusMessage && (
+        <Alert>
+          {allValid || orderStatus === "validating" ? (
+            <Loader2 className="size-4 animate-spin text-primary-600" />
+          ) : someValid ? (
+            <Loader2 className="size-4 animate-spin text-primary-600" />
+          ) : (
+            <CheckCircle2 className="size-4 text-neutral-500" />
+          )}
+          <AlertTitle>
+            {allValid || orderStatus === "validating"
+              ? "Issuing certificate"
+              : someValid
+                ? "Verification in progress"
+                : "Waiting for verification"}
+          </AlertTitle>
+          <AlertDescription>{statusMessage}</AlertDescription>
+        </Alert>
+      )}
+
+      {orderStatus === "failed" ? (
+        <div className="flex justify-end">
+          <Button
+            onClick={handleTryAgain}
+            size="lg"
+            variant="destructive"
+            className="min-h-11 rounded-lg transition-colors duration-150"
+            aria-label="Start over"
+          >
+            Try Again
+          </Button>
+        </div>
+      ) : !allValid && orderStatus !== "validating" ? (
         <div className="flex justify-end">
           <Button
             onClick={handleVerifyAll}
@@ -204,7 +235,7 @@ export function StepValidation() {
             )}
           </Button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

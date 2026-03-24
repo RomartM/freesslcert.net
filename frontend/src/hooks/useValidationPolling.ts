@@ -9,7 +9,7 @@ export function useValidationPolling(orderId: string | null) {
     refetchInterval: (query) => {
       const status = query.state.data?.status;
       if (status === "issued" || status === "failed" || status === "revoked") return false;
-      return 10_000;
+      return 5_000;
     },
   });
 }

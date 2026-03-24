@@ -147,20 +147,11 @@ func (p *manualDNSProvider) Timeout() (time.Duration, time.Duration) {
 	return 120 * time.Second, 5 * time.Second
 }
 
-// obtainResult carries the outcome of a background lego Obtain call.
-type obtainResult struct {
-	Resource *certificate.Resource
-	Err      error
-}
-
 // orderState holds ephemeral ACME state for an in-flight order.
 type orderState struct {
 	PrivateKey crypto.PrivateKey
 	Domains    []string
 	KeyType    string
-	httpProv   *manualHTTPProvider
-	dnsProv    *manualDNSProvider
-	resultCh   chan *obtainResult
 }
 
 // ACMEService orchestrates ACME certificate issuance via the lego library.
@@ -219,6 +210,11 @@ func NewACMEService(ctx context.Context, cfg *config.Config, repo repository.Cer
 // CreateOrder creates a new certificate order, generates a private key for the
 // certificate, starts the ACME Obtain flow in the background, and returns the
 // order with real challenge information from the ACME server.
+//
+// The background goroutine self-finalizes: on success it writes the certificate
+// data directly to the database; on failure it sets the order status to failed.
+// There is no separate FinalizeCertificate step -- clients poll GET /orders/:id
+// until the status transitions to "issued" or "failed".
 func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequest) (*model.CertificateOrder, error) {
 	orderID := uuid.New().String()
 
@@ -229,16 +225,6 @@ func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequ
 
 	httpProv := newManualHTTPProvider()
 	dnsProv := newManualDNSProvider()
-	resultCh := make(chan *obtainResult, 1)
-
-	state := &orderState{
-		PrivateKey: privKey,
-		Domains:    req.Domains,
-		KeyType:    req.KeyType,
-		httpProv:   httpProv,
-		dnsProv:    dnsProv,
-		resultCh:   resultCh,
-	}
 
 	// Configure a fresh lego client per order with the custom providers.
 	legoCfg := lego.NewConfig(s.user)
@@ -269,25 +255,72 @@ func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequ
 		}
 	}
 
-	// Start the Obtain flow in background.
+	// Launch self-finalizing background goroutine with its own timeout context.
+	bgCtx, bgCancel := context.WithTimeout(context.Background(), 10*time.Minute)
+
 	go func() {
+		defer bgCancel()
+		defer s.orders.Delete(orderID)
+
 		resource, obtainErr := client.Certificate.Obtain(certificate.ObtainRequest{
 			Domains:    req.Domains,
 			Bundle:     true,
 			PrivateKey: privKey,
 		})
-		resultCh <- &obtainResult{Resource: resource, Err: obtainErr}
+
+		if obtainErr != nil {
+			s.logger.Error("certificate obtain failed", "order_id", orderID, "error", obtainErr)
+			_ = s.repo.UpdateStatus(bgCtx, orderID, model.StatusFailed)
+			return
+		}
+
+		// Success -- save certificate to DB.
+		now := time.Now().UTC()
+
+		// Parse actual certificate expiry; fall back to 90 days.
+		expiry := now.Add(90 * 24 * time.Hour)
+		if len(resource.Certificate) > 0 {
+			block, _ := pem.Decode(resource.Certificate)
+			if block != nil {
+				if cert, parseErr := x509.ParseCertificate(block.Bytes); parseErr == nil {
+					expiry = cert.NotAfter
+				}
+			}
+		}
+
+		privKeyPEM, encErr := encodePrivateKey(privKey)
+		if encErr != nil {
+			s.logger.Error("encode private key failed", "order_id", orderID, "error", encErr)
+			_ = s.repo.UpdateStatus(bgCtx, orderID, model.StatusFailed)
+			return
+		}
+
+		order := &model.CertificateOrder{
+			ID:          orderID,
+			Certificate: string(resource.Certificate),
+			PrivateKey:  privKeyPEM,
+			CABundle:    string(resource.IssuerCertificate),
+			Status:      model.StatusIssued,
+			IssuedAt:    &now,
+			ExpiresAt:   &expiry,
+		}
+
+		if err := s.repo.UpdateCertificate(bgCtx, order); err != nil {
+			s.logger.Error("save certificate failed", "order_id", orderID, "error", err)
+			return
+		}
+
+		s.logger.Info("certificate issued", "order_id", orderID, "domains", req.Domains)
 	}()
 
-	// Wait for challenges to be presented by lego (up to 30 seconds).
+	// Wait briefly for challenges to be presented by lego.
 	var challenges []model.Challenge
-	timeout := time.After(30 * time.Second)
+	timeout := time.After(15 * time.Second)
 	expectedCount := len(req.Domains)
 
 	for len(challenges) < expectedCount {
 		select {
 		case <-timeout:
-			// Return whatever challenges we have.
 			goto done
 		case <-httpProv.presented:
 			challenges = httpProv.GetChallenges()
@@ -297,16 +330,10 @@ func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequ
 	}
 done:
 
-	// If no challenges were captured, check if Obtain already completed with an error.
+	// If no challenges captured, the Obtain goroutine likely already failed.
 	if len(challenges) == 0 {
-		select {
-		case result := <-resultCh:
-			if result.Err != nil {
-				return nil, fmt.Errorf("ACME order failed: %w", result.Err)
-			}
-		default:
-			// Still running, return empty challenges (shouldn't happen normally).
-		}
+		bgCancel() // cancel the background goroutine
+		return nil, fmt.Errorf("failed to get ACME challenges: %w", model.ErrInvalidInput)
 	}
 
 	now := time.Now().UTC()
@@ -322,10 +349,15 @@ done:
 	}
 
 	if err := s.repo.Create(ctx, order); err != nil {
+		bgCancel() // cancel the background goroutine
 		return nil, fmt.Errorf("persist certificate order: %w", err)
 	}
 
-	s.orders.Store(orderID, state)
+	s.orders.Store(orderID, &orderState{
+		PrivateKey: privKey,
+		Domains:    req.Domains,
+		KeyType:    req.KeyType,
+	})
 
 	s.logger.Info("created certificate order",
 		"order_id", orderID,
@@ -378,61 +410,6 @@ func (s *ACMEService) ValidateChallenge(ctx context.Context, orderID string, dom
 
 	s.logger.Info("validated challenge", "order_id", orderID, "domain", domain)
 	return nil
-}
-
-// FinalizeCertificate waits for the background Obtain goroutine to complete
-// and retrieves the issued certificate from the ACME CA.
-func (s *ACMEService) FinalizeCertificate(ctx context.Context, orderID string) (*model.CertificateOrder, error) {
-	order, err := s.repo.GetByID(ctx, orderID)
-	if err != nil {
-		return nil, fmt.Errorf("get order for finalization: %w", err)
-	}
-
-	val, ok := s.orders.Load(orderID)
-	if !ok {
-		return nil, fmt.Errorf("no in-memory state for order %s: %w", orderID, model.ErrNotFound)
-	}
-	state := val.(*orderState)
-
-	// Wait for the background Obtain to complete (with timeout).
-	select {
-	case result := <-state.resultCh:
-		if result.Err != nil {
-			_ = s.repo.UpdateStatus(ctx, orderID, model.StatusFailed)
-			return nil, fmt.Errorf("obtain certificate from ACME: %w", result.Err)
-		}
-
-		now := time.Now().UTC()
-		expiry := now.Add(90 * 24 * time.Hour) // Let's Encrypt certs are 90 days.
-
-		privKeyPEM, encErr := encodePrivateKey(state.PrivateKey)
-		if encErr != nil {
-			return nil, fmt.Errorf("encode private key: %w", encErr)
-		}
-
-		order.Certificate = string(result.Resource.Certificate)
-		order.PrivateKey = privKeyPEM
-		order.CABundle = string(result.Resource.IssuerCertificate)
-		order.Status = model.StatusIssued
-		order.IssuedAt = &now
-		order.ExpiresAt = &expiry
-
-		if err := s.repo.UpdateCertificate(ctx, order); err != nil {
-			return nil, fmt.Errorf("persist issued certificate: %w", err)
-		}
-
-		s.orders.Delete(orderID)
-		s.logger.Info("certificate issued", "order_id", orderID, "domains", order.Domains)
-		return order, nil
-
-	case <-time.After(5 * time.Minute):
-		_ = s.repo.UpdateStatus(ctx, orderID, model.StatusFailed)
-		s.orders.Delete(orderID)
-		return nil, fmt.Errorf("certificate obtain timed out: %w", model.ErrOrderNotReady)
-
-	case <-ctx.Done():
-		return nil, ctx.Err()
-	}
 }
 
 // RevokeCertificate revokes a previously issued certificate.

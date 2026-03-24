@@ -120,26 +120,6 @@ func (h *CertificateHandler) ValidateOrder(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "challenge validated"})
 }
 
-// FinalizeOrder handles POST /api/v1/orders/:id/finalize.
-func (h *CertificateHandler) FinalizeOrder(c *gin.Context) {
-	id := c.Param("id")
-	if id == "" {
-		c.JSON(http.StatusBadRequest, model.ErrorResponse{
-			Code:    "invalid_request",
-			Message: "order ID is required",
-		})
-		return
-	}
-
-	order, err := h.acme.FinalizeCertificate(c.Request.Context(), id)
-	if err != nil {
-		handleError(c, err)
-		return
-	}
-
-	c.JSON(http.StatusOK, order)
-}
-
 // DownloadCertificate handles GET /api/v1/orders/:id/download/:format.
 func (h *CertificateHandler) DownloadCertificate(c *gin.Context) {
 	id := c.Param("id")

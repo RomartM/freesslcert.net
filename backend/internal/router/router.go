@@ -34,7 +34,6 @@ func Setup(
 		v1.POST("/orders", certHandler.CreateOrder)
 		v1.GET("/orders/:id", certHandler.GetOrder)
 		v1.POST("/orders/:id/validate", certHandler.ValidateOrder)
-		v1.POST("/orders/:id/finalize", certHandler.FinalizeOrder)
 		v1.GET("/orders/:id/download/:format", certHandler.DownloadCertificate)
 		v1.POST("/orders/:id/revoke", certHandler.RevokeOrder)
 		v1.GET("/config", certHandler.GetConfig)

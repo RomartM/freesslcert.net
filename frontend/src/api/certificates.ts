@@ -11,9 +11,6 @@ export const certificatesApi = {
   validateOrder: (id: string, domain: string) =>
     api.post<{ status: string }>(`/api/v1/orders/${id}/validate`, { domain }).then((r) => r.data),
 
-  finalizeOrder: (id: string) =>
-    api.post<CertificateOrder>(`/api/v1/orders/${id}/finalize`).then((r) => r.data),
-
   downloadCertificate: (id: string, format: string) =>
     api.get(`/api/v1/orders/${id}/download/${format}`, { responseType: "blob" }).then((r) => r.data),
 
