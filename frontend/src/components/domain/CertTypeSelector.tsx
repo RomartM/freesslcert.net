@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 import type { CertificateType } from "@/types/certificate";
 
-const CERT_TYPES: Array<{ value: CertificateType; label: string; description: string }> = [
-  { value: "single", label: "Single", description: "One domain" },
-  { value: "wildcard", label: "Wildcard", description: "*.domain" },
-  { value: "multi-domain", label: "Multi-Domain", description: "SAN cert" },
+const CERT_TYPES: Array<{ value: CertificateType; label: string }> = [
+  { value: "single", label: "Single" },
+  { value: "wildcard", label: "Wildcard" },
+  { value: "multi-domain", label: "Multi-Domain" },
 ];
 
 export interface CertTypeSelectorProps {
@@ -14,28 +14,24 @@ export interface CertTypeSelectorProps {
 
 export function CertTypeSelector({ value, onChange }: CertTypeSelectorProps) {
   return (
-    <fieldset>
-      <legend className="sr-only">Certificate type</legend>
-      <div className="inline-flex rounded-lg bg-neutral-100 p-1" role="radiogroup">
-        {CERT_TYPES.map((type) => (
-          <button
-            key={type.value}
-            type="button"
-            role="radio"
-            aria-checked={value === type.value}
-            aria-label={`${type.label} - ${type.description}`}
-            onClick={() => onChange(type.value)}
-            className={cn(
-              "min-h-10 rounded-md px-4 py-2 text-sm font-medium transition-all duration-150",
-              value === type.value
-                ? "bg-white text-neutral-900 shadow-sm"
-                : "text-neutral-500 hover:text-neutral-700"
-            )}
-          >
-            {type.label}
-          </button>
-        ))}
-      </div>
-    </fieldset>
+    <div className="inline-flex rounded-lg bg-neutral-100/80 p-0.5" role="radiogroup" aria-label="Certificate type">
+      {CERT_TYPES.map((type) => (
+        <button
+          key={type.value}
+          type="button"
+          role="radio"
+          aria-checked={value === type.value}
+          onClick={() => onChange(type.value)}
+          className={cn(
+            "rounded-md px-3 py-1.5 text-[13px] font-medium transition-all duration-150",
+            value === type.value
+              ? "bg-white text-neutral-900 shadow-sm"
+              : "text-neutral-400 hover:text-neutral-600"
+          )}
+        >
+          {type.label}
+        </button>
+      ))}
+    </div>
   );
 }

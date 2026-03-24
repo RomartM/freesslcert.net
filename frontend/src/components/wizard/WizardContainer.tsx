@@ -8,11 +8,11 @@ export function WizardContainer() {
   const currentStep = useWizardStore((state) => state.currentStep);
 
   return (
-    <div className="rounded-xl border border-neutral-200/60 bg-white shadow-sm">
-      <div className="p-6 pb-0">
+    <div className="rounded-2xl border border-neutral-200/50 bg-white shadow-lg shadow-neutral-200/50">
+      <div className="px-6 pt-5 pb-0 sm:px-8">
         <StepIndicator currentStep={currentStep} />
       </div>
-      <div className="p-6">
+      <div className="px-6 pb-6 pt-2 sm:px-8 sm:pb-8">
         {currentStep === "domain" && <StepDomainInput />}
         {currentStep === "validation" && <StepValidation />}
         {currentStep === "download" && <StepDownload />}

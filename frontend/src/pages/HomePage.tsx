@@ -6,11 +6,11 @@ import { FaqSection } from "@/components/marketing/FaqSection";
 export function HomePage() {
   return (
     <>
-      <div className="text-center mb-8">
-        <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-neutral-900">
+      <div className="text-center mb-10">
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-neutral-900">
           Free SSL Certificates
         </h1>
-        <p className="mt-2 text-base text-neutral-500">
+        <p className="mt-3 text-[17px] text-neutral-400 font-light">
           Powered by Let&#39;s Encrypt. No signup. No cost.
         </p>
       </div>

@@ -141,71 +141,66 @@ export function StepDomainInput() {
     certificateType === "multi-domain" || domains.length === 0;
 
   return (
-    <div className="space-y-5">
-      {/* Certificate Type */}
-      <CertTypeSelector
-        value={certificateType}
-        onChange={handleCertTypeChange}
-      />
-
-      {/* Domain Input */}
-      <div className="space-y-2">
-        <label
-          htmlFor="domain-input"
-          className="text-sm font-medium text-neutral-700"
-        >
-          {certificateType === "multi-domain" ? "Add Domains" : "Domain Name"}
-        </label>
-        <form
-          onSubmit={handleSubmit(handleAddDomain)}
-          className="flex gap-2"
-        >
-          <div className="relative flex-1">
-            {certificateType === "wildcard" && (
-              <span
-                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-neutral-400"
-                aria-hidden="true"
-              >
-                *.
-              </span>
-            )}
-            <Input
-              id="domain-input"
-              placeholder="example.com"
-              disabled={!canAddMore}
-              className={`h-11 rounded-lg text-base ${certificateType === "wildcard" ? "pl-8" : ""}`}
-              aria-invalid={!!errors.domain}
-              aria-describedby={errors.domain ? "domain-error" : undefined}
-              {...register("domain")}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  handleSubmit(handleAddDomain)();
-                }
-              }}
-            />
-          </div>
-          <Button
-            type="submit"
-            variant="outline"
-            disabled={!canAddMore}
-            className="h-11 rounded-lg px-4"
-            aria-label="Add domain"
-          >
-            <Plus className="size-4" />
-            <span className="hidden sm:inline">Add</span>
-          </Button>
-        </form>
-        {errors.domain && (
-          <p
-            id="domain-error"
-            className="text-xs text-destructive"
-            role="alert"
-          >
-            {errors.domain.message}
-          </p>
-        )}
+    <div className="space-y-4">
+      {/* Certificate Type — compact inline */}
+      <div className="flex items-center justify-between">
+        <span className="text-[13px] font-medium text-neutral-500">Type</span>
+        <CertTypeSelector
+          value={certificateType}
+          onChange={handleCertTypeChange}
+        />
       </div>
+
+      {/* Domain Input — single clean row */}
+      <form
+        onSubmit={handleSubmit(handleAddDomain)}
+        className="flex gap-2"
+      >
+        <div className="relative flex-1">
+          {certificateType === "wildcard" && (
+            <span
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-neutral-400"
+              aria-hidden="true"
+            >
+              *.
+            </span>
+          )}
+          <Input
+            id="domain-input"
+            placeholder="example.com"
+            disabled={!canAddMore}
+            className={`h-10 rounded-lg text-sm ${certificateType === "wildcard" ? "pl-8" : ""}`}
+            aria-invalid={!!errors.domain}
+            aria-describedby={errors.domain ? "domain-error" : undefined}
+            {...register("domain")}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleSubmit(handleAddDomain)();
+              }
+            }}
+          />
+        </div>
+        <Button
+          type="submit"
+          variant="outline"
+          disabled={!canAddMore}
+          className="h-10 rounded-lg px-3 text-sm"
+          aria-label="Add domain"
+        >
+          <Plus className="size-3.5" />
+          Add
+        </Button>
+      </form>
+      {errors.domain && (
+        <p
+          id="domain-error"
+          className="text-xs text-destructive -mt-2"
+          role="alert"
+        >
+          {errors.domain.message}
+        </p>
+      )}
 
       {/* Domain List */}
       <DomainList domains={domains} onRemove={removeDomain} />
@@ -217,7 +212,7 @@ export function StepDomainInput() {
       {createOrderMutation.isError && (
         <Alert variant="destructive">
           <AlertCircle className="size-4" />
-          <AlertDescription>
+          <AlertDescription className="text-sm">
             {createOrderMutation.error?.message ||
               "Failed to create certificate order. Please try again."}
           </AlertDescription>
@@ -228,17 +223,17 @@ export function StepDomainInput() {
       <Button
         onClick={handleGenerate}
         disabled={domains.length === 0 || createOrderMutation.isPending}
-        className="w-full h-12 rounded-lg text-base font-medium"
+        className="w-full h-11 rounded-xl text-sm font-medium mt-2"
         size="lg"
       >
         {createOrderMutation.isPending ? (
           <>
             <Loader2 className="size-4 animate-spin" />
-            <span>Creating Order...</span>
+            Creating Order...
           </>
         ) : (
           <>
-            <span>Generate Certificate</span>
+            Generate Certificate
             <ArrowRight className="size-4" />
           </>
         )}
