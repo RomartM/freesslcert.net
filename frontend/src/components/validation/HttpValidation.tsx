@@ -88,7 +88,7 @@ export function HttpValidation({ challenges }: HttpValidationProps) {
               <div className="ml-8">
                 <p className="text-xs text-muted-foreground">
                   Ensure the file is reachable at{" "}
-                  <code className="rounded bg-neutral-100 dark:bg-neutral-800 px-1 py-0.5 font-mono text-xs">
+                  <code className="rounded bg-neutral-100 px-1 py-0.5 font-mono text-xs">
                     http://{challenge.domain}
                     {challenge.file_path ||
                       `/.well-known/acme-challenge/${challenge.token}`}

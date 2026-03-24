@@ -16,10 +16,10 @@ export function WizardContainer() {
   const currentStep = useWizardStore((state) => state.currentStep);
 
   return (
-    <Card className="shadow-md">
-      <CardHeader className="space-y-4 border-b pb-4">
+    <Card className="border border-neutral-200 shadow-sm">
+      <CardHeader className="space-y-4 border-b border-neutral-100 pb-4">
         <StepIndicator currentStep={currentStep} />
-        <CardTitle className="text-lg font-semibold">
+        <CardTitle className="text-lg font-semibold text-neutral-900">
           {STEP_TITLES[currentStep]}
         </CardTitle>
       </CardHeader>

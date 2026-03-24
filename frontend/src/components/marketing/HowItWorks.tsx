@@ -49,7 +49,7 @@ export function HowItWorks() {
               <div
                 className={cn(
                   "relative flex size-14 items-center justify-center rounded-xl",
-                  "bg-primary-50 dark:bg-primary-900/30"
+                  "bg-primary-50"
                 )}
               >
                 <Icon className="size-7 text-primary-500" aria-hidden="true" />

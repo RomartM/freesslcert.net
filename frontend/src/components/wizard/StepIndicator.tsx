@@ -37,12 +37,12 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
                   className={cn(
                     "flex size-8 items-center justify-center rounded-full text-sm font-semibold transition-all duration-300",
                     isCompleted &&
-                      "bg-primary-500 text-white",
+                      "bg-primary-600 text-white",
                     isCurrent &&
-                      "bg-primary-500 text-white ring-4 ring-primary-500/20",
+                      "border-2 border-primary-500 text-primary-600",
                     !isCompleted &&
                       !isCurrent &&
-                      "bg-neutral-200 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400"
+                      "bg-neutral-100 text-neutral-400"
                   )}
                   aria-current={isCurrent ? "step" : undefined}
                 >
@@ -56,7 +56,7 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
                   className={cn(
                     "hidden text-xs font-medium transition-colors duration-200 md:block",
                     isCurrent && "text-foreground",
-                    isCompleted && "text-primary-500",
+                    isCompleted && "text-primary-600",
                     !isCurrent &&
                       !isCompleted &&
                       "text-muted-foreground"
@@ -71,7 +71,7 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
                     "mx-2 h-px flex-1 transition-colors duration-300 sm:mx-4",
                     index < currentIndex
                       ? "bg-primary-500"
-                      : "bg-neutral-200 dark:bg-neutral-800"
+                      : "bg-neutral-200"
                   )}
                   aria-hidden="true"
                 />

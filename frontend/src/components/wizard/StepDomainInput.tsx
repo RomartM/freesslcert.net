@@ -238,7 +238,7 @@ export function StepDomainInput() {
       <Button
         onClick={handleGenerate}
         disabled={domains.length === 0 || createOrderMutation.isPending}
-        className="w-full bg-primary-500 py-5 text-base font-semibold text-white hover:bg-primary-600 disabled:opacity-50"
+        className="w-full py-5 text-base font-semibold"
         size="lg"
       >
         {createOrderMutation.isPending ? (

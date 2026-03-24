@@ -13,7 +13,7 @@ const statusConfig: Record<
   pending: {
     icon: Loader2,
     label: "Pending",
-    className: "text-neutral-400 dark:text-neutral-500",
+    className: "text-neutral-400",
   },
   valid: {
     icon: CheckCircle2,

@@ -129,7 +129,7 @@ export function StepValidation() {
           Back
         </Button>
         <div className="flex items-center gap-2">
-          <ShieldCheck className="size-5 text-primary-500" />
+          <ShieldCheck className="size-5 text-primary-600" />
           <h2 className="text-lg font-semibold text-foreground">
             Verify Domain Ownership
           </h2>

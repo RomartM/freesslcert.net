@@ -53,8 +53,8 @@ export function ValidationMethodPicker({
                 "text-left transition-all duration-200",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 isSelected
-                  ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20 ring-1 ring-primary-500"
-                  : "border-border hover:border-neutral-300 dark:hover:border-neutral-600",
+                  ? "border-primary-500 bg-primary-50 ring-1 ring-primary-500"
+                  : "border-border hover:border-neutral-300",
                 isDisabled && "opacity-50 cursor-not-allowed"
               )}
             >
@@ -63,7 +63,7 @@ export function ValidationMethodPicker({
                   "flex size-10 shrink-0 items-center justify-center rounded-md",
                   isSelected
                     ? "bg-primary-500 text-white"
-                    : "bg-neutral-100 dark:bg-neutral-800 text-neutral-500"
+                    : "bg-neutral-100 text-neutral-500"
                 )}
               >
                 <Icon className="size-5" />

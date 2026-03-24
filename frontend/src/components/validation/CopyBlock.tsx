@@ -19,7 +19,7 @@ export function CopyBlock({ label, value }: CopyBlockProps) {
       <div className="relative group">
         <pre
           className={cn(
-            "rounded-lg border bg-neutral-50 dark:bg-neutral-900 p-3 pr-12",
+            "rounded-lg border bg-neutral-50 p-3 pr-12",
             "font-mono text-sm text-foreground",
             "overflow-x-auto whitespace-pre-wrap break-all",
             "transition-all duration-200"

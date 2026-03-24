@@ -28,8 +28,8 @@ export function StepDownload() {
     <div className="space-y-6">
       {/* Success banner */}
       <div className="flex flex-col items-center gap-3 py-4">
-        <div className="flex size-16 items-center justify-center rounded-full bg-success/10">
-          <CheckCircle2 className="size-8 text-success" />
+        <div className="flex size-16 items-center justify-center rounded-full bg-primary-100">
+          <CheckCircle2 className="size-8 text-primary-600" />
         </div>
         <div className="text-center">
           <h2 className="text-lg font-semibold text-foreground">

@@ -21,8 +21,8 @@ export function AutoClearWarning() {
     <Alert
       className={
         isUrgent
-          ? "border-error/50 bg-error/5 dark:bg-error/10"
-          : "border-warning/50 bg-warning/5 dark:bg-warning/10"
+          ? "border-error/50 bg-error/5"
+          : "border-warning/50 bg-warning/5"
       }
     >
       <Timer

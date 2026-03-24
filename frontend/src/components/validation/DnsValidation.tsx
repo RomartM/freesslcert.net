@@ -81,7 +81,7 @@ function DnsRecordRow({ challenge }: DnsRecordRowProps) {
                 <DnsCopyValue value={recordName} />
               </td>
               <td className="pt-2 pr-4">
-                <span className="inline-flex items-center rounded-md bg-primary-50 dark:bg-primary-900/30 px-2 py-0.5 text-xs font-medium text-primary-700 dark:text-primary-300">
+                <span className="inline-flex items-center rounded-md bg-primary-50 px-2 py-0.5 text-xs font-medium text-primary-700">
                   TXT
                 </span>
               </td>
