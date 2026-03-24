@@ -1,15 +1,18 @@
 import { Lock } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function Header() {
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-neutral-200 bg-white">
-      <div className="mx-auto flex h-14 max-w-5xl items-center px-4">
-        <a href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
-          <Lock className="size-5 text-primary-600" />
-          <span className="text-base font-semibold text-neutral-900">
+    <header className="fixed top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-neutral-100">
+      <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-6">
+        <Link to="/" className="flex items-center gap-2.5 transition-opacity duration-150 hover:opacity-70">
+          <div className="flex size-8 items-center justify-center rounded-lg bg-primary-600 text-white">
+            <Lock className="size-4" />
+          </div>
+          <span className="text-[15px] font-semibold tracking-tight text-neutral-900">
             freesslcert.net
           </span>
-        </a>
+        </Link>
       </div>
     </header>
   );

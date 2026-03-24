@@ -8,9 +8,9 @@ import { TermsPage } from "@/pages/TermsPage";
 
 function App() {
   return (
-    <div className="min-h-screen bg-white text-neutral-700">
+    <div className="min-h-screen bg-neutral-50/50">
       <Header />
-      <main className="pt-20 pb-16">
+      <main className="pt-24 pb-20">
         <PageShell>
           <Routes>
             <Route path="/" element={<HomePage />} />

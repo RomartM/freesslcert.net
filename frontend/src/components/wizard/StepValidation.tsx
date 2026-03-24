@@ -123,14 +123,15 @@ export function StepValidation() {
           variant="ghost"
           size="sm"
           onClick={handleBack}
+          className="min-h-11 transition-colors duration-150"
           aria-label="Go back to domain entry"
         >
           <ArrowLeft className="size-4" />
           Back
         </Button>
         <div className="flex items-center gap-2">
-          <ShieldCheck className="size-5 text-primary-600" />
-          <h2 className="text-lg font-semibold text-foreground">
+          <ShieldCheck className="size-5 text-primary-600" aria-hidden="true" />
+          <h2 className="text-lg font-semibold tracking-tight text-neutral-900">
             Verify Domain Ownership
           </h2>
         </div>
@@ -187,6 +188,7 @@ export function StepValidation() {
             onClick={handleVerifyAll}
             disabled={validateMutation.isPending}
             size="lg"
+            className="min-h-11 rounded-lg transition-colors duration-150"
             aria-label="Verify all domains"
           >
             {validateMutation.isPending ? (

@@ -33,13 +33,9 @@ export function StepDomainInput() {
     domains,
     keyType,
     csrContent,
-    expertMode,
     setCertificateType,
     addDomain,
     removeDomain,
-    setKeyType,
-    setCsrContent,
-    setExpertMode,
     setStep,
     setOrderId,
     setChallenges,
@@ -145,7 +141,7 @@ export function StepDomainInput() {
     certificateType === "multi-domain" || domains.length === 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Certificate Type */}
       <CertTypeSelector
         value={certificateType}
@@ -156,7 +152,7 @@ export function StepDomainInput() {
       <div className="space-y-2">
         <label
           htmlFor="domain-input"
-          className="text-sm font-medium text-foreground"
+          className="text-sm font-medium text-neutral-700"
         >
           {certificateType === "multi-domain" ? "Add Domains" : "Domain Name"}
         </label>
@@ -167,7 +163,7 @@ export function StepDomainInput() {
           <div className="relative flex-1">
             {certificateType === "wildcard" && (
               <span
-                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground"
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-neutral-400"
                 aria-hidden="true"
               >
                 *.
@@ -177,7 +173,7 @@ export function StepDomainInput() {
               id="domain-input"
               placeholder="example.com"
               disabled={!canAddMore}
-              className={certificateType === "wildcard" ? "pl-8" : ""}
+              className={`h-11 rounded-lg text-base ${certificateType === "wildcard" ? "pl-8" : ""}`}
               aria-invalid={!!errors.domain}
               aria-describedby={errors.domain ? "domain-error" : undefined}
               {...register("domain")}
@@ -193,6 +189,7 @@ export function StepDomainInput() {
             type="submit"
             variant="outline"
             disabled={!canAddMore}
+            className="h-11 rounded-lg px-4"
             aria-label="Add domain"
           >
             <Plus className="size-4" />
@@ -214,14 +211,7 @@ export function StepDomainInput() {
       <DomainList domains={domains} onRemove={removeDomain} />
 
       {/* Advanced Options */}
-      <AdvancedOptions
-        keyType={keyType}
-        onKeyTypeChange={setKeyType}
-        csrEnabled={expertMode}
-        onCsrEnabledChange={setExpertMode}
-        csrContent={csrContent}
-        onCsrContentChange={setCsrContent}
-      />
+      <AdvancedOptions />
 
       {/* Error Alert */}
       {createOrderMutation.isError && (
@@ -238,7 +228,7 @@ export function StepDomainInput() {
       <Button
         onClick={handleGenerate}
         disabled={domains.length === 0 || createOrderMutation.isPending}
-        className="w-full py-5 text-base font-semibold"
+        className="w-full h-12 rounded-lg text-base font-medium"
         size="lg"
       >
         {createOrderMutation.isPending ? (

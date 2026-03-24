@@ -1,73 +1,42 @@
 import { Globe, ShieldCheck, Download } from "lucide-react";
-import { cn } from "@/lib/utils";
 
-interface Step {
-  icon: typeof Globe;
-  title: string;
-  description: string;
-}
-
-const steps: Step[] = [
+const steps = [
   {
     icon: Globe,
     title: "Enter Your Domain",
-    description:
-      "Type your domain name and choose your certificate type. We support single, wildcard, and multi-domain certificates.",
+    description: "Type your domain name and select your certificate type.",
   },
   {
     icon: ShieldCheck,
     title: "Verify Ownership",
-    description:
-      "Prove you own the domain by placing a file on your server or adding a DNS record. We guide you through every step.",
+    description: "Prove you own the domain via HTTP file or DNS record.",
   },
   {
     icon: Download,
     title: "Download Certificate",
-    description:
-      "Get your signed SSL certificate instantly. Download the files and install them on your web server.",
+    description: "Get your SSL certificate files ready to install.",
   },
 ];
 
 export function HowItWorks() {
   return (
-    <section className="py-12" aria-labelledby="how-it-works-heading">
+    <section className="mt-16" aria-labelledby="how-it-works-heading">
       <h2
         id="how-it-works-heading"
-        className="text-2xl font-bold text-center text-foreground mb-8"
+        className="text-xl font-semibold tracking-tight text-neutral-900 text-center mb-8"
       >
         How It Works
       </h2>
-
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-        {steps.map((step, index) => {
+        {steps.map((step) => {
           const Icon = step.icon;
           return (
-            <div
-              key={step.title}
-              className="flex flex-col items-center text-center space-y-3"
-            >
-              <div
-                className={cn(
-                  "relative flex size-14 items-center justify-center rounded-xl",
-                  "bg-primary-50"
-                )}
-              >
-                <Icon className="size-7 text-primary-500" aria-hidden="true" />
-                <span
-                  className={cn(
-                    "absolute -top-2 -right-2 flex size-6 items-center justify-center",
-                    "rounded-full bg-primary-500 text-xs font-bold text-white"
-                  )}
-                >
-                  {index + 1}
-                </span>
+            <div key={step.title} className="text-center">
+              <div className="mx-auto mb-3 flex size-10 items-center justify-center rounded-xl bg-primary-50 text-primary-600">
+                <Icon className="size-5" aria-hidden="true" />
               </div>
-              <h3 className="text-base font-semibold text-foreground">
-                {step.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
-                {step.description}
-              </p>
+              <h3 className="text-sm font-semibold text-neutral-900">{step.title}</h3>
+              <p className="mt-1 text-sm text-neutral-500 leading-relaxed">{step.description}</p>
             </div>
           );
         })}

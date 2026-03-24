@@ -1,87 +1,68 @@
 import { useState } from "react";
 import { ChevronDown, FileKey } from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleTrigger,
-  CollapsibleContent,
-} from "@/components/ui/collapsible";
-import { KeyTypeSelector } from "@/components/config/KeyTypeSelector";
 import { cn } from "@/lib/utils";
-import type { KeyType } from "@/types/certificate";
+import { KeyTypeSelector } from "@/components/config/KeyTypeSelector";
+import { useWizardStore } from "@/stores/wizard-store";
 
-export interface AdvancedOptionsProps {
-  keyType: KeyType;
-  onKeyTypeChange: (type: KeyType) => void;
-  csrEnabled: boolean;
-  onCsrEnabledChange: (enabled: boolean) => void;
-  csrContent: string | null;
-  onCsrContentChange: (content: string | null) => void;
-}
-
-export function AdvancedOptions({
-  keyType,
-  onKeyTypeChange,
-  csrEnabled,
-  onCsrEnabledChange,
-  csrContent,
-  onCsrContentChange,
-}: AdvancedOptionsProps) {
+export function AdvancedOptions() {
   const [open, setOpen] = useState(false);
+  const csrContent = useWizardStore((s) => s.csrContent);
+  const setCsrContent = useWizardStore((s) => s.setCsrContent);
+  const expertMode = useWizardStore((s) => s.expertMode);
+  const setExpertMode = useWizardStore((s) => s.setExpertMode);
 
   return (
-    <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="flex w-full items-center gap-2 rounded-md px-1 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="flex min-h-11 items-center gap-1.5 text-sm text-neutral-400 hover:text-neutral-600 transition-colors duration-150"
+        aria-expanded={open}
+        aria-controls="advanced-options-panel"
+      >
         <ChevronDown
-          className={cn(
-            "size-4 transition-transform duration-200",
-            open && "rotate-180"
-          )}
+          className={cn("size-4 transition-transform duration-150", open && "rotate-180")}
+          aria-hidden="true"
         />
-        <span>Advanced Options</span>
-      </CollapsibleTrigger>
+        Advanced Options
+      </button>
 
-      <CollapsibleContent className="space-y-4 pt-2">
-        {!csrEnabled && (
-          <KeyTypeSelector value={keyType} onChange={onKeyTypeChange} />
-        )}
+      {open && (
+        <div id="advanced-options-panel" className="pt-4 space-y-4">
+          {!expertMode && <KeyTypeSelector />}
 
-        <div className="space-y-3">
-          <label className="flex items-center gap-2 text-sm font-medium text-foreground">
+          <label className="flex min-h-11 items-center gap-2 text-sm text-neutral-600 cursor-pointer">
             <input
               type="checkbox"
-              checked={csrEnabled}
+              checked={expertMode}
               onChange={(e) => {
-                onCsrEnabledChange(e.target.checked);
+                setExpertMode(e.target.checked);
                 if (!e.target.checked) {
-                  onCsrContentChange(null);
+                  setCsrContent(null);
                 }
               }}
-              className="size-4 rounded border-border accent-primary-500"
+              className="size-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500"
             />
-            <FileKey className="size-3.5" />
-            <span>I have my own CSR</span>
+            <FileKey className="size-4" aria-hidden="true" />
+            I have my own CSR
           </label>
 
-          {csrEnabled && (
+          {expertMode && (
             <div className="space-y-1.5">
-              <label
-                htmlFor="csr-textarea"
-                className="text-xs text-muted-foreground"
-              >
-                Paste your Certificate Signing Request (PEM format)
+              <label htmlFor="csr-textarea" className="text-sm font-medium text-neutral-700">
+                Certificate Signing Request
               </label>
               <textarea
                 id="csr-textarea"
                 value={csrContent ?? ""}
-                onChange={(e) => onCsrContentChange(e.target.value || null)}
-                placeholder="-----BEGIN CERTIFICATE REQUEST-----&#10;...&#10;-----END CERTIFICATE REQUEST-----"
-                className="h-32 w-full resize-y rounded-lg border border-input bg-transparent px-3 py-2 font-mono text-xs transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
-                aria-label="Certificate Signing Request content"
+                onChange={(e) => setCsrContent(e.target.value || null)}
+                placeholder="-----BEGIN CERTIFICATE REQUEST-----"
+                className="w-full min-h-[120px] rounded-lg border border-neutral-200 bg-neutral-50 p-3 text-sm font-mono text-neutral-700 placeholder:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-colors duration-150"
               />
             </div>
           )}
         </div>
-      </CollapsibleContent>
-    </Collapsible>
+      )}
+    </div>
   );
 }

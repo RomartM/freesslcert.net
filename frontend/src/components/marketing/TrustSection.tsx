@@ -1,45 +1,27 @@
-import { Shield, Lock, EyeOff, ShieldCheck } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Shield, Lock, Timer, ShieldCheck } from "lucide-react";
 
-interface TrustBadge {
-  icon: typeof Shield;
-  label: string;
-}
-
-const badges: TrustBadge[] = [
+const badges = [
   { icon: Shield, label: "100% Free" },
   { icon: Lock, label: "Let's Encrypt" },
-  { icon: EyeOff, label: "Auto-Purged in 24h" },
+  { icon: Timer, label: "Auto-Purged 24h" },
   { icon: ShieldCheck, label: "ACME Standard" },
 ];
 
 export function TrustSection() {
   return (
     <section
-      className="mt-12 mb-8"
+      className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-neutral-400"
       aria-label="Trust and security features"
     >
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {badges.map((badge) => {
-          const Icon = badge.icon;
-          return (
-            <div
-              key={badge.label}
-              className={cn(
-                "flex items-center justify-center gap-2 rounded-lg border px-4 py-3",
-                "bg-card text-card-foreground shadow-sm",
-                "transition-all duration-200 hover:shadow-md"
-              )}
-            >
-              <Icon
-                className="size-4 shrink-0 text-primary-500"
-                aria-hidden="true"
-              />
-              <span className="text-sm font-medium">{badge.label}</span>
-            </div>
-          );
-        })}
-      </div>
+      {badges.map((badge) => {
+        const Icon = badge.icon;
+        return (
+          <div key={badge.label} className="flex items-center gap-1.5">
+            <Icon className="size-3.5" aria-hidden="true" />
+            <span>{badge.label}</span>
+          </div>
+        );
+      })}
     </section>
   );
 }
