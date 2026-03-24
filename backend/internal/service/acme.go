@@ -7,7 +7,9 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/rsa"
+	"crypto/sha256"
 	"crypto/x509"
+	"encoding/base64"
 	"encoding/json"
 	"encoding/pem"
 	"fmt"
@@ -102,8 +104,13 @@ func newManualDNSProvider() *manualDNSProvider {
 }
 
 func (p *manualDNSProvider) Present(domain, token, keyAuth string) error {
-	// For DNS-01, the domain already has the _acme-challenge prefix from lego.
 	fqdn := fmt.Sprintf("_acme-challenge.%s", domain)
+
+	// DNS-01 requires the TXT record value to be the base64url-encoded
+	// SHA-256 digest of the key authorization (RFC 8555 Section 8.4).
+	digest := sha256.Sum256([]byte(keyAuth))
+	txtValue := base64.RawURLEncoding.EncodeToString(digest[:])
+
 	p.mu.Lock()
 	p.challenges[domain] = model.Challenge{
 		Domain:      domain,
@@ -112,7 +119,7 @@ func (p *manualDNSProvider) Present(domain, token, keyAuth string) error {
 		KeyAuth:     keyAuth,
 		Status:      model.StatusPending,
 		RecordName:  fqdn,
-		RecordValue: keyAuth, // lego passes the encoded value
+		RecordValue: txtValue,
 	}
 	p.mu.Unlock()
 	p.presented <- struct{}{}
