@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export function Footer() {
   return (
     <footer className="border-t border-neutral-100">
-      <div className="mx-auto flex max-w-2xl flex-col items-center gap-3 px-6 py-6 sm:flex-row sm:justify-between">
+      <div className="mx-auto flex max-w-3xl flex-col items-center gap-3 px-6 py-6 sm:flex-row sm:justify-between">
         <p className="text-xs text-neutral-400">
           &copy; {new Date().getFullYear()} freesslcert.net &middot; Powered by{" "}
           <a

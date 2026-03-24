@@ -4,18 +4,14 @@ import type { Challenge, ChallengeStatus } from "@/types/certificate";
 
 const statusConfig: Record<
   ChallengeStatus,
-  { icon: typeof CheckCircle2; className: string; label: string }
+  { icon: typeof CheckCircle2; iconClass: string; textClass: string; label: string }
 > = {
-  pending: { icon: Loader2, className: "text-neutral-400 animate-spin", label: "Pending" },
-  valid: { icon: CheckCircle2, className: "text-primary-600", label: "Verified" },
-  invalid: { icon: XCircle, className: "text-red-500", label: "Failed" },
+  pending: { icon: Loader2, iconClass: "animate-spin text-neutral-400", textClass: "text-neutral-400", label: "Pending" },
+  valid: { icon: CheckCircle2, iconClass: "text-primary-600", textClass: "text-primary-600", label: "Verified" },
+  invalid: { icon: XCircle, iconClass: "text-red-500", textClass: "text-red-500", label: "Failed" },
 };
 
-export interface ValidationStatusProps {
-  challenges: Challenge[];
-}
-
-export function ValidationStatus({ challenges }: ValidationStatusProps) {
+export function ValidationStatus({ challenges }: { challenges: Challenge[] }) {
   if (challenges.length === 0) return null;
 
   return (
@@ -28,10 +24,12 @@ export function ValidationStatus({ challenges }: ValidationStatusProps) {
             key={challenge.domain}
             className="flex items-center justify-between rounded-lg border border-neutral-100 bg-white px-4 py-3"
           >
-            <span className="text-sm font-medium text-neutral-700">{challenge.domain}</span>
-            <div className={cn("flex items-center gap-1.5 text-sm", config.className)}>
-              <Icon className="size-4" />
-              <span>{config.label}</span>
+            <span className="text-sm font-medium text-neutral-700 truncate mr-3">
+              {challenge.domain}
+            </span>
+            <div className="flex items-center gap-2 shrink-0">
+              <Icon className={cn("size-4", config.iconClass)} />
+              <span className={cn("text-sm", config.textClass)}>{config.label}</span>
             </div>
           </div>
         );
