@@ -255,10 +255,36 @@ func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequ
 		}
 	}
 
+	// Create the DB record FIRST so the background goroutine can update it
+	// even if it completes before we finish waiting for challenges (e.g.,
+	// when Let's Encrypt has a cached authorization and skips challenges).
+	now := time.Now().UTC()
+	order := &model.CertificateOrder{
+		ID:              orderID,
+		Domains:         req.Domains,
+		CertificateType: req.CertificateType,
+		KeyType:         req.KeyType,
+		Status:          model.StatusPending,
+		CreatedAt:       now,
+		PurgeAfter:      now.Add(24 * time.Hour),
+	}
+
+	if err := s.repo.Create(ctx, order); err != nil {
+		return nil, fmt.Errorf("persist certificate order: %w", err)
+	}
+
+	s.orders.Store(orderID, &orderState{
+		PrivateKey: privKey,
+		Domains:    req.Domains,
+		KeyType:    req.KeyType,
+	})
+
 	// Launch self-finalizing background goroutine with its own timeout context.
 	bgCtx, bgCancel := context.WithTimeout(context.Background(), 10*time.Minute)
+	doneCh := make(chan struct{})
 
 	go func() {
+		defer close(doneCh)
 		defer bgCancel()
 		defer s.orders.Delete(orderID)
 
@@ -274,11 +300,11 @@ func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequ
 			return
 		}
 
-		// Success -- save certificate to DB.
-		now := time.Now().UTC()
+		// Success — save certificate to DB.
+		issueTime := time.Now().UTC()
 
 		// Parse actual certificate expiry; fall back to 90 days.
-		expiry := now.Add(90 * 24 * time.Hour)
+		expiry := issueTime.Add(90 * 24 * time.Hour)
 		if len(resource.Certificate) > 0 {
 			block, _ := pem.Decode(resource.Certificate)
 			if block != nil {
@@ -295,17 +321,17 @@ func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequ
 			return
 		}
 
-		order := &model.CertificateOrder{
+		certOrder := &model.CertificateOrder{
 			ID:          orderID,
 			Certificate: string(resource.Certificate),
 			PrivateKey:  privKeyPEM,
 			CABundle:    string(resource.IssuerCertificate),
 			Status:      model.StatusIssued,
-			IssuedAt:    &now,
+			IssuedAt:    &issueTime,
 			ExpiresAt:   &expiry,
 		}
 
-		if err := s.repo.UpdateCertificate(bgCtx, order); err != nil {
+		if err := s.repo.UpdateCertificate(bgCtx, certOrder); err != nil {
 			s.logger.Error("save certificate failed", "order_id", orderID, "error", err)
 			return
 		}
@@ -313,14 +339,26 @@ func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequ
 		s.logger.Info("certificate issued", "order_id", orderID, "domains", req.Domains)
 	}()
 
-	// Wait briefly for challenges to be presented by lego.
+	// Wait for challenges to be presented by lego, OR for the goroutine to
+	// complete (happens when authorization is already cached by Let's Encrypt).
 	var challenges []model.Challenge
-	timeout := time.After(15 * time.Second)
+	timeout := time.After(20 * time.Second)
 	expectedCount := len(req.Domains)
 
 	for len(challenges) < expectedCount {
 		select {
 		case <-timeout:
+			goto done
+		case <-doneCh:
+			// Obtain completed without presenting challenges (cached authz).
+			// Fetch the order from DB — it may already be "issued".
+			updatedOrder, fetchErr := s.repo.GetByID(ctx, orderID)
+			if fetchErr == nil && updatedOrder.Status == model.StatusIssued {
+				s.logger.Info("certificate issued immediately (cached authorization)",
+					"order_id", orderID, "domains", req.Domains)
+				return updatedOrder, nil
+			}
+			// If it failed, return empty challenges so the caller sees the order.
 			goto done
 		case <-httpProv.presented:
 			challenges = httpProv.GetChallenges()
@@ -330,34 +368,13 @@ func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequ
 	}
 done:
 
-	// If no challenges captured, the Obtain goroutine likely already failed.
-	if len(challenges) == 0 {
-		bgCancel() // cancel the background goroutine
-		return nil, fmt.Errorf("failed to get ACME challenges: %w", model.ErrInvalidInput)
+	// Update challenges in DB if we captured any.
+	if len(challenges) > 0 {
+		_ = s.repo.UpdateChallenges(ctx, orderID, challenges)
 	}
 
-	now := time.Now().UTC()
-	order := &model.CertificateOrder{
-		ID:              orderID,
-		Domains:         req.Domains,
-		CertificateType: req.CertificateType,
-		KeyType:         req.KeyType,
-		Status:          model.StatusPending,
-		CreatedAt:       now,
-		PurgeAfter:      now.Add(24 * time.Hour),
-		Challenges:      challenges,
-	}
-
-	if err := s.repo.Create(ctx, order); err != nil {
-		bgCancel() // cancel the background goroutine
-		return nil, fmt.Errorf("persist certificate order: %w", err)
-	}
-
-	s.orders.Store(orderID, &orderState{
-		PrivateKey: privKey,
-		Domains:    req.Domains,
-		KeyType:    req.KeyType,
-	})
+	// Return the order (with or without challenges).
+	order.Challenges = challenges
 
 	s.logger.Info("created certificate order",
 		"order_id", orderID,
@@ -424,19 +441,17 @@ func (s *ACMEService) RevokeCertificate(ctx context.Context, orderID string) err
 	}
 
 	if order.Certificate != "" {
-		block, _ := pem.Decode([]byte(order.Certificate))
-		if block != nil {
-			// Create a one-off client for revocation.
-			legoCfg := lego.NewConfig(s.user)
-			legoCfg.CADirURL = s.cfg.ACMEDirectoryURL
+		// Create a one-off client for revocation.
+		legoCfg := lego.NewConfig(s.user)
+		legoCfg.CADirURL = s.cfg.ACMEDirectoryURL
 
-			client, clientErr := lego.NewClient(legoCfg)
-			if clientErr != nil {
-				return fmt.Errorf("create lego client for revocation: %w", clientErr)
-			}
-			if err := client.Certificate.Revoke(block.Bytes); err != nil {
-				return fmt.Errorf("revoke certificate with ACME: %w", err)
-			}
+		client, clientErr := lego.NewClient(legoCfg)
+		if clientErr != nil {
+			return fmt.Errorf("create lego client for revocation: %w", clientErr)
+		}
+		// lego's Revoke expects PEM-encoded certificate bytes.
+		if err := client.Certificate.Revoke([]byte(order.Certificate)); err != nil {
+			return fmt.Errorf("revoke certificate with ACME: %w", err)
 		}
 	}
 

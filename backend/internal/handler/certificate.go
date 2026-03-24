@@ -5,6 +5,7 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
+	"log/slog"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -298,6 +299,7 @@ func handleError(c *gin.Context, err error) {
 			Message: err.Error(),
 		})
 	default:
+		slog.Error("internal error", "error", err, "path", c.Request.URL.Path)
 		c.JSON(http.StatusInternalServerError, model.ErrorResponse{
 			Code:    "internal_error",
 			Message: "an internal error occurred",
