@@ -7,8 +7,8 @@
     <!-- Primary Meta Tags -->
     <title>Free SSL Certificate Generator | freesslcert.net</title>
     <meta name="title" content="Free SSL Certificate Generator | freesslcert.net" />
-    <meta name="description" content="Generate free SSL/TLS certificates powered by Let's Encrypt in 60 seconds. No signup, no cost. Support for single, wildcard, and multi-domain certificates." />
-    <meta name="keywords" content="free SSL certificate, SSL generator, Let's Encrypt, TLS certificate, HTTPS, wildcard certificate, free HTTPS, SSL for free, certificate generator, ACME" />
+    <meta name="description" content="Generate free SSL certificates powered by Let's Encrypt in 60 seconds. No signup required. Single, wildcard & multi-domain support." />
+    <meta name="keywords" content="free SSL certificate, SSL certificate generator, Let's Encrypt, free HTTPS, wildcard SSL certificate, TLS certificate, SSL for free, free wildcard SSL, multi-domain SSL, SAN certificate, ACME protocol, free SSL no signup, SSL certificate online, generate SSL certificate" />
     <meta name="author" content="freesslcert.net" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://freesslcert.net/" />
@@ -20,12 +20,16 @@
     <meta property="og:description" content="Generate free SSL/TLS certificates powered by Let's Encrypt in 60 seconds. No signup, no cost." />
     <meta property="og:site_name" content="freesslcert.net" />
     <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://freesslcert.net/og-image.svg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://freesslcert.net/" />
     <meta property="twitter:title" content="Free SSL Certificate Generator | freesslcert.net" />
     <meta property="twitter:description" content="Generate free SSL/TLS certificates powered by Let's Encrypt in 60 seconds. No signup, no cost." />
+    <meta property="twitter:image" content="https://freesslcert.net/og-image.svg" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -45,7 +49,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-    <!-- Structured Data (JSON-LD) -->
+    <!-- Structured Data (JSON-LD) — WebApplication -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -67,20 +71,121 @@
     }
     </script>
 
-    <!-- SPA redirect handler for Cloudflare Pages -->
-    <script>
-      (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) {
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
-        }
-      }(window.location))
+    <!-- FAQ Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type": "Question", "name": "What is an SSL certificate?", "acceptedAnswer": {"@type": "Answer", "text": "An SSL/TLS certificate encrypts data between your website and visitors, ensuring secure communication. It makes your site show the padlock icon and use HTTPS."}},
+        {"@type": "Question", "name": "Is this really free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, completely free. We use Let's Encrypt, a nonprofit Certificate Authority. There are no hidden costs or premium tiers."}},
+        {"@type": "Question", "name": "How long do SSL certificates last?", "acceptedAnswer": {"@type": "Answer", "text": "Let's Encrypt certificates are valid for 90 days. You can generate a new certificate anytime for free."}},
+        {"@type": "Question", "name": "Are wildcard SSL certificates supported?", "acceptedAnswer": {"@type": "Answer", "text": "Yes! Select Wildcard as the certificate type and use DNS validation. A wildcard certificate covers your domain and all its subdomains."}},
+        {"@type": "Question", "name": "What validation methods are available?", "acceptedAnswer": {"@type": "Answer", "text": "HTTP file upload and DNS TXT record validation. DNS validation is required for wildcard certificates."}},
+        {"@type": "Question", "name": "Is my private key secure?", "acceptedAnswer": {"@type": "Answer", "text": "All certificate data including private keys is automatically purged from our servers within 24 hours."}},
+        {"@type": "Question", "name": "What web servers are supported?", "acceptedAnswer": {"@type": "Answer", "text": "All major web servers including Nginx, Apache, Node.js, Caddy, IIS, and any server supporting PEM, DER, or PKCS12 formats."}}
+      ]
+    }
+    </script>
+
+    <!-- HowTo Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Get a Free SSL Certificate",
+      "description": "Generate a free SSL/TLS certificate using Let's Encrypt in 3 simple steps.",
+      "totalTime": "PT1M",
+      "step": [
+        {"@type": "HowToStep", "position": 1, "name": "Enter your domain", "text": "Type your domain name and choose single, wildcard, or multi-domain certificate type."},
+        {"@type": "HowToStep", "position": 2, "name": "Verify domain ownership", "text": "Prove you own the domain using HTTP file upload or DNS TXT record verification."},
+        {"@type": "HowToStep", "position": 3, "name": "Download certificate", "text": "Download your SSL certificate, private key, and CA bundle in PEM, DER, or PKCS12 format."}
+      ]
+    }
+    </script>
+
+    <!-- BreadcrumbList Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://freesslcert.net/"}
+      ]
+    }
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Static content for SEO crawlers — React replaces this on mount -->
+      <header style="padding:16px 24px;border-bottom:1px solid #e5e5e5">
+        <a href="/" style="font-weight:600;font-size:15px;color:#171717;text-decoration:none">freesslcert.net</a>
+      </header>
+      <main style="max-width:768px;margin:0 auto;padding:80px 24px 64px">
+        <h1 style="font-size:32px;font-weight:600;text-align:center;color:#171717">Free SSL Certificate Generator</h1>
+        <p style="text-align:center;color:#737373;margin-top:8px">Generate free SSL/TLS certificates powered by Let's Encrypt. No signup. No cost. Ready in 60 seconds.</p>
+
+        <section style="margin-top:48px">
+          <h2 style="font-size:20px;font-weight:600;color:#171717">Generate Free SSL Certificates Online</h2>
+          <p style="color:#525252;line-height:1.6">freesslcert.net is a free, browser-based SSL certificate generator powered by Let's Encrypt — the world's most trusted nonprofit Certificate Authority. Generate single domain, wildcard, and multi-domain (SAN) SSL/TLS certificates in under 60 seconds with no account required.</p>
+          <p style="color:#525252;line-height:1.6">Our certificates are fully trusted by all major browsers including Chrome, Firefox, Safari, and Edge. They use industry-standard encryption and are valid for 90 days with unlimited free renewals.</p>
+        </section>
+
+        <section style="margin-top:32px">
+          <h2 style="font-size:20px;font-weight:600;color:#171717">How It Works</h2>
+          <ol style="color:#525252;line-height:1.8;padding-left:20px">
+            <li><strong>Enter your domain</strong> — Type your domain name (e.g., example.com) and choose single, wildcard (*.example.com), or multi-domain certificate.</li>
+            <li><strong>Verify ownership</strong> — Prove you own the domain using HTTP file upload or DNS TXT record verification.</li>
+            <li><strong>Download your certificate</strong> — Get your SSL certificate, private key, and CA bundle in PEM, DER, or PKCS12 format.</li>
+          </ol>
+        </section>
+
+        <section style="margin-top:32px">
+          <h2 style="font-size:20px;font-weight:600;color:#171717">Why Choose freesslcert.net?</h2>
+          <ul style="color:#525252;line-height:1.8;padding-left:20px">
+            <li><strong>100% Free</strong> — No hidden costs, no premium tiers, no credit card required.</li>
+            <li><strong>No Signup Required</strong> — Generate certificates instantly without creating an account.</li>
+            <li><strong>Wildcard Support</strong> — Secure your domain and all subdomains with a single wildcard certificate.</li>
+            <li><strong>Multiple Formats</strong> — Download in PEM, DER, or PKCS12 format for any web server.</li>
+            <li><strong>Let's Encrypt Powered</strong> — Certificates issued by the world's largest Certificate Authority.</li>
+            <li><strong>Auto-Purged</strong> — All certificate data is automatically deleted within 24 hours for security.</li>
+          </ul>
+        </section>
+
+        <section style="margin-top:32px">
+          <h2 style="font-size:20px;font-weight:600;color:#171717">Supported Certificate Types</h2>
+          <ul style="color:#525252;line-height:1.8;padding-left:20px">
+            <li><strong>Single Domain SSL</strong> — Secure one domain (e.g., example.com)</li>
+            <li><strong>Wildcard SSL Certificate</strong> — Secure a domain and all subdomains (e.g., *.example.com)</li>
+            <li><strong>Multi-Domain (SAN) SSL</strong> — Secure multiple domains in one certificate</li>
+            <li><strong>RSA & ECDSA Keys</strong> — Choose between RSA 2048/4096-bit or ECDSA P-256/P-384 key algorithms</li>
+          </ul>
+        </section>
+
+        <section style="margin-top:32px">
+          <h2 style="font-size:20px;font-weight:600;color:#171717">Frequently Asked Questions</h2>
+          <details><summary style="font-weight:500;cursor:pointer;padding:8px 0">What is an SSL certificate?</summary><p style="color:#525252;padding:8px 0">An SSL/TLS certificate encrypts data between your website and visitors, ensuring secure communication. It makes your site show the padlock icon and use HTTPS instead of HTTP.</p></details>
+          <details><summary style="font-weight:500;cursor:pointer;padding:8px 0">Is this really free?</summary><p style="color:#525252;padding:8px 0">Yes, completely free. We use Let's Encrypt, a nonprofit Certificate Authority that provides free SSL certificates to over 400 million websites. There are no hidden costs or premium tiers.</p></details>
+          <details><summary style="font-weight:500;cursor:pointer;padding:8px 0">How long do certificates last?</summary><p style="color:#525252;padding:8px 0">Let's Encrypt certificates are valid for 90 days. You can generate a new certificate anytime for free. We recommend setting a reminder to renew before expiration.</p></details>
+          <details><summary style="font-weight:500;cursor:pointer;padding:8px 0">Are wildcard certificates supported?</summary><p style="color:#525252;padding:8px 0">Yes! Select Wildcard as the certificate type and use DNS validation. A wildcard certificate covers your domain and all its subdomains (e.g., *.example.com covers blog.example.com, app.example.com, etc.).</p></details>
+          <details><summary style="font-weight:500;cursor:pointer;padding:8px 0">What validation methods are available?</summary><p style="color:#525252;padding:8px 0">We support HTTP file upload (place a verification file on your web server) and DNS TXT record validation (add a TXT record to your domain's DNS). DNS validation is required for wildcard certificates.</p></details>
+          <details><summary style="font-weight:500;cursor:pointer;padding:8px 0">Is my private key secure?</summary><p style="color:#525252;padding:8px 0">Private keys are generated on our server for the certificate issuance process, then served to you over HTTPS. All certificate data including private keys is automatically purged from our servers within 24 hours.</p></details>
+          <details><summary style="font-weight:500;cursor:pointer;padding:8px 0">What web servers are supported?</summary><p style="color:#525252;padding:8px 0">Our certificates work with all major web servers including Nginx, Apache, Node.js, Caddy, IIS, Tomcat, and any server that supports PEM, DER, or PKCS12 certificate formats.</p></details>
+        </section>
+
+        <section style="margin-top:32px">
+          <h2 style="font-size:20px;font-weight:600;color:#171717">Install Your SSL Certificate</h2>
+          <p style="color:#525252;line-height:1.6">After downloading your certificate files, install them on your web server. We provide copy-paste installation guides for Nginx, Apache, Node.js, and Caddy. Your website will be secured with HTTPS in minutes.</p>
+        </section>
+      </main>
+      <footer style="border-top:1px solid #e5e5e5;padding:24px;text-align:center;font-size:12px;color:#a3a3a3">
+        <p>&copy; 2026 freesslcert.net &middot; Powered by <a href="https://letsencrypt.org" style="color:#a3a3a3">Let's Encrypt</a></p>
+        <nav><a href="/privacy" style="color:#a3a3a3;margin:0 8px">Privacy</a><a href="/terms" style="color:#a3a3a3;margin:0 8px">Terms</a></nav>
+      </footer>
+    </div>
+    <noscript>
+      <p>freesslcert.net requires JavaScript to generate SSL certificates. Please enable JavaScript in your browser to use this application.</p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

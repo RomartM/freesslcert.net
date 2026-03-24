@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" fill="none">
+  <rect width="1200" height="630" fill="#f0fdf4"/>
+  <rect x="40" y="40" width="1120" height="550" rx="24" fill="white" stroke="#e5e5e5"/>
+  <rect x="80" y="120" width="56" height="56" rx="12" fill="#16a34a"/>
+  <text x="80" y="240" font-family="system-ui,sans-serif" font-size="48" font-weight="600" fill="#171717">Free SSL Certificates</text>
+  <text x="80" y="300" font-family="system-ui,sans-serif" font-size="24" fill="#737373">Generate free SSL/TLS certificates powered by Let's Encrypt</text>
+  <text x="80" y="350" font-family="system-ui,sans-serif" font-size="24" fill="#737373">No signup. No cost. Ready in 60 seconds.</text>
+  <rect x="80" y="400" width="280" height="56" rx="12" fill="#16a34a"/>
+  <text x="130" y="436" font-family="system-ui,sans-serif" font-size="20" font-weight="500" fill="white">Generate Certificate</text>
+  <text x="80" y="530" font-family="system-ui,sans-serif" font-size="20" fill="#a3a3a3">freesslcert.net</text>
+</svg>
