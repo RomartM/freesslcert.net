@@ -1,4 +1,4 @@
-import { Shield, Lock, EyeOff, Globe } from "lucide-react";
+import { Shield, Lock, EyeOff, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TrustBadge {
@@ -10,7 +10,7 @@ const badges: TrustBadge[] = [
   { icon: Shield, label: "100% Free" },
   { icon: Lock, label: "Let's Encrypt" },
   { icon: EyeOff, label: "Auto-Purged in 24h" },
-  { icon: Globe, label: "Open Source" },
+  { icon: ShieldCheck, label: "ACME Standard" },
 ];
 
 export function TrustSection() {

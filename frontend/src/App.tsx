@@ -5,6 +5,8 @@ import { WizardContainer } from "@/components/wizard/WizardContainer";
 import { TrustSection } from "@/components/marketing/TrustSection";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
 import { FaqSection } from "@/components/marketing/FaqSection";
+import { PrivacySection } from "@/components/marketing/PrivacySection";
+import { TermsSection } from "@/components/marketing/TermsSection";
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
           <TrustSection />
           <HowItWorks />
           <FaqSection />
+          <PrivacySection />
+          <TermsSection />
         </PageShell>
       </main>
       <Footer />

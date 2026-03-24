@@ -13,30 +13,36 @@
   --radius-lg: 14px;
   --radius-xl: 20px;
 
-  --color-primary-50: oklch(0.97 0.01 250);
-  --color-primary-100: oklch(0.94 0.03 250);
-  --color-primary-200: oklch(0.88 0.06 250);
-  --color-primary-300: oklch(0.79 0.10 250);
-  --color-primary-400: oklch(0.70 0.14 250);
-  --color-primary-500: oklch(0.60 0.18 250);
-  --color-primary-600: oklch(0.52 0.19 250);
-  --color-primary-700: oklch(0.45 0.17 250);
-  --color-primary-800: oklch(0.38 0.14 250);
-  --color-primary-900: oklch(0.30 0.10 250);
+  /* Primary: Let's Encrypt navy blue */
+  --color-primary-50: oklch(0.97 0.01 245);
+  --color-primary-100: oklch(0.93 0.02 245);
+  --color-primary-200: oklch(0.87 0.04 245);
+  --color-primary-300: oklch(0.78 0.07 245);
+  --color-primary-400: oklch(0.65 0.10 245);
+  --color-primary-500: oklch(0.45 0.12 255);
+  --color-primary-600: oklch(0.38 0.11 255);
+  --color-primary-700: oklch(0.32 0.10 255);
+  --color-primary-800: oklch(0.27 0.08 255);
+  --color-primary-900: oklch(0.22 0.06 255);
 
-  --color-neutral-50: oklch(0.985 0.002 250);
-  --color-neutral-100: oklch(0.96 0.004 250);
-  --color-neutral-200: oklch(0.92 0.006 250);
-  --color-neutral-300: oklch(0.87 0.008 250);
-  --color-neutral-400: oklch(0.71 0.010 250);
-  --color-neutral-500: oklch(0.55 0.012 250);
-  --color-neutral-600: oklch(0.45 0.012 250);
-  --color-neutral-700: oklch(0.37 0.012 250);
-  --color-neutral-800: oklch(0.27 0.010 250);
-  --color-neutral-900: oklch(0.20 0.008 250);
-  --color-neutral-950: oklch(0.13 0.006 250);
+  /* Accent: Let's Encrypt green */
+  --color-accent: oklch(0.62 0.19 145);
 
-  --color-success: oklch(0.65 0.18 145);
+  /* Success stays green (already matches LE green) */
+  --color-success: oklch(0.62 0.19 145);
+
+  --color-neutral-50: oklch(0.985 0.001 240);
+  --color-neutral-100: oklch(0.96 0.003 240);
+  --color-neutral-200: oklch(0.92 0.004 240);
+  --color-neutral-300: oklch(0.87 0.006 240);
+  --color-neutral-400: oklch(0.71 0.008 240);
+  --color-neutral-500: oklch(0.55 0.010 240);
+  --color-neutral-600: oklch(0.45 0.010 240);
+  --color-neutral-700: oklch(0.37 0.010 240);
+  --color-neutral-800: oklch(0.27 0.008 240);
+  --color-neutral-900: oklch(0.20 0.006 240);
+  --color-neutral-950: oklch(0.13 0.004 240);
+
   --color-warning: oklch(0.75 0.15 75);
   --color-error: oklch(0.60 0.20 25);
 
@@ -94,7 +100,7 @@
 
 :root {
   --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --foreground: oklch(0.15 0.008 250);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
