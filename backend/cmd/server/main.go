@@ -114,7 +114,7 @@ func run(logger *slog.Logger) error {
 	}()
 
 	// Initialise handlers.
-	certHandler := handler.NewCertificateHandler(acmeSvc, certRepo)
+	certHandler := handler.NewCertificateHandler(acmeSvc, certRepo, cfg.CORSAllowedOrigins)
 	healthHandler := handler.NewHealthHandler()
 
 	// Create rate limiter and start its background cleanup.

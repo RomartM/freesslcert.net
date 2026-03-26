@@ -25,6 +25,11 @@ func Setup(
 	// reachable by load balancers and health probes.
 	engine.GET("/health", healthHandler.Health)
 
+	// WebSocket endpoint registered BEFORE rate limiting. WebSocket
+	// connections are long-lived and should not be subject to the
+	// per-request rate limiter.
+	engine.GET("/api/v1/orders/:id/ws", certHandler.WebSocketOrder)
+
 	// Apply rate limiting to all subsequent routes.
 	engine.Use(rateLimiter.Middleware())
 

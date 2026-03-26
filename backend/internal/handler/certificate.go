@@ -1,14 +1,18 @@
 package handler
 
 import (
+	"context"
 	"crypto/x509"
+	"encoding/json"
 	"encoding/pem"
 	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 	"software.sslmate.com/src/go-pkcs12"
 
 	"github.com/freesslcert/freesslcert/internal/model"
@@ -18,13 +22,18 @@ import (
 
 // CertificateHandler exposes HTTP endpoints for the certificate order lifecycle.
 type CertificateHandler struct {
-	acme *service.ACMEService
-	repo repository.CertificateRepository
+	acme           *service.ACMEService
+	repo           repository.CertificateRepository
+	allowedOrigins map[string]bool
 }
 
 // NewCertificateHandler constructs a CertificateHandler.
-func NewCertificateHandler(acme *service.ACMEService, repo repository.CertificateRepository) *CertificateHandler {
-	return &CertificateHandler{acme: acme, repo: repo}
+func NewCertificateHandler(acme *service.ACMEService, repo repository.CertificateRepository, allowedOrigins []string) *CertificateHandler {
+	origins := make(map[string]bool, len(allowedOrigins))
+	for _, o := range allowedOrigins {
+		origins[o] = true
+	}
+	return &CertificateHandler{acme: acme, repo: repo, allowedOrigins: origins}
 }
 
 // CreateOrder handles POST /api/v1/orders.
@@ -273,6 +282,159 @@ func (h *CertificateHandler) GetConfig(c *gin.Context) {
 		CertificateTypes:  []string{"single", "wildcard", "multi-domain"},
 		ValidationMethods: []string{"http-01", "dns-01"},
 	})
+}
+
+// WebSocketOrder handles GET /api/v1/orders/:id/ws.
+// It upgrades the HTTP connection to a WebSocket, sends the current order state
+// immediately, then polls the database every 2 seconds and pushes updates when
+// the order changes. The connection is closed after sending a terminal state
+// (issued, failed, revoked).
+func (h *CertificateHandler) WebSocketOrder(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Code:    "invalid_request",
+			Message: "order ID is required",
+		})
+		return
+	}
+
+	upgrader := websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool {
+			origin := r.Header.Get("Origin")
+			if origin == "" {
+				return true
+			}
+			return h.allowedOrigins[origin]
+		},
+	}
+
+	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		// Upgrade writes its own HTTP error response; just log.
+		slog.Error("websocket upgrade failed", "error", err, "order_id", id)
+		return
+	}
+	defer conn.Close()
+
+	// Use a background context so the poll loop is not tied to the
+	// already-hijacked HTTP request context.
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	// Monitor client disconnects: when the client sends a close frame or the
+	// connection drops, cancel the context so the poll loop exits.
+	go func() {
+		defer cancel()
+		for {
+			if _, _, err := conn.ReadMessage(); err != nil {
+				return
+			}
+		}
+	}()
+
+	// Fetch and send the initial state.
+	order, err := h.repo.GetByID(ctx, id)
+	if err != nil {
+		writeWSError(conn, err)
+		return
+	}
+
+	snapshot, err := marshalOrder(order)
+	if err != nil {
+		slog.Error("marshal order for websocket", "error", err, "order_id", id)
+		return
+	}
+
+	if err := conn.WriteMessage(websocket.TextMessage, snapshot); err != nil {
+		return
+	}
+
+	// If already terminal, close immediately after sending the state.
+	if isTerminalStatus(order.Status) {
+		conn.WriteMessage(websocket.CloseMessage,
+			websocket.FormatCloseMessage(websocket.CloseNormalClosure, "order complete"))
+		return
+	}
+
+	// Poll loop: check every 2 seconds for changes.
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+			updated, err := h.repo.GetByID(ctx, id)
+			if err != nil {
+				// If the order was deleted or a transient DB error occurred,
+				// inform the client and close.
+				writeWSError(conn, err)
+				return
+			}
+
+			newSnapshot, err := marshalOrder(updated)
+			if err != nil {
+				slog.Error("marshal order for websocket", "error", err, "order_id", id)
+				return
+			}
+
+			// Only send when the serialised representation actually changed.
+			if string(newSnapshot) == string(snapshot) {
+				continue
+			}
+			snapshot = newSnapshot
+
+			if err := conn.WriteMessage(websocket.TextMessage, snapshot); err != nil {
+				return
+			}
+
+			if isTerminalStatus(updated.Status) {
+				conn.WriteMessage(websocket.CloseMessage,
+					websocket.FormatCloseMessage(websocket.CloseNormalClosure, "order complete"))
+				return
+			}
+		}
+	}
+}
+
+// isTerminalStatus returns true for order statuses that will never change again.
+func isTerminalStatus(status string) bool {
+	switch status {
+	case model.StatusIssued, model.StatusFailed, model.StatusRevoked:
+		return true
+	default:
+		return false
+	}
+}
+
+// marshalOrder serialises a CertificateOrder to JSON bytes.
+func marshalOrder(order *model.CertificateOrder) ([]byte, error) {
+	data, err := json.Marshal(order)
+	if err != nil {
+		return nil, fmt.Errorf("marshal certificate order: %w", err)
+	}
+	return data, nil
+}
+
+// writeWSError sends an error message over the WebSocket and initiates a close.
+func writeWSError(conn *websocket.Conn, err error) {
+	msg := model.ErrorResponse{
+		Code:    "error",
+		Message: "failed to fetch order",
+	}
+	if errors.Is(err, model.ErrNotFound) {
+		msg.Code = "not_found"
+		msg.Message = "order not found"
+	}
+	data, marshalErr := json.Marshal(msg)
+	if marshalErr != nil {
+		return
+	}
+	conn.WriteMessage(websocket.TextMessage, data)
+	conn.WriteMessage(websocket.CloseMessage,
+		websocket.FormatCloseMessage(websocket.CloseInternalServerErr, msg.Message))
 }
 
 // handleError maps domain errors to HTTP status codes.
