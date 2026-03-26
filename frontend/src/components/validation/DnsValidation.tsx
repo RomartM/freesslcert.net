@@ -50,8 +50,10 @@ interface DnsRecordCardProps {
 }
 
 function DnsRecordCard({ challenge }: DnsRecordCardProps) {
-  const recordName =
+  const fullRecordName =
     challenge.record_name || `_acme-challenge.${challenge.domain}`;
+  // DNS panels only need the subdomain part (e.g., "_acme-challenge"), not the FQDN
+  const subdomainName = fullRecordName.replace(`.${challenge.domain}`, "");
   const recordValue = challenge.record_value || challenge.key_authorization;
 
   return (
@@ -59,7 +61,17 @@ function DnsRecordCard({ challenge }: DnsRecordCardProps) {
       <p className="text-sm font-medium text-foreground">{challenge.domain}</p>
 
       <div className="space-y-4">
-        <CopyBlock label="Record name" value={recordName} />
+        <div className="space-y-1.5">
+          <span className="text-xs font-medium uppercase tracking-wider text-neutral-400">
+            Record name
+          </span>
+          <div className="flex items-baseline gap-2">
+            <CopyBlock value={subdomainName} label="" />
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Full name: <code className="font-mono text-xs">{fullRecordName}</code>
+          </p>
+        </div>
 
         <div className="space-y-1.5">
           <span className="text-xs font-medium uppercase tracking-wider text-neutral-400">
@@ -76,7 +88,7 @@ function DnsRecordCard({ challenge }: DnsRecordCardProps) {
 
         <CopyBlock
           label="Full DNS record"
-          value={`${recordName} TXT "${recordValue}"`}
+          value={`${fullRecordName} TXT "${recordValue}"`}
         />
       </div>
     </div>
