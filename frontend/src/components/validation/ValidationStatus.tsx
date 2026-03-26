@@ -7,6 +7,7 @@ const statusConfig: Record<
   { icon: typeof CheckCircle2; iconClass: string; textClass: string; label: string }
 > = {
   pending: { icon: Loader2, iconClass: "animate-spin text-neutral-400", textClass: "text-neutral-400", label: "Pending" },
+  validating: { icon: Loader2, iconClass: "animate-spin text-amber-500", textClass: "text-amber-500", label: "Verifying..." },
   valid: { icon: CheckCircle2, iconClass: "text-primary-600", textClass: "text-primary-600", label: "Verified" },
   invalid: { icon: XCircle, iconClass: "text-red-500", textClass: "text-red-500", label: "Failed" },
 };

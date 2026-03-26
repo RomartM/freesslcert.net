@@ -84,8 +84,10 @@ export function StepValidation() {
 
   const allValid =
     challenges.length > 0 && challenges.every((c) => c.status === "valid");
-  const someValid =
-    challenges.length > 0 && challenges.some((c) => c.status === "valid");
+  const allSubmitted =
+    challenges.length > 0 && challenges.every((c) => c.status === "validating" || c.status === "valid");
+  const someSubmitted =
+    challenges.length > 0 && challenges.some((c) => c.status === "validating" || c.status === "valid");
   const hasFailures = challenges.some((c) => c.status === "invalid");
   const orderStatus = pollingData?.status;
 
@@ -97,12 +99,12 @@ export function StepValidation() {
 
   // Derive status message
   let statusMessage: string | null = null;
-  if (orderStatus === "pending" && !someValid) {
-    statusMessage = "Complete the steps above to verify your domain";
-  } else if (orderStatus === "pending" && someValid && !allValid) {
-    statusMessage = "Verifying your domain...";
-  } else if (orderStatus === "validating" || (orderStatus === "pending" && allValid)) {
-    statusMessage = "Let's Encrypt is issuing your certificate...";
+  if (orderStatus === "pending" && !someSubmitted) {
+    statusMessage = "Complete the steps above, then click Verify All";
+  } else if (orderStatus === "pending" && someSubmitted && !allSubmitted) {
+    statusMessage = "Some domains submitted — verify the remaining domains";
+  } else if (orderStatus === "validating" || allSubmitted) {
+    statusMessage = "Let's Encrypt is verifying your domain and issuing your certificate...";
   }
 
   return (
@@ -183,17 +185,17 @@ export function StepValidation() {
 
       {statusMessage && (
         <Alert>
-          {allValid || orderStatus === "validating" ? (
+          {allSubmitted || orderStatus === "validating" ? (
             <Loader2 className="size-4 animate-spin text-primary-600" />
-          ) : someValid ? (
-            <Loader2 className="size-4 animate-spin text-primary-600" />
+          ) : someSubmitted ? (
+            <Loader2 className="size-4 animate-spin text-amber-500" />
           ) : (
             <CheckCircle2 className="size-4 text-neutral-500" />
           )}
           <AlertTitle>
-            {allValid || orderStatus === "validating"
-              ? "Issuing certificate"
-              : someValid
+            {allSubmitted || orderStatus === "validating"
+              ? "Verifying with Let's Encrypt"
+              : someSubmitted
                 ? "Verification in progress"
                 : "Waiting for verification"}
           </AlertTitle>
@@ -213,7 +215,7 @@ export function StepValidation() {
             Try Again
           </Button>
         </div>
-      ) : !allValid && orderStatus !== "validating" ? (
+      ) : !allSubmitted && orderStatus !== "validating" ? (
         <div className="flex justify-end">
           <Button
             onClick={handleVerifyAll}

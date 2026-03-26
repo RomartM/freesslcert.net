@@ -2,7 +2,7 @@ export type CertificateType = "single" | "wildcard" | "multi-domain";
 export type KeyType = "rsa-2048" | "rsa-4096" | "ecdsa-p256" | "ecdsa-p384";
 export type ValidationMethod = "http-01" | "dns-01";
 export type OrderStatus = "pending" | "validating" | "issued" | "failed" | "revoked";
-export type ChallengeStatus = "pending" | "valid" | "invalid";
+export type ChallengeStatus = "pending" | "validating" | "valid" | "invalid";
 
 export interface Challenge {
   domain: string;

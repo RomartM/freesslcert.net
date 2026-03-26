@@ -82,7 +82,8 @@ const (
 
 // Challenge status constants.
 const (
-	ChallengeStatusPending = "pending"
-	ChallengeStatusValid   = "valid"
-	ChallengeStatusInvalid = "invalid"
+	ChallengeStatusPending    = "pending"
+	ChallengeStatusValidating = "validating"
+	ChallengeStatusValid      = "valid"
+	ChallengeStatusInvalid    = "invalid"
 )

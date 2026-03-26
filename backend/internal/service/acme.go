@@ -449,7 +449,7 @@ func (s *ACMEService) ValidateChallenge(ctx context.Context, orderID string, dom
 	found := false
 	for i := range order.Challenges {
 		if order.Challenges[i].Domain == domain {
-			order.Challenges[i].Status = model.ChallengeStatusValid
+			order.Challenges[i].Status = model.ChallengeStatusValidating
 			found = true
 			break
 		}
@@ -473,15 +473,15 @@ func (s *ACMEService) ValidateChallenge(ctx context.Context, orderID string, dom
 		}
 	}
 
-	// Check if all challenges are satisfied and update order status.
-	allValid := true
+	// Check if all challenges are submitted and update order status.
+	allSubmitted := true
 	for _, ch := range order.Challenges {
-		if ch.Status != model.ChallengeStatusValid {
-			allValid = false
+		if ch.Status == model.ChallengeStatusPending {
+			allSubmitted = false
 			break
 		}
 	}
-	if allValid {
+	if allSubmitted {
 		if err := s.repo.UpdateStatus(ctx, orderID, model.StatusValidating); err != nil {
 			return fmt.Errorf("update order status to validating: %w", err)
 		}
