@@ -82,8 +82,6 @@ export function StepValidation() {
     reset();
   };
 
-  const allValid =
-    challenges.length > 0 && challenges.every((c) => c.status === "valid");
   const allSubmitted =
     challenges.length > 0 && challenges.every((c) => c.status === "validating" || c.status === "valid");
   const someSubmitted =
