@@ -14,6 +14,7 @@ import (
 	"encoding/pem"
 	"fmt"
 	"log/slog"
+	"strings"
 	"sync"
 	"time"
 
@@ -446,9 +447,12 @@ func (s *ACMEService) ValidateChallenge(ctx context.Context, orderID string, dom
 		return fmt.Errorf("get order for validation: %w", err)
 	}
 
+	// Strip wildcard prefix — lego stores challenges by the bare domain.
+	lookupDomain := strings.TrimPrefix(domain, "*.")
+
 	found := false
 	for i := range order.Challenges {
-		if order.Challenges[i].Domain == domain {
+		if order.Challenges[i].Domain == lookupDomain {
 			order.Challenges[i].Status = model.ChallengeStatusValidating
 			found = true
 			break
@@ -463,13 +467,14 @@ func (s *ACMEService) ValidateChallenge(ctx context.Context, orderID string, dom
 	}
 
 	// Unblock the provider so lego can proceed with ACME validation.
+	// Use the bare domain (without wildcard prefix) as that's what lego uses.
 	if state, ok := s.orders.Load(orderID); ok {
 		os := state.(*orderState)
 		if os.HTTPProvider != nil {
-			os.HTTPProvider.Unblock(domain)
+			os.HTTPProvider.Unblock(lookupDomain)
 		}
 		if os.DNSProvider != nil {
-			os.DNSProvider.Unblock(domain)
+			os.DNSProvider.Unblock(lookupDomain)
 		}
 	}
 
