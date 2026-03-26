@@ -14,7 +14,6 @@ import (
 	"encoding/pem"
 	"fmt"
 	"log/slog"
-	"strings"
 	"sync"
 	"time"
 
@@ -291,23 +290,13 @@ func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequ
 		return nil, fmt.Errorf("create lego client for order: %w", err)
 	}
 
-	// Determine if any domain requires DNS-01 (wildcard domains).
-	needsDNS := false
-	for _, d := range req.Domains {
-		if strings.HasPrefix(d, "*.") {
-			needsDNS = true
-			break
-		}
+	// Register both challenge providers. Wildcard domains require DNS-01;
+	// non-wildcard domains can use either. ACME server decides which to offer.
+	if err := client.Challenge.SetDNS01Provider(dnsProv); err != nil {
+		return nil, fmt.Errorf("set DNS-01 provider: %w", err)
 	}
-
-	if needsDNS {
-		if err := client.Challenge.SetDNS01Provider(dnsProv); err != nil {
-			return nil, fmt.Errorf("set DNS-01 provider: %w", err)
-		}
-	} else {
-		if err := client.Challenge.SetHTTP01Provider(httpProv); err != nil {
-			return nil, fmt.Errorf("set HTTP-01 provider: %w", err)
-		}
+	if err := client.Challenge.SetHTTP01Provider(httpProv); err != nil {
+		return nil, fmt.Errorf("set HTTP-01 provider: %w", err)
 	}
 
 	// Create the DB record FIRST so the background goroutine can update it
