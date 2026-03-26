@@ -7,7 +7,7 @@ services:
       - .env
     labels:
       - traefik.enable=true
-      - "traefik.http.routers.freesslcert.rule=Host(`api.freesslcert.net`)"
+      - "traefik.http.routers.freesslcert.rule=Host(`api.freesslcert.net`) || HostRegexp(`^origin-.+\\.freesslcert\\.net$`)"
       - traefik.http.routers.freesslcert.entrypoints=websecure
       - traefik.http.routers.freesslcert.tls=true
       - traefik.http.services.freesslcert.loadbalancer.server.port=8080
