@@ -11,7 +11,6 @@ RUN apk add --no-cache ca-certificates tzdata \
     && addgroup -g 1001 -S appgroup \
     && adduser -u 1001 -S appuser -G appgroup
 COPY --from=builder /app /usr/local/bin/app
-RUN mkdir -p /app/data /app/data/acme && chown -R appuser:appgroup /app/data
 USER appuser:appgroup
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD wget -qO- http://localhost:8080/health || exit 1

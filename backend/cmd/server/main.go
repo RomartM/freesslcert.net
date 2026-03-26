@@ -9,12 +9,11 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"syscall"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	_ "modernc.org/sqlite"
+	_ "github.com/tursodatabase/libsql-client-go/libsql"
 
 	"github.com/freesslcert/freesslcert/internal/config"
 	"github.com/freesslcert/freesslcert/internal/handler"
@@ -52,14 +51,8 @@ func run(logger *slog.Logger) error {
 		"acme_dir", cfg.ACMEDirectoryURL,
 	)
 
-	// Ensure data directories exist.
-	dbDir := filepath.Dir(cfg.DBPath)
-	if err := os.MkdirAll(dbDir, 0o755); err != nil {
-		return fmt.Errorf("create database directory: %w", err)
-	}
-
-	// Open SQLite database.
-	db, err := sql.Open("sqlite", cfg.DBPath)
+	// Open Turso/libSQL database.
+	db, err := sql.Open("libsql", cfg.DatabaseURL)
 	if err != nil {
 		return fmt.Errorf("open database: %w", err)
 	}
@@ -69,32 +62,24 @@ func run(logger *slog.Logger) error {
 		}
 	}()
 
-	// Enable WAL mode and set pragmas for better concurrency.
-	pragmas := []string{
-		"PRAGMA journal_mode=WAL",
-		"PRAGMA busy_timeout=5000",
-		"PRAGMA synchronous=NORMAL",
-		"PRAGMA foreign_keys=ON",
-	}
-	for _, p := range pragmas {
-		if _, err := db.ExecContext(ctx, p); err != nil {
-			return fmt.Errorf("execute pragma %q: %w", p, err)
-		}
-	}
-
 	if err := db.PingContext(ctx); err != nil {
 		return fmt.Errorf("ping database: %w", err)
 	}
-	logger.Info("database connected", "path", cfg.DBPath)
+	logger.Info("database connected")
 
-	// Initialise repository.
+	// Initialise repositories.
 	certRepo, err := repository.NewCertificateRepository(ctx, db)
 	if err != nil {
 		return fmt.Errorf("init certificate repository: %w", err)
 	}
 
+	acmeRepo, err := repository.NewAcmeAccountRepository(ctx, db)
+	if err != nil {
+		return fmt.Errorf("init acme account repository: %w", err)
+	}
+
 	// Initialise ACME service.
-	acmeSvc, err := service.NewACMEService(ctx, cfg, certRepo, logger)
+	acmeSvc, err := service.NewACMEService(ctx, cfg, certRepo, acmeRepo, logger)
 	if err != nil {
 		return fmt.Errorf("init acme service: %w", err)
 	}
@@ -111,6 +96,13 @@ func run(logger *slog.Logger) error {
 			case <-ctx.Done():
 				return
 			case <-ticker.C:
+				purged, err := certRepo.PurgeSensitiveData(context.Background())
+				if err != nil {
+					logger.Error("purge sensitive data", "error", err)
+				} else if purged > 0 {
+					logger.Info("purged sensitive data from orders", "count", purged)
+				}
+
 				deleted, err := certRepo.DeleteExpired(context.Background())
 				if err != nil {
 					logger.Error("purge expired orders", "error", err)

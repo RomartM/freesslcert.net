@@ -14,8 +14,6 @@ import (
 	"encoding/pem"
 	"fmt"
 	"log/slog"
-	"os"
-	"path/filepath"
 	"strings"
 	"sync"
 	"time"
@@ -156,21 +154,18 @@ type orderState struct {
 
 // ACMEService orchestrates ACME certificate issuance via the lego library.
 type ACMEService struct {
-	user   *acmeUser
-	cfg    *config.Config
-	repo   repository.CertificateRepository
-	logger *slog.Logger
-	orders sync.Map // map[orderID]*orderState
+	user      *acmeUser
+	cfg       *config.Config
+	repo      repository.CertificateRepository
+	acmeRepo  repository.AcmeAccountRepository
+	logger    *slog.Logger
+	orders    sync.Map // map[orderID]*orderState
 }
 
 // NewACMEService initialises the ACME client, registering a new account when
-// no persisted account data is found in ACMEDataDir.
-func NewACMEService(ctx context.Context, cfg *config.Config, repo repository.CertificateRepository, logger *slog.Logger) (*ACMEService, error) {
-	if err := os.MkdirAll(cfg.ACMEDataDir, 0o700); err != nil {
-		return nil, fmt.Errorf("create acme data dir: %w", err)
-	}
-
-	user, err := loadOrCreateUser(cfg)
+// no persisted account data is found in the database.
+func NewACMEService(ctx context.Context, cfg *config.Config, repo repository.CertificateRepository, acmeRepo repository.AcmeAccountRepository, logger *slog.Logger) (*ACMEService, error) {
+	user, err := loadOrCreateUser(ctx, acmeRepo, cfg)
 	if err != nil {
 		return nil, fmt.Errorf("load or create acme user: %w", err)
 	}
@@ -191,7 +186,7 @@ func NewACMEService(ctx context.Context, cfg *config.Config, repo repository.Cer
 			return nil, fmt.Errorf("register acme account: %w", err)
 		}
 		user.Registration = reg
-		if err := saveUser(cfg, user); err != nil {
+		if err := saveUser(ctx, acmeRepo, cfg, user); err != nil {
 			return nil, fmt.Errorf("save acme user after registration: %w", err)
 		}
 		logger.Info("registered new ACME account", "email", user.Email)
@@ -200,10 +195,11 @@ func NewACMEService(ctx context.Context, cfg *config.Config, repo repository.Cer
 	}
 
 	return &ACMEService{
-		user:   user,
-		cfg:    cfg,
-		repo:   repo,
-		logger: logger,
+		user:     user,
+		cfg:      cfg,
+		repo:     repo,
+		acmeRepo: acmeRepo,
+		logger:   logger,
 	}, nil
 }
 
@@ -334,6 +330,11 @@ func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequ
 		if err := s.repo.UpdateCertificate(bgCtx, certOrder); err != nil {
 			s.logger.Error("save certificate failed", "order_id", orderID, "error", err)
 			return
+		}
+
+		// Log successful domain issuance for permanent audit trail.
+		if err := s.repo.LogDomain(bgCtx, certOrder); err != nil {
+			s.logger.Error("log domain failed", "order_id", orderID, "error", err)
 		}
 
 		s.logger.Info("certificate issued", "order_id", orderID, "domains", req.Domains)
@@ -543,71 +544,84 @@ func encodePrivateKey(key crypto.PrivateKey) (string, error) {
 	}
 }
 
-// loadOrCreateUser loads a persisted ACME user or creates a new one.
-func loadOrCreateUser(cfg *config.Config) (*acmeUser, error) {
-	keyPath := filepath.Join(cfg.ACMEDataDir, "account.key")
-	regPath := filepath.Join(cfg.ACMEDataDir, "account.json")
-
+// loadOrCreateUser loads a persisted ACME user from the database or creates a new one.
+func loadOrCreateUser(ctx context.Context, acmeRepo repository.AcmeAccountRepository, cfg *config.Config) (*acmeUser, error) {
 	user := &acmeUser{Email: cfg.ACMEEmail}
 
-	// Try to load existing key.
-	keyData, err := os.ReadFile(keyPath)
-	if err == nil {
-		block, _ := pem.Decode(keyData)
+	// Try to load existing account from database.
+	account, err := acmeRepo.GetAccount(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("get acme account from db: %w", err)
+	}
+
+	if account != nil {
+		// Parse the stored private key.
+		block, _ := pem.Decode([]byte(account.PrivateKeyPEM))
 		if block != nil {
-			privKey, err := x509.ParseECPrivateKey(block.Bytes)
-			if err != nil {
-				// Try RSA.
+			privKey, ecErr := x509.ParseECPrivateKey(block.Bytes)
+			if ecErr != nil {
 				rsaKey, rsaErr := x509.ParsePKCS1PrivateKey(block.Bytes)
 				if rsaErr != nil {
-					return nil, fmt.Errorf("parse account key: %w (ecdsa: %v)", rsaErr, err)
+					return nil, fmt.Errorf("parse account key: %w (ecdsa: %v)", rsaErr, ecErr)
 				}
 				user.key = rsaKey
 			} else {
 				user.key = privKey
 			}
 		}
+
+		// Parse the stored registration.
+		if account.RegistrationJSON != "" {
+			var reg registration.Resource
+			if jsonErr := json.Unmarshal([]byte(account.RegistrationJSON), &reg); jsonErr == nil {
+				user.Registration = &reg
+			}
+		}
+
+		return user, nil
 	}
 
-	if user.key == nil {
-		// Generate a new ECDSA P-256 key for the account.
-		privKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
-		if err != nil {
-			return nil, fmt.Errorf("generate account key: %w", err)
-		}
-		user.key = privKey
-
-		der, err := x509.MarshalECPrivateKey(privKey)
-		if err != nil {
-			return nil, fmt.Errorf("marshal account key: %w", err)
-		}
-		block := &pem.Block{Type: "EC PRIVATE KEY", Bytes: der}
-		if err := os.WriteFile(keyPath, pem.EncodeToMemory(block), 0o600); err != nil {
-			return nil, fmt.Errorf("write account key: %w", err)
-		}
+	// No account found — generate a new ECDSA P-256 key.
+	privKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	if err != nil {
+		return nil, fmt.Errorf("generate account key: %w", err)
 	}
+	user.key = privKey
 
-	// Try to load registration.
-	regData, err := os.ReadFile(regPath)
-	if err == nil {
-		var reg registration.Resource
-		if err := json.Unmarshal(regData, &reg); err == nil {
-			user.Registration = &reg
-		}
+	// Persist the new key to DB (registration will be saved after ACME registration).
+	der, err := x509.MarshalECPrivateKey(privKey)
+	if err != nil {
+		return nil, fmt.Errorf("marshal account key: %w", err)
+	}
+	keyPEM := string(pem.EncodeToMemory(&pem.Block{Type: "EC PRIVATE KEY", Bytes: der}))
+
+	if err := acmeRepo.SaveAccount(ctx, &repository.AcmeAccount{
+		Email:         cfg.ACMEEmail,
+		PrivateKeyPEM: keyPEM,
+		CreatedAt:     time.Now().UTC(),
+	}); err != nil {
+		return nil, fmt.Errorf("save new acme account key: %w", err)
 	}
 
 	return user, nil
 }
 
-// saveUser persists the account registration data.
-func saveUser(cfg *config.Config, user *acmeUser) error {
-	regPath := filepath.Join(cfg.ACMEDataDir, "account.json")
-	data, err := json.MarshalIndent(user.Registration, "", "  ")
+// saveUser persists the account registration data to the database.
+func saveUser(ctx context.Context, acmeRepo repository.AcmeAccountRepository, cfg *config.Config, user *acmeUser) error {
+	regData, err := json.MarshalIndent(user.Registration, "", "  ")
 	if err != nil {
 		return fmt.Errorf("marshal registration: %w", err)
 	}
-	if err := os.WriteFile(regPath, data, 0o600); err != nil {
-		return fmt.Errorf("write registration: %w", err)
+
+	keyPEM, err := encodePrivateKey(user.key)
+	if err != nil {
+		return fmt.Errorf("encode account key: %w", err)
 	}
-	return nil
+
+	return acmeRepo.SaveAccount(ctx, &repository.AcmeAccount{
+		Email:            cfg.ACMEEmail,
+		PrivateKeyPEM:    keyPEM,
+		RegistrationJSON: string(regData),
+		CreatedAt:        time.Now().UTC(),
+	})
 }

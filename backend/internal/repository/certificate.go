@@ -28,6 +28,20 @@ CREATE TABLE IF NOT EXISTS certificate_orders (
 );
 `
 
+const createDomainLogTableSQL = `
+CREATE TABLE IF NOT EXISTS domain_log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id TEXT NOT NULL,
+    domain TEXT NOT NULL,
+    certificate_type TEXT NOT NULL,
+    key_type TEXT NOT NULL,
+    issued_at DATETIME NOT NULL,
+    expires_at DATETIME,
+    region TEXT,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+`
+
 // CertificateRepository defines persistence operations for certificate orders.
 type CertificateRepository interface {
 	Create(ctx context.Context, order *model.CertificateOrder) error
@@ -36,6 +50,8 @@ type CertificateRepository interface {
 	UpdateCertificate(ctx context.Context, order *model.CertificateOrder) error
 	UpdateChallenges(ctx context.Context, id string, challenges []model.Challenge) error
 	DeleteExpired(ctx context.Context) (int64, error)
+	LogDomain(ctx context.Context, order *model.CertificateOrder) error
+	PurgeSensitiveData(ctx context.Context) (int64, error)
 }
 
 type certificateRepository struct {
@@ -46,6 +62,9 @@ type certificateRepository struct {
 func NewCertificateRepository(ctx context.Context, db *sql.DB) (CertificateRepository, error) {
 	if _, err := db.ExecContext(ctx, createTableSQL); err != nil {
 		return nil, fmt.Errorf("create certificate_orders table: %w", err)
+	}
+	if _, err := db.ExecContext(ctx, createDomainLogTableSQL); err != nil {
+		return nil, fmt.Errorf("create domain_log table: %w", err)
 	}
 	return &certificateRepository{db: db}, nil
 }
@@ -263,6 +282,54 @@ func (r *certificateRepository) DeleteExpired(ctx context.Context) (int64, error
 	rows, err := res.RowsAffected()
 	if err != nil {
 		return 0, fmt.Errorf("rows affected for delete expired: %w", err)
+	}
+	return rows, nil
+}
+
+func (r *certificateRepository) LogDomain(ctx context.Context, order *model.CertificateOrder) error {
+	query := `
+		INSERT INTO domain_log (order_id, domain, certificate_type, key_type, issued_at, expires_at)
+		VALUES (?, ?, ?, ?, ?, ?)
+	`
+	var issuedAtStr string
+	if order.IssuedAt != nil {
+		issuedAtStr = order.IssuedAt.UTC().Format(time.RFC3339)
+	} else {
+		issuedAtStr = time.Now().UTC().Format(time.RFC3339)
+	}
+	var expiresAtStr *string
+	if order.ExpiresAt != nil {
+		s := order.ExpiresAt.UTC().Format(time.RFC3339)
+		expiresAtStr = &s
+	}
+
+	for _, domain := range order.Domains {
+		if _, err := r.db.ExecContext(ctx, query,
+			order.ID, domain, order.CertificateType, order.KeyType,
+			issuedAtStr, expiresAtStr,
+		); err != nil {
+			return fmt.Errorf("log domain %s: %w", domain, err)
+		}
+	}
+	return nil
+}
+
+func (r *certificateRepository) PurgeSensitiveData(ctx context.Context) (int64, error) {
+	query := `
+		UPDATE certificate_orders
+		SET certificate = NULL, private_key = NULL, ca_bundle = NULL
+		WHERE status = 'issued'
+		  AND certificate IS NOT NULL
+		  AND issued_at < ?
+	`
+	cutoff := time.Now().UTC().Add(-24 * time.Hour).Format(time.RFC3339)
+	res, err := r.db.ExecContext(ctx, query, cutoff)
+	if err != nil {
+		return 0, fmt.Errorf("purge sensitive data: %w", err)
+	}
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return 0, fmt.Errorf("rows affected for purge sensitive: %w", err)
 	}
 	return rows, nil
 }

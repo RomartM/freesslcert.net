@@ -1,41 +1,29 @@
 services:
-  app:
+  api:
     image: ghcr.io/romartm/freesslcert.net/api:latest
     container_name: freesslcert-api
-    env_file: .env
-    environment:
-      - DB_PATH=/app/data/freesslcert.db
-      - ACME_DATA_DIR=/app/data/acme
-    volumes:
-      - app-data:/app/data
+    restart: always
+    env_file:
+      - .env
+    labels:
+      - traefik.enable=true
+      - "traefik.http.routers.freesslcert.rule=Host(`api.freesslcert.net`)"
+      - traefik.http.routers.freesslcert.entrypoints=websecure
+      - traefik.http.routers.freesslcert.tls=true
+      - traefik.http.services.freesslcert.loadbalancer.server.port=8080
     networks:
-      - app-network
-    restart: unless-stopped
+      - traefik-public
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:8080/health"]
       interval: 30s
       timeout: 5s
       retries: 3
-
-  nginx:
-    image: nginx:1.25-alpine
-    container_name: freesslcert-nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./deploy/nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./deploy/nginx/ssl:/etc/nginx/ssl:ro
-    depends_on:
-      app:
-        condition: service_healthy
-    networks:
-      - app-network
-    restart: unless-stopped
-
-volumes:
-  app-data:
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
-  app-network:
+  traefik-public:
+    external: true

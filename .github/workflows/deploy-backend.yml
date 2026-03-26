@@ -5,12 +5,13 @@ on:
     branches: [main]
     paths:
       - 'backend/**'
-      - 'deploy/**'
       - 'docker-compose.yml'
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/api
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   test:
@@ -29,8 +30,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-    outputs:
-      image-tag: ${{ steps.meta.outputs.tags }}
     steps:
       - uses: actions/checkout@v4
 
@@ -61,10 +60,15 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
-    environment: production
+    strategy:
+      fail-fast: false
+      matrix:
+        server:
+          - { name: us-east, host: "100.111.72.8" }
+          - { name: eu-west, host: "100.121.100.24" }
+          - { name: sg, host: "100.104.55.72" }
+          - { name: au-syd, host: "100.120.168.37" }
     steps:
-      - uses: actions/checkout@v4
-
       - name: Connect to Tailscale
         uses: tailscale/github-action@v3
         with:
@@ -72,25 +76,14 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
 
-      - name: Deploy via Tailscale SSH
-        env:
-          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
-          HOST: ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}
+      - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "$SSH_KEY" > ~/.ssh/key && chmod 600 ~/.ssh/key
-          SSH="ssh -o StrictHostKeyChecking=no -i ~/.ssh/key"
-          SCP="scp -o StrictHostKeyChecking=no -i ~/.ssh/key"
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
 
-          $SSH $HOST 'test -f /opt/freesslcert/.env'
-
-          $SCP docker-compose.yml $HOST:/opt/freesslcert/
-          $SCP deploy/nginx/nginx.conf $HOST:/opt/freesslcert/deploy/nginx/
-          $SCP -r deploy/nginx/conf.d/ $HOST:/opt/freesslcert/deploy/nginx/
-
-          $SSH $HOST << 'DEPLOY'
-          cd /opt/freesslcert
-          docker compose pull app
-          docker compose up -d
-          docker image prune -f
-          DEPLOY
+      - name: Deploy to ${{ matrix.server.name }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key \
+            deploy-freesslcert@${{ matrix.server.host }} \
+            'cd /opt/freesslcert && docker compose pull && docker compose up -d --force-recreate && docker image prune -f'

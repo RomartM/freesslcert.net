@@ -12,12 +12,11 @@ import (
 type Config struct {
 	AppEnv             string
 	AppPort            string
-	DBPath             string
+	DatabaseURL        string
 	ACMEEmail          string
 	ACMEDirectoryURL   string
 	CloudflareAPIToken string
 	CORSAllowedOrigins []string
-	ACMEDataDir        string
 	RateLimitRequests  int
 	RateLimitWindow    time.Duration
 }
@@ -29,10 +28,9 @@ func Load() (*Config, error) {
 	cfg := &Config{
 		AppEnv:           envOrDefault("APP_ENV", "development"),
 		AppPort:          envOrDefault("APP_PORT", "8080"),
-		DBPath:           envOrDefault("DB_PATH", "./data/freesslcert.db"),
+		DatabaseURL:      envOrSecret("DATABASE_URL"),
 		ACMEEmail:        envOrSecret("ACME_EMAIL"),
 		ACMEDirectoryURL: envOrDefault("ACME_DIRECTORY_URL", "https://acme-staging-v02.api.letsencrypt.org/directory"),
-		ACMEDataDir:      envOrDefault("ACME_DATA_DIR", "./data/acme"),
 	}
 
 	cfg.CloudflareAPIToken = envOrSecret("CLOUDFLARE_API_TOKEN")
@@ -68,14 +66,11 @@ func (c *Config) IsDevelopment() bool {
 }
 
 func (c *Config) validate() error {
+	if c.DatabaseURL == "" {
+		return fmt.Errorf("DATABASE_URL is required (set DATABASE_URL or DATABASE_URL_FILE)")
+	}
 	if c.ACMEEmail == "" {
 		return fmt.Errorf("ACME_EMAIL is required (set ACME_EMAIL or ACME_EMAIL_FILE)")
-	}
-	if c.DBPath == "" {
-		return fmt.Errorf("DB_PATH is required")
-	}
-	if c.ACMEDataDir == "" {
-		return fmt.Errorf("ACME_DATA_DIR is required")
 	}
 	return nil
 }
