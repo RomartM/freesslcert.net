@@ -3,13 +3,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
-import { Plus, ArrowRight, Loader2, AlertCircle } from "lucide-react";
+import { ArrowRight, Loader2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CertTypeSelector } from "@/components/domain/CertTypeSelector";
-import { DomainList } from "@/components/domain/DomainList";
 import { AdvancedOptions } from "@/components/config/AdvancedOptions";
 import { useWizardStore } from "@/stores/wizard-store";
 import { certificatesApi } from "@/api/certificates";
@@ -20,8 +19,8 @@ const domainSchema = z.object({
     .string()
     .min(1, "Domain is required")
     .regex(
-      /^(\*\.)?([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/,
-      "Enter a valid domain"
+      /^([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/,
+      "Enter a valid domain (e.g., example.com)"
     ),
 });
 
@@ -30,13 +29,10 @@ type DomainFormValues = z.infer<typeof domainSchema>;
 export function StepDomainInput() {
   const {
     certificateType,
-    domains,
     keyType,
     csrContent,
     validationMethod,
     setCertificateType,
-    addDomain,
-    removeDomain,
     setStep,
     setOrderId,
     setChallenges,
@@ -46,13 +42,14 @@ export function StepDomainInput() {
   const {
     register,
     handleSubmit,
-    reset: resetForm,
     formState: { errors },
-    setError,
+    watch,
   } = useForm<DomainFormValues>({
     resolver: zodResolver(domainSchema),
     defaultValues: { domain: "" },
   });
+
+  const domainValue = watch("domain");
 
   const createOrderMutation = useMutation({
     mutationFn: certificatesApi.createOrder,
@@ -72,79 +69,35 @@ export function StepDomainInput() {
   const handleCertTypeChange = useCallback(
     (type: CertificateType) => {
       setCertificateType(type);
-
-      // Clear domains when switching types
-      domains.forEach((d) => removeDomain(d.id));
-
-      // Wildcard forces DNS-01 validation
       if (type === "wildcard") {
         setValidationMethod("dns-01");
       }
     },
-    [setCertificateType, domains, removeDomain, setValidationMethod]
+    [setCertificateType, setValidationMethod]
   );
 
-  const handleAddDomain = useCallback(
+  const handleGenerate = useCallback(
     (data: DomainFormValues) => {
-      // Strip any accidentally typed wildcard prefix, then normalize
-      let domainToAdd = data.domain
-        .toLowerCase()
-        .trim()
-        .replace(/^\*\./, "");
+      let domain = data.domain.toLowerCase().trim().replace(/^\*\./, "");
 
-      // For wildcard, prefix with *.
       if (certificateType === "wildcard") {
-        domainToAdd = `*.${domainToAdd}`;
+        domain = `*.${domain}`;
       }
 
-      // For single domain, only one allowed
-      if (certificateType === "single" && domains.length >= 1) {
-        setError("domain", {
-          message:
-            "Single domain certificates support only one domain. Remove the existing one first.",
-        });
-        return;
-      }
-
-      // For wildcard, only one allowed
-      if (certificateType === "wildcard" && domains.length >= 1) {
-        setError("domain", {
-          message:
-            "Wildcard certificates support only one domain. Remove the existing one first.",
-        });
-        return;
-      }
-
-      // Check for duplicates
-      if (domains.some((d) => d.domain === domainToAdd)) {
-        setError("domain", { message: "This domain has already been added" });
-        return;
-      }
-
-      addDomain(domainToAdd);
-      resetForm({ domain: "" });
+      createOrderMutation.mutate({
+        domains: [domain],
+        certificate_type: certificateType,
+        key_type: keyType,
+        validation_method: validationMethod,
+        ...(csrContent ? { csr: csrContent } : {}),
+      });
     },
-    [certificateType, domains, addDomain, resetForm, setError]
+    [certificateType, keyType, validationMethod, csrContent, createOrderMutation]
   );
-
-  const handleGenerate = useCallback(() => {
-    if (domains.length === 0) return;
-
-    createOrderMutation.mutate({
-      domains: domains.map((d) => d.domain),
-      certificate_type: certificateType,
-      key_type: keyType,
-      validation_method: validationMethod,
-      ...(csrContent ? { csr: csrContent } : {}),
-    });
-  }, [domains, certificateType, keyType, validationMethod, csrContent, createOrderMutation]);
-
-  const canAddMore =
-    certificateType === "multi-domain" || domains.length === 0;
 
   return (
     <div className="space-y-4">
-      {/* Certificate Type — compact inline */}
+      {/* Certificate Type */}
       <div className="flex items-center justify-between">
         <span className="text-[13px] font-medium text-neutral-500">Type</span>
         <CertTypeSelector
@@ -153,9 +106,9 @@ export function StepDomainInput() {
         />
       </div>
 
-      {/* Domain Input — single clean row */}
+      {/* Domain Input + Generate — single row */}
       <form
-        onSubmit={handleSubmit(handleAddDomain)}
+        onSubmit={handleSubmit(handleGenerate)}
         className="flex gap-2"
       >
         <div className="relative flex-1">
@@ -170,28 +123,28 @@ export function StepDomainInput() {
           <Input
             id="domain-input"
             placeholder="example.com"
-            disabled={!canAddMore}
-            className={`h-10 rounded-lg text-sm ${certificateType === "wildcard" ? "pl-8" : ""}`}
+            className={`h-11 rounded-lg text-sm ${certificateType === "wildcard" ? "pl-8" : ""}`}
             aria-invalid={!!errors.domain}
             aria-describedby={errors.domain ? "domain-error" : undefined}
             {...register("domain")}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                handleSubmit(handleAddDomain)();
-              }
-            }}
           />
         </div>
         <Button
           type="submit"
-          variant="outline"
-          disabled={!canAddMore}
-          className="h-10 rounded-lg px-3 text-sm"
-          aria-label="Add domain"
+          disabled={!domainValue || createOrderMutation.isPending}
+          className="h-11 rounded-lg px-5 text-sm font-medium"
         >
-          <Plus className="size-3.5" />
-          Add
+          {createOrderMutation.isPending ? (
+            <>
+              <Loader2 className="size-4 animate-spin" />
+              Generating...
+            </>
+          ) : (
+            <>
+              Generate
+              <ArrowRight className="size-4" />
+            </>
+          )}
         </Button>
       </form>
       {errors.domain && (
@@ -203,9 +156,6 @@ export function StepDomainInput() {
           {errors.domain.message}
         </p>
       )}
-
-      {/* Domain List */}
-      <DomainList domains={domains} onRemove={removeDomain} />
 
       {/* Advanced Options */}
       <AdvancedOptions />
@@ -220,26 +170,6 @@ export function StepDomainInput() {
           </AlertDescription>
         </Alert>
       )}
-
-      {/* Generate Button */}
-      <Button
-        onClick={handleGenerate}
-        disabled={domains.length === 0 || createOrderMutation.isPending}
-        className="w-full h-11 rounded-xl text-sm font-medium mt-2"
-        size="lg"
-      >
-        {createOrderMutation.isPending ? (
-          <>
-            <Loader2 className="size-4 animate-spin" />
-            Creating Order...
-          </>
-        ) : (
-          <>
-            Generate Certificate
-            <ArrowRight className="size-4" />
-          </>
-        )}
-      </Button>
     </div>
   );
 }

@@ -47,7 +47,7 @@ type Challenge struct {
 // CreateOrderRequest is the inbound payload for creating a certificate order.
 type CreateOrderRequest struct {
 	Domains          []string `json:"domains" binding:"required,min=1"`
-	CertificateType  string   `json:"certificate_type" binding:"required,oneof=single wildcard multi-domain"`
+	CertificateType  string   `json:"certificate_type" binding:"required,oneof=single wildcard"`
 	KeyType          string   `json:"key_type" binding:"required,oneof=rsa-2048 rsa-4096 ecdsa-p256 ecdsa-p384"`
 	ValidationMethod string   `json:"validation_method,omitempty"`
 	CSR              string   `json:"csr,omitempty"`

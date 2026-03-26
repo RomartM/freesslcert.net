@@ -57,6 +57,13 @@ func (h *CertificateHandler) CreateOrder(c *gin.Context) {
 	}
 
 	if req.CertificateType == "wildcard" {
+		if len(req.Domains) != 1 {
+			c.JSON(http.StatusBadRequest, model.ErrorResponse{
+				Code:    "invalid_request",
+				Message: "wildcard certificate requires exactly one domain",
+			})
+			return
+		}
 		for _, d := range req.Domains {
 			if len(d) < 3 || d[:2] != "*." {
 				c.JSON(http.StatusBadRequest, model.ErrorResponse{
@@ -279,7 +286,7 @@ func (h *CertificateHandler) RevokeOrder(c *gin.Context) {
 func (h *CertificateHandler) GetConfig(c *gin.Context) {
 	c.JSON(http.StatusOK, model.ConfigResponse{
 		KeyTypes:          []string{"rsa-2048", "rsa-4096", "ecdsa-p256", "ecdsa-p384"},
-		CertificateTypes:  []string{"single", "wildcard", "multi-domain"},
+		CertificateTypes:  []string{"single", "wildcard"},
 		ValidationMethods: []string{"http-01", "dns-01"},
 	})
 }

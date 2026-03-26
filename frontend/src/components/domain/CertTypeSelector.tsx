@@ -4,7 +4,6 @@ import type { CertificateType } from "@/types/certificate";
 const CERT_TYPES: Array<{ value: CertificateType; label: string }> = [
   { value: "single", label: "Single" },
   { value: "wildcard", label: "Wildcard" },
-  { value: "multi-domain", label: "Multi-Domain" },
 ];
 
 export interface CertTypeSelectorProps {
