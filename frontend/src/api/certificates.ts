@@ -19,4 +19,7 @@ export const certificatesApi = {
 
   getConfig: () =>
     api.get<ConfigResponse>("/api/v1/config").then((r) => r.data),
+
+  subscribeNotification: (id: string, email: string) =>
+    api.post<{ status: string }>(`/api/v1/orders/${id}/subscribe`, { email }).then((r) => r.data),
 };

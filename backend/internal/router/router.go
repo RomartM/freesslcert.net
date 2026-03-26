@@ -30,6 +30,10 @@ func Setup(
 	// per-request rate limiter.
 	engine.GET("/api/v1/orders/:id/ws", certHandler.WebSocketOrder)
 
+	// Unsubscribe endpoint registered BEFORE rate limiting so users can
+	// always unsubscribe from notification emails.
+	engine.GET("/api/v1/unsubscribe/:token", certHandler.Unsubscribe)
+
 	// Apply rate limiting to all subsequent routes.
 	engine.Use(rateLimiter.Middleware())
 
@@ -41,6 +45,7 @@ func Setup(
 		v1.POST("/orders/:id/validate", certHandler.ValidateOrder)
 		v1.GET("/orders/:id/download/:format", certHandler.DownloadCertificate)
 		v1.POST("/orders/:id/revoke", certHandler.RevokeOrder)
+		v1.POST("/orders/:id/subscribe", certHandler.Subscribe)
 		v1.GET("/config", certHandler.GetConfig)
 	}
 }

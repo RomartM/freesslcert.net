@@ -19,10 +19,11 @@ type Config struct {
 	CORSAllowedOrigins []string
 	RateLimitRequests  int
 	RateLimitWindow    time.Duration
+	ResendAPIKey       string
 }
 
 // Load reads configuration from environment variables. For any variable FOO,
-// if FOO_FILE is set it reads the value from the file at that path (useful for
+// if FOO is empty but FOO_FILE is set it reads the value from the file at that path (useful for
 // Docker secrets). Required fields cause a fatal error when missing.
 func Load() (*Config, error) {
 	cfg := &Config{
@@ -34,6 +35,7 @@ func Load() (*Config, error) {
 	}
 
 	cfg.CloudflareAPIToken = envOrSecret("CLOUDFLARE_API_TOKEN")
+	cfg.ResendAPIKey = envOrSecret("RESEND_API_KEY")
 
 	originsRaw := envOrDefault("CORS_ALLOWED_ORIGINS", "http://localhost:5173")
 	cfg.CORSAllowedOrigins = strings.Split(originsRaw, ",")

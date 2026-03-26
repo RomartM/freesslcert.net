@@ -24,16 +24,27 @@ import (
 type CertificateHandler struct {
 	acme           *service.ACMEService
 	repo           repository.CertificateRepository
+	notifRepo      repository.NotificationRepository
 	allowedOrigins map[string]bool
 }
 
 // NewCertificateHandler constructs a CertificateHandler.
-func NewCertificateHandler(acme *service.ACMEService, repo repository.CertificateRepository, allowedOrigins []string) *CertificateHandler {
+func NewCertificateHandler(
+	acme *service.ACMEService,
+	repo repository.CertificateRepository,
+	notifRepo repository.NotificationRepository,
+	allowedOrigins []string,
+) *CertificateHandler {
 	origins := make(map[string]bool, len(allowedOrigins))
 	for _, o := range allowedOrigins {
 		origins[o] = true
 	}
-	return &CertificateHandler{acme: acme, repo: repo, allowedOrigins: origins}
+	return &CertificateHandler{
+		acme:           acme,
+		repo:           repo,
+		notifRepo:      notifRepo,
+		allowedOrigins: origins,
+	}
 }
 
 // CreateOrder handles POST /api/v1/orders.
@@ -289,6 +300,115 @@ func (h *CertificateHandler) GetConfig(c *gin.Context) {
 		CertificateTypes:  []string{"single", "wildcard"},
 		ValidationMethods: []string{"http-01", "dns-01"},
 	})
+}
+
+// subscribeRequest is the inbound payload for subscribing to expiry notifications.
+type subscribeRequest struct {
+	Email string `json:"email" binding:"required,email"`
+}
+
+// Subscribe handles POST /api/v1/orders/:id/subscribe.
+// It subscribes the given email address to expiry reminders for the order's
+// certificate.
+func (h *CertificateHandler) Subscribe(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Code:    "invalid_request",
+			Message: "order ID is required",
+		})
+		return
+	}
+
+	var req subscribeRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Code:    "invalid_request",
+			Message: fmt.Sprintf("invalid request body: %v", err),
+		})
+		return
+	}
+
+	order, err := h.repo.GetByID(c.Request.Context(), id)
+	if err != nil {
+		handleError(c, err)
+		return
+	}
+
+	if order.Status != model.StatusIssued {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Code:    "order_not_issued",
+			Message: fmt.Sprintf("order status is %s, must be issued to subscribe", order.Status),
+		})
+		return
+	}
+
+	if order.ExpiresAt == nil {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Code:    "invalid_request",
+			Message: "order has no expiry date",
+		})
+		return
+	}
+
+	if len(order.Domains) == 0 {
+		c.JSON(http.StatusBadRequest, model.ErrorResponse{
+			Code:    "invalid_request",
+			Message: "order has no domains",
+		})
+		return
+	}
+
+	domain := order.Domains[0]
+	expiresAt := order.ExpiresAt.UTC().Format(time.RFC3339)
+
+	_, err = h.notifRepo.Subscribe(c.Request.Context(), req.Email, id, domain, expiresAt)
+	if err != nil {
+		slog.Error("subscribe to expiry notification", "error", err, "order_id", id)
+		c.JSON(http.StatusInternalServerError, model.ErrorResponse{
+			Code:    "internal_error",
+			Message: "failed to create subscription",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": "subscribed"})
+}
+
+// Unsubscribe handles GET /api/v1/unsubscribe/:token.
+// It removes the notification subscription and returns a simple HTML page.
+func (h *CertificateHandler) Unsubscribe(c *gin.Context) {
+	token := c.Param("token")
+	if token == "" {
+		c.String(http.StatusBadRequest, "missing unsubscribe token")
+		return
+	}
+
+	if err := h.notifRepo.Unsubscribe(c.Request.Context(), token); err != nil {
+		slog.Error("unsubscribe notification", "error", err, "token", token)
+		c.String(http.StatusInternalServerError, "an error occurred")
+		return
+	}
+
+	c.Header("Content-Type", "text/html; charset=utf-8")
+	c.String(http.StatusOK, `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unsubscribed - FreeSSLCert.net</title>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 500px; margin: 80px auto; padding: 20px; text-align: center; color: #333;">
+  <h1 style="color: #10b981; font-size: 24px;">FreeSSLCert.net</h1>
+  <h2 style="font-size: 20px; margin-top: 32px;">You've been unsubscribed</h2>
+  <p style="font-size: 16px; line-height: 1.6; color: #6b7280;">
+    You will no longer receive SSL certificate expiry reminders.
+  </p>
+  <p style="margin-top: 32px;">
+    <a href="https://freesslcert.net" style="color: #10b981; text-decoration: none;">Back to FreeSSLCert.net</a>
+  </p>
+</body>
+</html>`)
 }
 
 // WebSocketOrder handles GET /api/v1/orders/:id/ws.

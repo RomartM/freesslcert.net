@@ -78,6 +78,11 @@ func run(logger *slog.Logger) error {
 		return fmt.Errorf("init acme account repository: %w", err)
 	}
 
+	notifRepo, err := repository.NewNotificationRepository(ctx, db)
+	if err != nil {
+		return fmt.Errorf("init notification repository: %w", err)
+	}
+
 	// Initialise ACME service.
 	acmeSvc, err := service.NewACMEService(ctx, cfg, certRepo, acmeRepo, logger)
 	if err != nil {
@@ -86,6 +91,15 @@ func run(logger *slog.Logger) error {
 
 	// Start ACME service background cleanup.
 	acmeSvc.StartCleanup(ctx)
+
+	// Optionally initialise the expiry notification service.
+	var notifier *service.Notifier
+	if cfg.ResendAPIKey != "" {
+		notifier = service.NewNotifier(cfg.ResendAPIKey, notifRepo, logger)
+		logger.Info("expiry notification service enabled")
+	} else {
+		logger.Info("expiry notification service disabled (RESEND_API_KEY not set)")
+	}
 
 	// Start background purge job.
 	go func() {
@@ -109,12 +123,16 @@ func run(logger *slog.Logger) error {
 				} else if deleted > 0 {
 					logger.Info("purged expired orders", "count", deleted)
 				}
+
+				if notifier != nil {
+					notifier.SendPendingNotifications(context.Background())
+				}
 			}
 		}
 	}()
 
 	// Initialise handlers.
-	certHandler := handler.NewCertificateHandler(acmeSvc, certRepo, cfg.CORSAllowedOrigins)
+	certHandler := handler.NewCertificateHandler(acmeSvc, certRepo, notifRepo, cfg.CORSAllowedOrigins)
 	healthHandler := handler.NewHealthHandler()
 
 	// Create rate limiter and start its background cleanup.
