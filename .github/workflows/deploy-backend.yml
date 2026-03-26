@@ -66,7 +66,9 @@ jobs:
         server:
           - { name: us-east, host: "100.111.72.8" }
           - { name: eu-west, host: "100.121.100.24" }
+          - { name: uk, host: "100.115.122.115" }
           - { name: sg, host: "100.104.55.72" }
+          - { name: jp, host: "100.73.47.28" }
           - { name: au-syd, host: "100.120.168.37" }
     steps:
       - name: Connect to Tailscale
