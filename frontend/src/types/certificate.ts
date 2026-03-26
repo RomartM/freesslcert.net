@@ -35,6 +35,7 @@ export interface CreateOrderRequest {
   domains: string[];
   certificate_type: CertificateType;
   key_type: KeyType;
+  validation_method?: ValidationMethod;
   csr?: string;
 }
 

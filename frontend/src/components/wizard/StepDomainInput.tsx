@@ -33,6 +33,7 @@ export function StepDomainInput() {
     domains,
     keyType,
     csrContent,
+    validationMethod,
     setCertificateType,
     addDomain,
     removeDomain,
@@ -133,9 +134,10 @@ export function StepDomainInput() {
       domains: domains.map((d) => d.domain),
       certificate_type: certificateType,
       key_type: keyType,
+      validation_method: validationMethod,
       ...(csrContent ? { csr: csrContent } : {}),
     });
-  }, [domains, certificateType, keyType, csrContent, createOrderMutation]);
+  }, [domains, certificateType, keyType, validationMethod, csrContent, createOrderMutation]);
 
   const canAddMore =
     certificateType === "multi-domain" || domains.length === 0;
