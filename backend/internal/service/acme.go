@@ -41,20 +41,25 @@ func (u *acmeUser) GetRegistration() *registration.Resource { return u.Registrat
 func (u *acmeUser) GetPrivateKey() crypto.PrivateKey        { return u.key }
 
 // manualHTTPProvider captures HTTP-01 challenge details for the user to provision manually.
+// Present() blocks until the user signals readiness via Unblock(), giving them time to place
+// the validation file on their server before lego tells ACME to verify.
 type manualHTTPProvider struct {
 	mu         sync.Mutex
 	challenges map[string]model.Challenge // domain -> challenge
+	ready      map[string]chan struct{}    // domain -> unblock signal
 	presented  chan struct{}
 }
 
 func newManualHTTPProvider() *manualHTTPProvider {
 	return &manualHTTPProvider{
 		challenges: make(map[string]model.Challenge),
+		ready:      make(map[string]chan struct{}),
 		presented:  make(chan struct{}, 100),
 	}
 }
 
 func (p *manualHTTPProvider) Present(domain, token, keyAuth string) error {
+	readyCh := make(chan struct{})
 	p.mu.Lock()
 	p.challenges[domain] = model.Challenge{
 		Domain:      domain,
@@ -65,14 +70,38 @@ func (p *manualHTTPProvider) Present(domain, token, keyAuth string) error {
 		FilePath:    "/.well-known/acme-challenge/" + token,
 		FileContent: keyAuth,
 	}
+	p.ready[domain] = readyCh
 	p.mu.Unlock()
 	p.presented <- struct{}{}
-	return nil
+
+	// Block until user confirms they've placed the file (via Unblock) or timeout.
+	select {
+	case <-readyCh:
+		return nil
+	case <-time.After(10 * time.Minute):
+		return fmt.Errorf("timed out waiting for user to place HTTP challenge file for %s", domain)
+	}
+}
+
+// Unblock signals that the user has placed the challenge file for the given domain.
+func (p *manualHTTPProvider) Unblock(domain string) {
+	p.mu.Lock()
+	ch, ok := p.ready[domain]
+	p.mu.Unlock()
+	if ok {
+		select {
+		case <-ch:
+			// already closed
+		default:
+			close(ch)
+		}
+	}
 }
 
 func (p *manualHTTPProvider) CleanUp(domain, token, keyAuth string) error {
 	p.mu.Lock()
 	delete(p.challenges, domain)
+	delete(p.ready, domain)
 	p.mu.Unlock()
 	return nil
 }
@@ -88,15 +117,19 @@ func (p *manualHTTPProvider) GetChallenges() []model.Challenge {
 }
 
 // manualDNSProvider captures DNS-01 challenge details.
+// Present() blocks until the user signals readiness via Unblock(), giving them time to create
+// the DNS TXT record before lego tells ACME to verify.
 type manualDNSProvider struct {
 	mu         sync.Mutex
 	challenges map[string]model.Challenge
+	ready      map[string]chan struct{}
 	presented  chan struct{}
 }
 
 func newManualDNSProvider() *manualDNSProvider {
 	return &manualDNSProvider{
 		challenges: make(map[string]model.Challenge),
+		ready:      make(map[string]chan struct{}),
 		presented:  make(chan struct{}, 100),
 	}
 }
@@ -109,6 +142,7 @@ func (p *manualDNSProvider) Present(domain, token, keyAuth string) error {
 	digest := sha256.Sum256([]byte(keyAuth))
 	txtValue := base64.RawURLEncoding.EncodeToString(digest[:])
 
+	readyCh := make(chan struct{})
 	p.mu.Lock()
 	p.challenges[domain] = model.Challenge{
 		Domain:      domain,
@@ -119,14 +153,37 @@ func (p *manualDNSProvider) Present(domain, token, keyAuth string) error {
 		RecordName:  fqdn,
 		RecordValue: txtValue,
 	}
+	p.ready[domain] = readyCh
 	p.mu.Unlock()
 	p.presented <- struct{}{}
-	return nil
+
+	// Block until user confirms they've created the DNS record (via Unblock) or timeout.
+	select {
+	case <-readyCh:
+		return nil
+	case <-time.After(10 * time.Minute):
+		return fmt.Errorf("timed out waiting for user to create DNS record for %s", domain)
+	}
+}
+
+// Unblock signals that the user has created the DNS TXT record for the given domain.
+func (p *manualDNSProvider) Unblock(domain string) {
+	p.mu.Lock()
+	ch, ok := p.ready[domain]
+	p.mu.Unlock()
+	if ok {
+		select {
+		case <-ch:
+		default:
+			close(ch)
+		}
+	}
 }
 
 func (p *manualDNSProvider) CleanUp(domain, token, keyAuth string) error {
 	p.mu.Lock()
 	delete(p.challenges, domain)
+	delete(p.ready, domain)
 	p.mu.Unlock()
 	return nil
 }
@@ -147,9 +204,11 @@ func (p *manualDNSProvider) Timeout() (time.Duration, time.Duration) {
 
 // orderState holds ephemeral ACME state for an in-flight order.
 type orderState struct {
-	PrivateKey crypto.PrivateKey
-	Domains    []string
-	KeyType    string
+	PrivateKey  crypto.PrivateKey
+	Domains     []string
+	KeyType     string
+	HTTPProvider *manualHTTPProvider
+	DNSProvider  *manualDNSProvider
 }
 
 // ACMEService orchestrates ACME certificate issuance via the lego library.
@@ -270,9 +329,11 @@ func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequ
 	}
 
 	s.orders.Store(orderID, &orderState{
-		PrivateKey: privKey,
-		Domains:    req.Domains,
-		KeyType:    req.KeyType,
+		PrivateKey:   privKey,
+		Domains:      req.Domains,
+		KeyType:      req.KeyType,
+		HTTPProvider: httpProv,
+		DNSProvider:  dnsProv,
 	})
 
 	// Launch self-finalizing background goroutine with its own timeout context.
@@ -410,6 +471,17 @@ func (s *ACMEService) ValidateChallenge(ctx context.Context, orderID string, dom
 
 	if err := s.repo.UpdateChallenges(ctx, orderID, order.Challenges); err != nil {
 		return fmt.Errorf("update challenges: %w", err)
+	}
+
+	// Unblock the provider so lego can proceed with ACME validation.
+	if state, ok := s.orders.Load(orderID); ok {
+		os := state.(*orderState)
+		if os.HTTPProvider != nil {
+			os.HTTPProvider.Unblock(domain)
+		}
+		if os.DNSProvider != nil {
+			os.DNSProvider.Unblock(domain)
+		}
 	}
 
 	// Check if all challenges are satisfied and update order status.
