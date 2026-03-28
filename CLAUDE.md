@@ -34,6 +34,10 @@ backend/            # Go API server
 | `/faq` | FAQPage | 0.8 | Dynamic (Helmet) | FAQPage (20 Q&As), BreadcrumbList |
 | `/guides/nginx-ssl` | NginxSSLGuidePage | 0.8 | Dynamic (Helmet) | HowTo, BreadcrumbList |
 | `/guides/apache-ssl` | ApacheSSLGuidePage | 0.8 | Dynamic (Helmet) | HowTo, BreadcrumbList |
+| `/guides/wordpress-ssl` | WordPressSSLGuidePage | 0.8 | Dynamic (Helmet) | HowTo, BreadcrumbList |
+| `/guides/nodejs-ssl` | NodejsSSLGuidePage | 0.8 | Dynamic (Helmet) | HowTo, BreadcrumbList |
+| `/ssl-vs-tls` | SSLvsTLSPage | 0.7 | Dynamic (Helmet) | Article, BreadcrumbList |
+| `/ssl-checker` | SSLCheckerPage | 0.9 | Dynamic (Helmet) | WebApplication, BreadcrumbList |
 | `/privacy` | PrivacyPage | 0.3 | Dynamic (Helmet) | BreadcrumbList |
 | `/terms` | TermsPage | 0.3 | Dynamic (Helmet) | BreadcrumbList |
 | `*` | NotFoundPage | - | noindex,follow | None |

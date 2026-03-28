@@ -11,6 +11,15 @@ All notable changes to freesslcert.net will be documented in this file.
 - **`/faq`** - Comprehensive standalone FAQ page with 20 detailed Q&As covering SSL/TLS fundamentals, certificate types (DV/OV/EV), wildcards, SANs, renewal, rate limits, HSTS, mixed content, certificate chains, CSR, key formats (PEM/PFX/DER), and installation (~3000 words, FAQPage JSON-LD schema)
 - **`/guides/nginx-ssl`** - Step-by-step guide for installing free SSL certificates on Nginx with complete config examples, troubleshooting section (~2000 words, HowTo + BreadcrumbList JSON-LD schemas)
 - **`/guides/apache-ssl`** - Step-by-step guide for installing free SSL certificates on Apache with VirtualHost config examples for Ubuntu/Debian and CentOS/RHEL (~2000 words, HowTo + BreadcrumbList JSON-LD schemas)
+- **`/guides/wordpress-ssl`** - Step-by-step guide for installing SSL on WordPress via cPanel, with .htaccess and wp-config.php code blocks, mixed content fixes, troubleshooting (~2000 words, HowTo + BreadcrumbList JSON-LD schemas)
+- **`/guides/nodejs-ssl`** - Step-by-step guide for setting up HTTPS with Node.js and Express.js, with code blocks for https.createServer, Express SSL, HTTP redirect, SNICallback reload (~2000 words, HowTo + BreadcrumbList JSON-LD schemas)
+- **`/ssl-vs-tls`** - Educational explainer on SSL vs TLS differences, protocol version history, TLS handshake, comparison table with color-coded status badges (~1500 words, Article + BreadcrumbList JSON-LD schemas)
+- **`/ssl-checker`** - SSL certificate checker tool page with domain input form (UI-only for now), informational content on common SSL problems and fixes (~1000 words, WebApplication + BreadcrumbList JSON-LD schemas)
+
+#### IndexNow Integration
+- **IndexNow key file** deployed at site root for Bing, Yandex, Seznam instant indexing
+- **Reusable submission script** at `submit-indexnow.py`
+- All URLs submitted to api.indexnow.org, Bing, and Yandex (202 Accepted)
 
 #### Technical SEO Fixes
 - **Canonical mismatch resolved** - Added 301! redirects for all non-canonical URL variants:

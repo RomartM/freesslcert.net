@@ -582,21 +582,39 @@ sudo head -1 /etc/ssl/example.com/private.key
             </li>
             <li>
               <Link
+                to="/guides/wordpress-ssl"
+                className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+              >
+                How to Install SSL on WordPress
+              </Link>{" "}
+              &mdash; Guide for WordPress websites
+            </li>
+            <li>
+              <Link
+                to="/guides/nodejs-ssl"
+                className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+              >
+                How to Set Up SSL with Node.js
+              </Link>{" "}
+              &mdash; Guide for Node.js applications
+            </li>
+            <li>
+              <Link
+                to="/ssl-vs-tls"
+                className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+              >
+                SSL vs TLS: What&#39;s the Difference?
+              </Link>{" "}
+              &mdash; Understanding SSL and TLS protocols
+            </li>
+            <li>
+              <Link
                 to="/faq"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 SSL Certificate FAQ
               </Link>{" "}
               &mdash; Common questions about SSL/TLS
-            </li>
-            <li>
-              <Link
-                to="/about"
-                className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
-              >
-                About freesslcert.net
-              </Link>{" "}
-              &mdash; How our service works
             </li>
             <li>
               <Link

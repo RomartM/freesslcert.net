@@ -157,13 +157,27 @@ export function AboutPage() {
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 Nginx
-              </Link>{" "}
-              and{" "}
+              </Link>
+              ,{" "}
               <Link
                 to="/guides/apache-ssl"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 Apache
+              </Link>
+              ,{" "}
+              <Link
+                to="/guides/wordpress-ssl"
+                className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+              >
+                WordPress
+              </Link>
+              , and{" "}
+              <Link
+                to="/guides/nodejs-ssl"
+                className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+              >
+                Node.js
               </Link>{" "}
               to help you through the installation process.
             </li>

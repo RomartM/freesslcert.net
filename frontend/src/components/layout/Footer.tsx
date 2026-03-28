@@ -22,11 +22,23 @@ export function Footer() {
           <Link to="/faq" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
             FAQ
           </Link>
+          <Link to="/ssl-checker" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
+            SSL Checker
+          </Link>
+          <Link to="/ssl-vs-tls" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
+            SSL vs TLS
+          </Link>
           <Link to="/guides/nginx-ssl" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
             Nginx Guide
           </Link>
           <Link to="/guides/apache-ssl" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
             Apache Guide
+          </Link>
+          <Link to="/guides/wordpress-ssl" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
+            WordPress Guide
+          </Link>
+          <Link to="/guides/nodejs-ssl" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
+            Node.js Guide
           </Link>
           <Link to="/privacy" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
             Privacy

@@ -30,6 +30,26 @@ const ApacheSSLGuidePage = lazy(() =>
     default: m.ApacheSSLGuidePage,
   }))
 );
+const WordPressSSLGuidePage = lazy(() =>
+  import("@/pages/WordPressSSLGuidePage").then((m) => ({
+    default: m.WordPressSSLGuidePage,
+  }))
+);
+const NodejsSSLGuidePage = lazy(() =>
+  import("@/pages/NodejsSSLGuidePage").then((m) => ({
+    default: m.NodejsSSLGuidePage,
+  }))
+);
+const SSLvsTLSPage = lazy(() =>
+  import("@/pages/SSLvsTLSPage").then((m) => ({
+    default: m.SSLvsTLSPage,
+  }))
+);
+const SSLCheckerPage = lazy(() =>
+  import("@/pages/SSLCheckerPage").then((m) => ({
+    default: m.SSLCheckerPage,
+  }))
+);
 
 function App() {
   return (
@@ -47,6 +67,16 @@ function App() {
                 path="/guides/apache-ssl"
                 element={<ApacheSSLGuidePage />}
               />
+              <Route
+                path="/guides/wordpress-ssl"
+                element={<WordPressSSLGuidePage />}
+              />
+              <Route
+                path="/guides/nodejs-ssl"
+                element={<NodejsSSLGuidePage />}
+              />
+              <Route path="/ssl-vs-tls" element={<SSLvsTLSPage />} />
+              <Route path="/ssl-checker" element={<SSLCheckerPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/terms" element={<TermsPage />} />
               <Route path="*" element={<NotFoundPage />} />
