@@ -1,9 +1,61 @@
+import { Helmet } from "react-helmet-async";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { StructuredData } from "@/components/seo/StructuredData";
 
 export function TermsPage() {
   return (
     <div className="max-w-2xl mx-auto">
+      <Helmet>
+        <title>Terms of Service | freesslcert.net</title>
+        <meta
+          name="description"
+          content="Terms of service for freesslcert.net free SSL certificate generator. Powered by Let's Encrypt ACME protocol."
+        />
+        <link rel="canonical" href="https://freesslcert.net/terms" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://freesslcert.net/terms" />
+        <meta
+          property="og:title"
+          content="Terms of Service | freesslcert.net"
+        />
+        <meta
+          property="og:description"
+          content="Terms of service for freesslcert.net free SSL certificate generator. Powered by Let's Encrypt ACME protocol."
+        />
+        <meta
+          property="og:image"
+          content="https://freesslcert.net/og-image.svg"
+        />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://freesslcert.net/terms" />
+        <meta
+          name="twitter:title"
+          content="Terms of Service | freesslcert.net"
+        />
+        <meta
+          name="twitter:description"
+          content="Terms of service for freesslcert.net free SSL certificate generator. Powered by Let's Encrypt ACME protocol."
+        />
+        <meta
+          name="twitter:image"
+          content="https://freesslcert.net/og-image.svg"
+        />
+      </Helmet>
+
+      <StructuredData
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://freesslcert.net/" },
+            { "@type": "ListItem", "position": 2, "name": "Terms of Service", "item": "https://freesslcert.net/terms" },
+          ],
+        }}
+      />
+
       <Link
         to="/"
         className="inline-flex min-h-11 items-center gap-1.5 text-sm text-neutral-500 hover:text-neutral-900 transition-colors duration-150 mb-8"

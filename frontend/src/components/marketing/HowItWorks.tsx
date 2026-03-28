@@ -1,4 +1,5 @@
 import { Globe, ShieldCheck, Download } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const steps = [
   {
@@ -41,6 +42,23 @@ export function HowItWorks() {
           );
         })}
       </div>
+      <p className="text-center mt-6 text-sm text-neutral-500">
+        Need help installing your certificate? See our step-by-step guides for{" "}
+        <Link
+          to="/guides/nginx-ssl"
+          className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+        >
+          Nginx
+        </Link>{" "}
+        and{" "}
+        <Link
+          to="/guides/apache-ssl"
+          className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+        >
+          Apache
+        </Link>
+        .
+      </p>
     </section>
   );
 }

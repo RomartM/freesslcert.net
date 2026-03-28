@@ -15,7 +15,19 @@ export function Footer() {
             Let&apos;s Encrypt
           </a>
         </p>
-        <nav className="flex items-center gap-4" aria-label="Footer">
+        <nav className="flex flex-wrap items-center gap-x-4 gap-y-1 justify-center" aria-label="Footer">
+          <Link to="/about" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
+            About
+          </Link>
+          <Link to="/faq" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
+            FAQ
+          </Link>
+          <Link to="/guides/nginx-ssl" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
+            Nginx Guide
+          </Link>
+          <Link to="/guides/apache-ssl" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
+            Apache Guide
+          </Link>
           <Link to="/privacy" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
             Privacy
           </Link>

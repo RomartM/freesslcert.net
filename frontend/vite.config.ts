@@ -10,6 +10,23 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('node_modules/react-dom')) {
+            return 'vendor';
+          }
+          if (id.includes('node_modules/react/')) {
+            return 'vendor';
+          }
+          if (id.includes('node_modules/react-router')) {
+            return 'router';
+          }
+        },
+      },
+    },
+  },
   server: {
     proxy: {
       '/api': {

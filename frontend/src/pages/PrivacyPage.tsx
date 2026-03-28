@@ -1,9 +1,61 @@
+import { Helmet } from "react-helmet-async";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { StructuredData } from "@/components/seo/StructuredData";
 
 export function PrivacyPage() {
   return (
     <div className="max-w-2xl mx-auto">
+      <Helmet>
+        <title>Privacy Policy | freesslcert.net</title>
+        <meta
+          name="description"
+          content="Privacy policy for freesslcert.net. Learn how we handle your data when generating free SSL certificates. No data stored, no signup required."
+        />
+        <link rel="canonical" href="https://freesslcert.net/privacy" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://freesslcert.net/privacy" />
+        <meta
+          property="og:title"
+          content="Privacy Policy | freesslcert.net"
+        />
+        <meta
+          property="og:description"
+          content="Privacy policy for freesslcert.net. Learn how we handle your data when generating free SSL certificates. No data stored, no signup required."
+        />
+        <meta
+          property="og:image"
+          content="https://freesslcert.net/og-image.svg"
+        />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://freesslcert.net/privacy" />
+        <meta
+          name="twitter:title"
+          content="Privacy Policy | freesslcert.net"
+        />
+        <meta
+          name="twitter:description"
+          content="Privacy policy for freesslcert.net. Learn how we handle your data when generating free SSL certificates. No data stored, no signup required."
+        />
+        <meta
+          name="twitter:image"
+          content="https://freesslcert.net/og-image.svg"
+        />
+      </Helmet>
+
+      <StructuredData
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://freesslcert.net/" },
+            { "@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": "https://freesslcert.net/privacy" },
+          ],
+        }}
+      />
+
       <Link
         to="/"
         className="inline-flex min-h-11 items-center gap-1.5 text-sm text-neutral-500 hover:text-neutral-900 transition-colors duration-150 mb-8"

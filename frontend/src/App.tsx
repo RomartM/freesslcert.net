@@ -1,11 +1,35 @@
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageShell } from "@/components/layout/PageShell";
 import { HomePage } from "@/pages/HomePage";
-import { PrivacyPage } from "@/pages/PrivacyPage";
-import { TermsPage } from "@/pages/TermsPage";
-import { NotFoundPage } from "@/pages/NotFoundPage";
+
+const PrivacyPage = lazy(() =>
+  import("@/pages/PrivacyPage").then((m) => ({ default: m.PrivacyPage }))
+);
+const TermsPage = lazy(() =>
+  import("@/pages/TermsPage").then((m) => ({ default: m.TermsPage }))
+);
+const NotFoundPage = lazy(() =>
+  import("@/pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage }))
+);
+const AboutPage = lazy(() =>
+  import("@/pages/AboutPage").then((m) => ({ default: m.AboutPage }))
+);
+const FAQPage = lazy(() =>
+  import("@/pages/FAQPage").then((m) => ({ default: m.FAQPage }))
+);
+const NginxSSLGuidePage = lazy(() =>
+  import("@/pages/NginxSSLGuidePage").then((m) => ({
+    default: m.NginxSSLGuidePage,
+  }))
+);
+const ApacheSSLGuidePage = lazy(() =>
+  import("@/pages/ApacheSSLGuidePage").then((m) => ({
+    default: m.ApacheSSLGuidePage,
+  }))
+);
 
 function App() {
   return (
@@ -13,12 +37,21 @@ function App() {
       <Header />
       <main className="pt-24 pb-20">
         <PageShell>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+          <Suspense fallback={null}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/guides/nginx-ssl" element={<NginxSSLGuidePage />} />
+              <Route
+                path="/guides/apache-ssl"
+                element={<ApacheSSLGuidePage />}
+              />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Suspense>
         </PageShell>
       </main>
       <Footer />
