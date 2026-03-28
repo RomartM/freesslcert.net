@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "sslChecker": "SSL Checker",
+    "sslVsTls": "SSL vs TLS",
+    "guides": "Guides",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "nginxGuide": "Nginx Guide",
+    "apacheGuide": "Apache Guide",
+    "wordpressGuide": "WordPress Guide",
+    "nodejsGuide": "Node.js Guide"
+  },
+  "footer": {
+    "copyright": "© {{year}} freesslcert.net · Powered by",
+    "letsEncrypt": "Let's Encrypt"
+  },
+  "hero": {
+    "title": "Free SSL Certificates",
+    "subtitle": "Powered by Let's Encrypt. No signup. No cost.",
+    "description": "Generate free SSL/TLS certificates for your websites in seconds."
+  },
+  "cta": {
+    "generateCertificate": "Generate Certificate",
+    "startOver": "Start Over",
+    "learnMore": "Learn More",
+    "readMore": "Read More",
+    "viewAll": "View All",
+    "backToHome": "Back to Home",
+    "checkSsl": "Check SSL",
+    "renewNow": "Renew Now",
+    "downloadCertificate": "Download Certificate"
+  },
+  "wizard": {
+    "domainRequired": "Domain is required",
+    "invalidDomain": "Enter a valid domain (e.g., example.com)",
+    "generating": "Generating...",
+    "generate": "Generate",
+    "certificateIssued": "Certificate Issued",
+    "certificateReady": "Your SSL certificate is ready. Download the files below.",
+    "expiryReminderSet": "Expiry reminder set",
+    "notifyMe": "Notify me before this certificate expires",
+    "notifyDescription": "We'll send a reminder 14 and 7 days before your certificate expires",
+    "subscribe": "Subscribe",
+    "generateAnother": "Generate Another Certificate",
+    "enterDomain": "Enter your domain",
+    "domainPlaceholder": "example.com",
+    "singleDomain": "Single Domain",
+    "wildcard": "Wildcard",
+    "multiDomain": "Multi-Domain",
+    "verifyOwnership": "Verify Ownership",
+    "downloadFiles": "Download Files"
+  },
+  "sslChecker": {
+    "title": "Free SSL Certificate Checker",
+    "description": "Enter a domain name to check its SSL certificate status, expiration date, issuer, and configuration.",
+    "checking": "Checking...",
+    "valid": "Valid",
+    "expired": "Expired",
+    "invalid": "Invalid",
+    "daysUntilExpiry": "Days Until Expiry",
+    "issuer": "Issuer",
+    "protocol": "Protocol",
+    "validFrom": "Valid From",
+    "validUntil": "Valid Until",
+    "signatureAlgorithm": "Signature Algorithm",
+    "commonName": "Common Name",
+    "serialNumber": "Serial Number",
+    "subjectAltNames": "Subject Alternative Names",
+    "certificateChain": "Certificate Chain",
+    "certificateDetails": "Certificate Details",
+    "generateNewCert": "Generate a new free SSL certificate"
+  },
+  "meta": {
+    "homeTitle": "Free SSL Certificate Generator | freesslcert.net",
+    "homeDescription": "Generate free SSL certificates powered by Let's Encrypt in 60 seconds. No signup required. Single, wildcard & multi-domain support.",
+    "aboutTitle": "About | freesslcert.net",
+    "faqTitle": "Frequently Asked Questions | freesslcert.net",
+    "blogTitle": "SSL Certificate Blog | freesslcert.net",
+    "sslCheckerTitle": "Free SSL Certificate Checker | freesslcert.net",
+    "privacyTitle": "Privacy Policy | freesslcert.net",
+    "termsTitle": "Terms of Service | freesslcert.net"
+  },
+  "language": {
+    "en": "English",
+    "es": "Español",
+    "zh": "中文",
+    "pt": "Português",
+    "fr": "Français",
+    "de": "Deutsch",
+    "hi": "हिन्दी",
+    "ar": "العربية",
+    "bn": "বাংলা",
+    "ru": "Русский",
+    "ur": "اردو",
+    "ja": "日本語",
+    "th": "ไทย",
+    "vi": "Tiếng Việt",
+    "ko": "한국어"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Select Language"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "The page you're looking for doesn't exist.",
+    "goHome": "Go to Homepage"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "tryAgain": "Try Again",
+    "close": "Close",
+    "noDataStored": "No Data Stored",
+    "freeForever": "Free Forever",
+    "poweredByLetsEncrypt": "Powered by Let's Encrypt",
+    "sixtySeconds": "60 Seconds",
+    "noSignup": "No Signup Required"
+  }
+}

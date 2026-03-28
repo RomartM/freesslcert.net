@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "होम",
+    "about": "हमारे बारे में",
+    "blog": "ब्लॉग",
+    "faq": "सामान्य प्रश्न",
+    "sslChecker": "SSL जाँचकर्ता",
+    "sslVsTls": "SSL बनाम TLS",
+    "guides": "गाइड",
+    "privacy": "गोपनीयता",
+    "terms": "नियम व शर्तें",
+    "nginxGuide": "Nginx गाइड",
+    "apacheGuide": "Apache गाइड",
+    "wordpressGuide": "WordPress गाइड",
+    "nodejsGuide": "Node.js गाइड"
+  },
+  "footer": {
+    "copyright": "© {{year}} freesslcert.net · द्वारा संचालित",
+    "letsEncrypt": "Let's Encrypt"
+  },
+  "hero": {
+    "title": "मुफ़्त SSL प्रमाणपत्र",
+    "subtitle": "Let's Encrypt द्वारा संचालित। कोई साइनअप नहीं। कोई लागत नहीं।",
+    "description": "अपनी वेबसाइटों के लिए कुछ ही सेकंड में मुफ़्त SSL/TLS प्रमाणपत्र बनाएं।"
+  },
+  "cta": {
+    "generateCertificate": "प्रमाणपत्र बनाएं",
+    "startOver": "फिर से शुरू करें",
+    "learnMore": "और जानें",
+    "readMore": "और पढ़ें",
+    "viewAll": "सभी देखें",
+    "backToHome": "होम पर वापस जाएं",
+    "checkSsl": "SSL जाँचें",
+    "renewNow": "अभी नवीनीकरण करें",
+    "downloadCertificate": "प्रमाणपत्र डाउनलोड करें"
+  },
+  "wizard": {
+    "domainRequired": "डोमेन आवश्यक है",
+    "invalidDomain": "एक वैध डोमेन दर्ज करें (जैसे, example.com)",
+    "generating": "बनाया जा रहा है...",
+    "generate": "बनाएं",
+    "certificateIssued": "प्रमाणपत्र जारी हुआ",
+    "certificateReady": "आपका SSL प्रमाणपत्र तैयार है। नीचे दी गई फ़ाइलें डाउनलोड करें।",
+    "expiryReminderSet": "समाप्ति अनुस्मारक सेट हो गया",
+    "notifyMe": "इस प्रमाणपत्र की समाप्ति से पहले मुझे सूचित करें",
+    "notifyDescription": "हम आपके प्रमाणपत्र की समाप्ति से 14 और 7 दिन पहले अनुस्मारक भेजेंगे",
+    "subscribe": "सदस्यता लें",
+    "generateAnother": "एक और प्रमाणपत्र बनाएं",
+    "enterDomain": "अपना डोमेन दर्ज करें",
+    "domainPlaceholder": "example.com",
+    "singleDomain": "एकल डोमेन",
+    "wildcard": "वाइल्डकार्ड",
+    "multiDomain": "बहु-डोमेन",
+    "verifyOwnership": "स्वामित्व सत्यापित करें",
+    "downloadFiles": "फ़ाइलें डाउनलोड करें"
+  },
+  "sslChecker": {
+    "title": "मुफ़्त SSL प्रमाणपत्र जाँचकर्ता",
+    "description": "SSL प्रमाणपत्र की स्थिति, समाप्ति तिथि, जारीकर्ता और कॉन्फ़िगरेशन जाँचने के लिए डोमेन नाम दर्ज करें।",
+    "checking": "जाँच की जा रही है...",
+    "valid": "वैध",
+    "expired": "समाप्त",
+    "invalid": "अमान्य",
+    "daysUntilExpiry": "समाप्ति तक दिन",
+    "issuer": "जारीकर्ता",
+    "protocol": "प्रोटोकॉल",
+    "validFrom": "से वैध",
+    "validUntil": "तक वैध",
+    "signatureAlgorithm": "हस्ताक्षर एल्गोरिदम",
+    "commonName": "सामान्य नाम",
+    "serialNumber": "क्रमांक",
+    "subjectAltNames": "विषय वैकल्पिक नाम",
+    "certificateChain": "प्रमाणपत्र श्रृंखला",
+    "certificateDetails": "प्रमाणपत्र विवरण",
+    "generateNewCert": "एक नया मुफ़्त SSL प्रमाणपत्र बनाएं"
+  },
+  "meta": {
+    "homeTitle": "मुफ़्त SSL प्रमाणपत्र जनरेटर | freesslcert.net",
+    "homeDescription": "Let's Encrypt की मदद से 60 सेकंड में मुफ़्त SSL प्रमाणपत्र बनाएं। कोई साइनअप आवश्यक नहीं। एकल, वाइल्डकार्ड और बहु-डोमेन समर्थन।",
+    "aboutTitle": "हमारे बारे में | freesslcert.net",
+    "faqTitle": "सामान्य प्रश्न | freesslcert.net",
+    "blogTitle": "SSL प्रमाणपत्र ब्लॉग | freesslcert.net",
+    "sslCheckerTitle": "मुफ़्त SSL प्रमाणपत्र जाँचकर्ता | freesslcert.net",
+    "privacyTitle": "गोपनीयता नीति | freesslcert.net",
+    "termsTitle": "सेवा की शर्तें | freesslcert.net"
+  },
+  "language": {
+    "en": "English",
+    "es": "Español",
+    "zh": "中文",
+    "pt": "Português",
+    "fr": "Français",
+    "de": "Deutsch",
+    "hi": "हिन्दी",
+    "ar": "العربية",
+    "bn": "বাংলা",
+    "ru": "Русский",
+    "ur": "اردو",
+    "ja": "日本語",
+    "th": "ไทย",
+    "vi": "Tiếng Việt",
+    "ko": "한국어"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "भाषा चुनें"
+  },
+  "notFound": {
+    "title": "पृष्ठ नहीं मिला",
+    "description": "आप जिस पृष्ठ की तलाश कर रहे हैं वह मौजूद नहीं है।",
+    "goHome": "होमपेज पर जाएं"
+  },
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "error": "एक त्रुटि हुई",
+    "tryAgain": "फिर से प्रयास करें",
+    "close": "बंद करें",
+    "noDataStored": "कोई डेटा संग्रहीत नहीं",
+    "freeForever": "हमेशा के लिए मुफ़्त",
+    "poweredByLetsEncrypt": "Let's Encrypt द्वारा संचालित",
+    "sixtySeconds": "60 सेकंड",
+    "noSignup": "कोई साइनअप आवश्यक नहीं"
+  }
+}

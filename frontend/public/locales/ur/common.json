@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "ہوم",
+    "about": "ہمارے بارے میں",
+    "blog": "بلاگ",
+    "faq": "عام سوالات",
+    "sslChecker": "SSL چیکر",
+    "sslVsTls": "SSL بمقابلہ TLS",
+    "guides": "رہنما",
+    "privacy": "رازداری",
+    "terms": "شرائط",
+    "nginxGuide": "Nginx رہنما",
+    "apacheGuide": "Apache رہنما",
+    "wordpressGuide": "WordPress رہنما",
+    "nodejsGuide": "Node.js رہنما"
+  },
+  "footer": {
+    "copyright": "© {{year}} freesslcert.net · بذریعہ",
+    "letsEncrypt": "Let's Encrypt"
+  },
+  "hero": {
+    "title": "مفت SSL سرٹیفکیٹ",
+    "subtitle": "Let's Encrypt کے ذریعے۔ کوئی سائن اپ نہیں۔ کوئی لاگت نہیں۔",
+    "description": "چند سیکنڈ میں اپنی ویب سائٹس کے لیے مفت SSL/TLS سرٹیفکیٹ بنائیں۔"
+  },
+  "cta": {
+    "generateCertificate": "سرٹیفکیٹ بنائیں",
+    "startOver": "دوبارہ شروع کریں",
+    "learnMore": "مزید جانیں",
+    "readMore": "مزید پڑھیں",
+    "viewAll": "سب دیکھیں",
+    "backToHome": "ہوم پر واپس جائیں",
+    "checkSsl": "SSL چیک کریں",
+    "renewNow": "ابھی تجدید کریں",
+    "downloadCertificate": "سرٹیفکیٹ ڈاؤن لوڈ کریں"
+  },
+  "wizard": {
+    "domainRequired": "ڈومین ضروری ہے",
+    "invalidDomain": "ایک درست ڈومین درج کریں (مثلاً، example.com)",
+    "generating": "بنایا جا رہا ہے...",
+    "generate": "بنائیں",
+    "certificateIssued": "سرٹیفکیٹ جاری ہو گیا",
+    "certificateReady": "آپ کا SSL سرٹیفکیٹ تیار ہے۔ نیچے دی گئی فائلیں ڈاؤن لوڈ کریں۔",
+    "expiryReminderSet": "میعاد ختم ہونے کی یاد دہانی سیٹ ہو گئی",
+    "notifyMe": "اس سرٹیفکیٹ کی میعاد ختم ہونے سے پہلے مجھے آگاہ کریں",
+    "notifyDescription": "ہم آپ کے سرٹیفکیٹ کی میعاد ختم ہونے سے 14 اور 7 دن پہلے یاد دہانی بھیجیں گے",
+    "subscribe": "سبسکرائب کریں",
+    "generateAnother": "ایک اور سرٹیفکیٹ بنائیں",
+    "enterDomain": "اپنا ڈومین درج کریں",
+    "domainPlaceholder": "example.com",
+    "singleDomain": "واحد ڈومین",
+    "wildcard": "وائلڈ کارڈ",
+    "multiDomain": "ملٹی ڈومین",
+    "verifyOwnership": "ملکیت کی تصدیق کریں",
+    "downloadFiles": "فائلیں ڈاؤن لوڈ کریں"
+  },
+  "sslChecker": {
+    "title": "مفت SSL سرٹیفکیٹ چیکر",
+    "description": "SSL سرٹیفکیٹ کی حیثیت، میعاد ختم ہونے کی تاریخ، جاری کنندہ اور ترتیب چیک کرنے کے لیے ڈومین نام درج کریں۔",
+    "checking": "جانچ کی جا رہی ہے...",
+    "valid": "درست",
+    "expired": "میعاد ختم",
+    "invalid": "غلط",
+    "daysUntilExpiry": "میعاد ختم ہونے تک دن",
+    "issuer": "جاری کنندہ",
+    "protocol": "پروٹوکول",
+    "validFrom": "سے درست",
+    "validUntil": "تک درست",
+    "signatureAlgorithm": "دستخط الگورتھم",
+    "commonName": "عام نام",
+    "serialNumber": "سیریل نمبر",
+    "subjectAltNames": "موضوع کے متبادل نام",
+    "certificateChain": "سرٹیفکیٹ چین",
+    "certificateDetails": "سرٹیفکیٹ کی تفصیلات",
+    "generateNewCert": "ایک نیا مفت SSL سرٹیفکیٹ بنائیں"
+  },
+  "meta": {
+    "homeTitle": "مفت SSL سرٹیفکیٹ جنریٹر | freesslcert.net",
+    "homeDescription": "Let's Encrypt کے ذریعے 60 سیکنڈ میں مفت SSL سرٹیفکیٹ بنائیں۔ کوئی سائن اپ ضروری نہیں۔ واحد، وائلڈ کارڈ اور ملٹی ڈومین سپورٹ۔",
+    "aboutTitle": "ہمارے بارے میں | freesslcert.net",
+    "faqTitle": "عام سوالات | freesslcert.net",
+    "blogTitle": "SSL سرٹیفکیٹ بلاگ | freesslcert.net",
+    "sslCheckerTitle": "مفت SSL سرٹیفکیٹ چیکر | freesslcert.net",
+    "privacyTitle": "رازداری کی پالیسی | freesslcert.net",
+    "termsTitle": "سروس کی شرائط | freesslcert.net"
+  },
+  "language": {
+    "en": "English",
+    "es": "Español",
+    "zh": "中文",
+    "pt": "Português",
+    "fr": "Français",
+    "de": "Deutsch",
+    "hi": "हिन्दी",
+    "ar": "العربية",
+    "bn": "বাংলা",
+    "ru": "Русский",
+    "ur": "اردو",
+    "ja": "日本語",
+    "th": "ไทย",
+    "vi": "Tiếng Việt",
+    "ko": "한국어"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "زبان منتخب کریں"
+  },
+  "notFound": {
+    "title": "صفحہ نہیں ملا",
+    "description": "آپ جس صفحے کی تلاش کر رہے ہیں وہ موجود نہیں ہے۔",
+    "goHome": "ہوم پیج پر جائیں"
+  },
+  "common": {
+    "loading": "لوڈ ہو رہا ہے...",
+    "error": "ایک خرابی پیش آئی",
+    "tryAgain": "دوبارہ کوشش کریں",
+    "close": "بند کریں",
+    "noDataStored": "کوئی ڈیٹا محفوظ نہیں",
+    "freeForever": "ہمیشہ کے لیے مفت",
+    "poweredByLetsEncrypt": "Let's Encrypt کے ذریعے",
+    "sixtySeconds": "60 سیکنڈ",
+    "noSignup": "کوئی سائن اپ ضروری نہیں"
+  }
+}

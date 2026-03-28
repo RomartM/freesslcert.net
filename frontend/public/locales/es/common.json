@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "blog": "Blog",
+    "faq": "Preguntas frecuentes",
+    "sslChecker": "Verificador SSL",
+    "sslVsTls": "SSL vs TLS",
+    "guides": "Guías",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "nginxGuide": "Guía de Nginx",
+    "apacheGuide": "Guía de Apache",
+    "wordpressGuide": "Guía de WordPress",
+    "nodejsGuide": "Guía de Node.js"
+  },
+  "footer": {
+    "copyright": "© {{year}} freesslcert.net · Desarrollado por",
+    "letsEncrypt": "Let's Encrypt"
+  },
+  "hero": {
+    "title": "Certificados SSL Gratuitos",
+    "subtitle": "Desarrollado por Let's Encrypt. Sin registro. Sin costo.",
+    "description": "Genera certificados SSL/TLS gratuitos para tus sitios web en segundos."
+  },
+  "cta": {
+    "generateCertificate": "Generar Certificado",
+    "startOver": "Empezar de Nuevo",
+    "learnMore": "Saber Más",
+    "readMore": "Leer Más",
+    "viewAll": "Ver Todo",
+    "backToHome": "Volver al Inicio",
+    "checkSsl": "Verificar SSL",
+    "renewNow": "Renovar Ahora",
+    "downloadCertificate": "Descargar Certificado"
+  },
+  "wizard": {
+    "domainRequired": "El dominio es obligatorio",
+    "invalidDomain": "Ingresa un dominio válido (por ejemplo, ejemplo.com)",
+    "generating": "Generando...",
+    "generate": "Generar",
+    "certificateIssued": "Certificado Emitido",
+    "certificateReady": "Tu certificado SSL está listo. Descarga los archivos a continuación.",
+    "expiryReminderSet": "Recordatorio de vencimiento configurado",
+    "notifyMe": "Notificarme antes de que este certificado expire",
+    "notifyDescription": "Enviaremos un recordatorio 14 y 7 días antes de que tu certificado expire",
+    "subscribe": "Suscribirse",
+    "generateAnother": "Generar Otro Certificado",
+    "enterDomain": "Ingresa tu dominio",
+    "domainPlaceholder": "ejemplo.com",
+    "singleDomain": "Dominio Único",
+    "wildcard": "Comodín",
+    "multiDomain": "Múltiples Dominios",
+    "verifyOwnership": "Verificar Propiedad",
+    "downloadFiles": "Descargar Archivos"
+  },
+  "sslChecker": {
+    "title": "Verificador de Certificados SSL Gratuito",
+    "description": "Ingresa un nombre de dominio para verificar el estado de su certificado SSL, fecha de vencimiento, emisor y configuración.",
+    "checking": "Verificando...",
+    "valid": "Válido",
+    "expired": "Vencido",
+    "invalid": "Inválido",
+    "daysUntilExpiry": "Días hasta el Vencimiento",
+    "issuer": "Emisor",
+    "protocol": "Protocolo",
+    "validFrom": "Válido Desde",
+    "validUntil": "Válido Hasta",
+    "signatureAlgorithm": "Algoritmo de Firma",
+    "commonName": "Nombre Común",
+    "serialNumber": "Número de Serie",
+    "subjectAltNames": "Nombres Alternativos del Sujeto",
+    "certificateChain": "Cadena de Certificados",
+    "certificateDetails": "Detalles del Certificado",
+    "generateNewCert": "Generar un nuevo certificado SSL gratuito"
+  },
+  "meta": {
+    "homeTitle": "Generador de Certificados SSL Gratuitos | freesslcert.net",
+    "homeDescription": "Genera certificados SSL gratuitos con Let's Encrypt en 60 segundos. Sin registro requerido. Soporte para dominios únicos, comodín y múltiples dominios.",
+    "aboutTitle": "Acerca de | freesslcert.net",
+    "faqTitle": "Preguntas Frecuentes | freesslcert.net",
+    "blogTitle": "Blog de Certificados SSL | freesslcert.net",
+    "sslCheckerTitle": "Verificador de Certificados SSL Gratuito | freesslcert.net",
+    "privacyTitle": "Política de Privacidad | freesslcert.net",
+    "termsTitle": "Términos de Servicio | freesslcert.net"
+  },
+  "language": {
+    "en": "English",
+    "es": "Español",
+    "zh": "中文",
+    "pt": "Português",
+    "fr": "Français",
+    "de": "Deutsch",
+    "hi": "हिन्दी",
+    "ar": "العربية",
+    "bn": "বাংলা",
+    "ru": "Русский",
+    "ur": "اردو",
+    "ja": "日本語",
+    "th": "ไทย",
+    "vi": "Tiếng Việt",
+    "ko": "한국어"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Seleccionar Idioma"
+  },
+  "notFound": {
+    "title": "Página No Encontrada",
+    "description": "La página que buscas no existe.",
+    "goHome": "Ir a la Página de Inicio"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "tryAgain": "Intentar de Nuevo",
+    "close": "Cerrar",
+    "noDataStored": "No se Almacenan Datos",
+    "freeForever": "Gratis Para Siempre",
+    "poweredByLetsEncrypt": "Desarrollado por Let's Encrypt",
+    "sixtySeconds": "60 Segundos",
+    "noSignup": "Sin Registro Requerido"
+  }
+}

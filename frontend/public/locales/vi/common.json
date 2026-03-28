@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "blog": "Blog",
+    "faq": "Câu hỏi thường gặp",
+    "sslChecker": "Kiểm tra SSL",
+    "sslVsTls": "SSL và TLS",
+    "guides": "Hướng dẫn",
+    "privacy": "Quyền riêng tư",
+    "terms": "Điều khoản",
+    "nginxGuide": "Hướng dẫn Nginx",
+    "apacheGuide": "Hướng dẫn Apache",
+    "wordpressGuide": "Hướng dẫn WordPress",
+    "nodejsGuide": "Hướng dẫn Node.js"
+  },
+  "footer": {
+    "copyright": "© {{year}} freesslcert.net · Hỗ trợ bởi",
+    "letsEncrypt": "Let's Encrypt"
+  },
+  "hero": {
+    "title": "Chứng chỉ SSL Miễn phí",
+    "subtitle": "Hỗ trợ bởi Let's Encrypt. Không cần đăng ký. Không tốn phí.",
+    "description": "Tạo chứng chỉ SSL/TLS miễn phí cho website của bạn chỉ trong vài giây."
+  },
+  "cta": {
+    "generateCertificate": "Tạo chứng chỉ",
+    "startOver": "Bắt đầu lại",
+    "learnMore": "Tìm hiểu thêm",
+    "readMore": "Đọc thêm",
+    "viewAll": "Xem tất cả",
+    "backToHome": "Quay về trang chủ",
+    "checkSsl": "Kiểm tra SSL",
+    "renewNow": "Gia hạn ngay",
+    "downloadCertificate": "Tải chứng chỉ"
+  },
+  "wizard": {
+    "domainRequired": "Tên miền là bắt buộc",
+    "invalidDomain": "Nhập tên miền hợp lệ (ví dụ: example.com)",
+    "generating": "Đang tạo...",
+    "generate": "Tạo",
+    "certificateIssued": "Chứng chỉ đã được cấp",
+    "certificateReady": "Chứng chỉ SSL của bạn đã sẵn sàng. Tải xuống các tệp bên dưới.",
+    "expiryReminderSet": "Đã đặt nhắc nhở hết hạn",
+    "notifyMe": "Thông báo cho tôi trước khi chứng chỉ này hết hạn",
+    "notifyDescription": "Chúng tôi sẽ gửi nhắc nhở 14 và 7 ngày trước khi chứng chỉ của bạn hết hạn",
+    "subscribe": "Đăng ký",
+    "generateAnother": "Tạo chứng chỉ khác",
+    "enterDomain": "Nhập tên miền của bạn",
+    "domainPlaceholder": "example.com",
+    "singleDomain": "Một tên miền",
+    "wildcard": "Wildcard",
+    "multiDomain": "Nhiều tên miền",
+    "verifyOwnership": "Xác minh quyền sở hữu",
+    "downloadFiles": "Tải xuống tệp"
+  },
+  "sslChecker": {
+    "title": "Công cụ kiểm tra chứng chỉ SSL miễn phí",
+    "description": "Nhập tên miền để kiểm tra trạng thái chứng chỉ SSL, ngày hết hạn, nhà phát hành và cấu hình.",
+    "checking": "Đang kiểm tra...",
+    "valid": "Hợp lệ",
+    "expired": "Đã hết hạn",
+    "invalid": "Không hợp lệ",
+    "daysUntilExpiry": "Số ngày đến khi hết hạn",
+    "issuer": "Nhà phát hành",
+    "protocol": "Giao thức",
+    "validFrom": "Có hiệu lực từ",
+    "validUntil": "Có hiệu lực đến",
+    "signatureAlgorithm": "Thuật toán chữ ký",
+    "commonName": "Tên thông thường",
+    "serialNumber": "Số sê-ri",
+    "subjectAltNames": "Tên thay thế của chủ thể",
+    "certificateChain": "Chuỗi chứng chỉ",
+    "certificateDetails": "Chi tiết chứng chỉ",
+    "generateNewCert": "Tạo chứng chỉ SSL miễn phí mới"
+  },
+  "meta": {
+    "homeTitle": "Công cụ tạo chứng chỉ SSL miễn phí | freesslcert.net",
+    "homeDescription": "Tạo chứng chỉ SSL miễn phí bằng Let's Encrypt trong 60 giây. Không cần đăng ký. Hỗ trợ một tên miền, wildcard và nhiều tên miền.",
+    "aboutTitle": "Giới thiệu | freesslcert.net",
+    "faqTitle": "Câu hỏi thường gặp | freesslcert.net",
+    "blogTitle": "Blog chứng chỉ SSL | freesslcert.net",
+    "sslCheckerTitle": "Công cụ kiểm tra chứng chỉ SSL miễn phí | freesslcert.net",
+    "privacyTitle": "Chính sách bảo mật | freesslcert.net",
+    "termsTitle": "Điều khoản dịch vụ | freesslcert.net"
+  },
+  "language": {
+    "en": "English",
+    "es": "Español",
+    "zh": "中文",
+    "pt": "Português",
+    "fr": "Français",
+    "de": "Deutsch",
+    "hi": "हिन्दी",
+    "ar": "العربية",
+    "bn": "বাংলা",
+    "ru": "Русский",
+    "ur": "اردو",
+    "ja": "日本語",
+    "th": "ไทย",
+    "vi": "Tiếng Việt",
+    "ko": "한국어"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Chọn ngôn ngữ"
+  },
+  "notFound": {
+    "title": "Không tìm thấy trang",
+    "description": "Trang bạn đang tìm kiếm không tồn tại.",
+    "goHome": "Về trang chủ"
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Đã xảy ra lỗi",
+    "tryAgain": "Thử lại",
+    "close": "Đóng",
+    "noDataStored": "Không lưu trữ dữ liệu",
+    "freeForever": "Miễn phí mãi mãi",
+    "poweredByLetsEncrypt": "Hỗ trợ bởi Let's Encrypt",
+    "sixtySeconds": "60 giây",
+    "noSignup": "Không cần đăng ký"
+  }
+}

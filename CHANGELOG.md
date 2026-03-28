@@ -4,6 +4,19 @@ All notable changes to freesslcert.net will be documented in this file.
 
 ## [Unreleased] - 2026-03-29
 
+### Internationalization (i18n) — 15 Languages
+- **i18next infrastructure** installed: `i18next`, `react-i18next`, `i18next-http-backend`, `i18next-browser-languagedetector`
+- **15 languages supported**: English, Spanish, Chinese, Portuguese, French, German, Hindi, Arabic, Bengali, Russian, Urdu, Japanese, Thai, Vietnamese, Korean
+- **Locale-based routing**: `/:lang/page` pattern (e.g., `/es/about`, `/ar/faq`). English served at root without prefix
+- **RTL support**: Automatic `dir="rtl"` on `<html>` for Arabic and Urdu
+- **Language switcher**: Globe icon dropdown in header, navigates to equivalent page in selected language
+- **Translation files**: 15 `common.json` files at `public/locales/{lang}/common.json` with 99 translated keys each
+- **useLocalePath hook**: All internal links use locale-aware paths
+- **hreflang tags**: Added to `index.html` (16 alternate links) and `sitemap.xml` (240 hreflang links across 15 URLs)
+- **Sitemap updated**: Added `xmlns:xhtml` namespace with full hreflang annotations per infrastructure standards
+- **LocaleLayout component**: Syncs i18next language from URL, sets document direction and lang attribute
+- **Footer and Header**: Fully internationalized using translation keys
+
 ### Functional SSL Checker Tool
 - **`GET /api/ssl-check?domain={domain}`** - New backend API endpoint (Go) that connects to any domain on port 443, inspects the TLS certificate, and returns structured JSON with: CN, SANs, issuer, validity dates, days until expiry, protocol version, signature algorithm, certificate chain, and validity status
 - **SSRF protection** - Blocks localhost, .local, .internal, private IP ranges; validates domain format; rejects bare IPs

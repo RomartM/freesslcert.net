@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "sslChecker": "Vérificateur SSL",
+    "sslVsTls": "SSL vs TLS",
+    "guides": "Guides",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "nginxGuide": "Guide Nginx",
+    "apacheGuide": "Guide Apache",
+    "wordpressGuide": "Guide WordPress",
+    "nodejsGuide": "Guide Node.js"
+  },
+  "footer": {
+    "copyright": "© {{year}} freesslcert.net · Propulsé par",
+    "letsEncrypt": "Let's Encrypt"
+  },
+  "hero": {
+    "title": "Certificats SSL Gratuits",
+    "subtitle": "Propulsé par Let's Encrypt. Sans inscription. Sans frais.",
+    "description": "Générez des certificats SSL/TLS gratuits pour vos sites web en quelques secondes."
+  },
+  "cta": {
+    "generateCertificate": "Générer un Certificat",
+    "startOver": "Recommencer",
+    "learnMore": "En Savoir Plus",
+    "readMore": "Lire Plus",
+    "viewAll": "Voir Tout",
+    "backToHome": "Retour à l'Accueil",
+    "checkSsl": "Vérifier le SSL",
+    "renewNow": "Renouveler Maintenant",
+    "downloadCertificate": "Télécharger le Certificat"
+  },
+  "wizard": {
+    "domainRequired": "Le domaine est obligatoire",
+    "invalidDomain": "Entrez un domaine valide (ex : exemple.fr)",
+    "generating": "Génération en cours...",
+    "generate": "Générer",
+    "certificateIssued": "Certificat Émis",
+    "certificateReady": "Votre certificat SSL est prêt. Téléchargez les fichiers ci-dessous.",
+    "expiryReminderSet": "Rappel d'expiration configuré",
+    "notifyMe": "Me notifier avant l'expiration de ce certificat",
+    "notifyDescription": "Nous enverrons un rappel 14 et 7 jours avant l'expiration de votre certificat",
+    "subscribe": "S'abonner",
+    "generateAnother": "Générer un Autre Certificat",
+    "enterDomain": "Entrez votre domaine",
+    "domainPlaceholder": "exemple.fr",
+    "singleDomain": "Domaine Unique",
+    "wildcard": "Wildcard",
+    "multiDomain": "Multi-Domaines",
+    "verifyOwnership": "Vérifier la Propriété",
+    "downloadFiles": "Télécharger les Fichiers"
+  },
+  "sslChecker": {
+    "title": "Vérificateur de Certificats SSL Gratuit",
+    "description": "Entrez un nom de domaine pour vérifier le statut de son certificat SSL, sa date d'expiration, son émetteur et sa configuration.",
+    "checking": "Vérification en cours...",
+    "valid": "Valide",
+    "expired": "Expiré",
+    "invalid": "Invalide",
+    "daysUntilExpiry": "Jours avant Expiration",
+    "issuer": "Émetteur",
+    "protocol": "Protocole",
+    "validFrom": "Valide à Partir du",
+    "validUntil": "Valide Jusqu'au",
+    "signatureAlgorithm": "Algorithme de Signature",
+    "commonName": "Nom Commun",
+    "serialNumber": "Numéro de Série",
+    "subjectAltNames": "Noms Alternatifs du Sujet",
+    "certificateChain": "Chaîne de Certificats",
+    "certificateDetails": "Détails du Certificat",
+    "generateNewCert": "Générer un nouveau certificat SSL gratuit"
+  },
+  "meta": {
+    "homeTitle": "Générateur de Certificats SSL Gratuits | freesslcert.net",
+    "homeDescription": "Générez des certificats SSL gratuits avec Let's Encrypt en 60 secondes. Sans inscription. Prise en charge des domaines uniques, wildcard et multi-domaines.",
+    "aboutTitle": "À Propos | freesslcert.net",
+    "faqTitle": "Foire Aux Questions | freesslcert.net",
+    "blogTitle": "Blog sur les Certificats SSL | freesslcert.net",
+    "sslCheckerTitle": "Vérificateur de Certificats SSL Gratuit | freesslcert.net",
+    "privacyTitle": "Politique de Confidentialité | freesslcert.net",
+    "termsTitle": "Conditions d'Utilisation | freesslcert.net"
+  },
+  "language": {
+    "en": "English",
+    "es": "Español",
+    "zh": "中文",
+    "pt": "Português",
+    "fr": "Français",
+    "de": "Deutsch",
+    "hi": "हिन्दी",
+    "ar": "العربية",
+    "bn": "বাংলা",
+    "ru": "Русский",
+    "ur": "اردو",
+    "ja": "日本語",
+    "th": "ไทย",
+    "vi": "Tiếng Việt",
+    "ko": "한국어"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Choisir la Langue"
+  },
+  "notFound": {
+    "title": "Page Introuvable",
+    "description": "La page que vous recherchez n'existe pas.",
+    "goHome": "Aller à la Page d'Accueil"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "tryAgain": "Réessayer",
+    "close": "Fermer",
+    "noDataStored": "Aucune Donnée Stockée",
+    "freeForever": "Gratuit à Vie",
+    "poweredByLetsEncrypt": "Propulsé par Let's Encrypt",
+    "sixtySeconds": "60 Secondes",
+    "noSignup": "Sans Inscription"
+  }
+}

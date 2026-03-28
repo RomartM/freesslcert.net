@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "Главная",
+    "about": "О нас",
+    "blog": "Блог",
+    "faq": "Вопросы и ответы",
+    "sslChecker": "Проверка SSL",
+    "sslVsTls": "SSL и TLS",
+    "guides": "Руководства",
+    "privacy": "Конфиденциальность",
+    "terms": "Условия",
+    "nginxGuide": "Руководство по Nginx",
+    "apacheGuide": "Руководство по Apache",
+    "wordpressGuide": "Руководство по WordPress",
+    "nodejsGuide": "Руководство по Node.js"
+  },
+  "footer": {
+    "copyright": "© {{year}} freesslcert.net · Работает на",
+    "letsEncrypt": "Let's Encrypt"
+  },
+  "hero": {
+    "title": "Бесплатные SSL-сертификаты",
+    "subtitle": "Работает на Let's Encrypt. Без регистрации. Без затрат.",
+    "description": "Создавайте бесплатные SSL/TLS-сертификаты для своих сайтов за считанные секунды."
+  },
+  "cta": {
+    "generateCertificate": "Создать сертификат",
+    "startOver": "Начать заново",
+    "learnMore": "Узнать больше",
+    "readMore": "Читать дальше",
+    "viewAll": "Смотреть все",
+    "backToHome": "Вернуться на главную",
+    "checkSsl": "Проверить SSL",
+    "renewNow": "Обновить сейчас",
+    "downloadCertificate": "Скачать сертификат"
+  },
+  "wizard": {
+    "domainRequired": "Домен обязателен",
+    "invalidDomain": "Введите действительный домен (например, example.com)",
+    "generating": "Создание...",
+    "generate": "Создать",
+    "certificateIssued": "Сертификат выдан",
+    "certificateReady": "Ваш SSL-сертификат готов. Скачайте файлы ниже.",
+    "expiryReminderSet": "Напоминание об истечении срока установлено",
+    "notifyMe": "Уведомить меня до истечения срока этого сертификата",
+    "notifyDescription": "Мы отправим напоминание за 14 и 7 дней до истечения срока вашего сертификата",
+    "subscribe": "Подписаться",
+    "generateAnother": "Создать ещё один сертификат",
+    "enterDomain": "Введите ваш домен",
+    "domainPlaceholder": "example.com",
+    "singleDomain": "Один домен",
+    "wildcard": "Wildcard",
+    "multiDomain": "Несколько доменов",
+    "verifyOwnership": "Подтвердить владение",
+    "downloadFiles": "Скачать файлы"
+  },
+  "sslChecker": {
+    "title": "Бесплатная проверка SSL-сертификатов",
+    "description": "Введите доменное имя для проверки статуса SSL-сертификата, срока действия, издателя и конфигурации.",
+    "checking": "Проверка...",
+    "valid": "Действителен",
+    "expired": "Истёк",
+    "invalid": "Недействителен",
+    "daysUntilExpiry": "Дней до истечения срока",
+    "issuer": "Издатель",
+    "protocol": "Протокол",
+    "validFrom": "Действителен с",
+    "validUntil": "Действителен до",
+    "signatureAlgorithm": "Алгоритм подписи",
+    "commonName": "Общее имя",
+    "serialNumber": "Серийный номер",
+    "subjectAltNames": "Альтернативные имена субъекта",
+    "certificateChain": "Цепочка сертификатов",
+    "certificateDetails": "Детали сертификата",
+    "generateNewCert": "Создать новый бесплатный SSL-сертификат"
+  },
+  "meta": {
+    "homeTitle": "Генератор бесплатных SSL-сертификатов | freesslcert.net",
+    "homeDescription": "Создавайте бесплатные SSL-сертификаты на базе Let's Encrypt за 60 секунд. Регистрация не требуется. Поддержка одного, wildcard и нескольких доменов.",
+    "aboutTitle": "О нас | freesslcert.net",
+    "faqTitle": "Часто задаваемые вопросы | freesslcert.net",
+    "blogTitle": "Блог об SSL-сертификатах | freesslcert.net",
+    "sslCheckerTitle": "Бесплатная проверка SSL-сертификатов | freesslcert.net",
+    "privacyTitle": "Политика конфиденциальности | freesslcert.net",
+    "termsTitle": "Условия использования | freesslcert.net"
+  },
+  "language": {
+    "en": "English",
+    "es": "Español",
+    "zh": "中文",
+    "pt": "Português",
+    "fr": "Français",
+    "de": "Deutsch",
+    "hi": "हिन्दी",
+    "ar": "العربية",
+    "bn": "বাংলা",
+    "ru": "Русский",
+    "ur": "اردو",
+    "ja": "日本語",
+    "th": "ไทย",
+    "vi": "Tiếng Việt",
+    "ko": "한국어"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Выбрать язык"
+  },
+  "notFound": {
+    "title": "Страница не найдена",
+    "description": "Страница, которую вы ищете, не существует.",
+    "goHome": "На главную страницу"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "error": "Произошла ошибка",
+    "tryAgain": "Попробовать снова",
+    "close": "Закрыть",
+    "noDataStored": "Данные не сохраняются",
+    "freeForever": "Бесплатно навсегда",
+    "poweredByLetsEncrypt": "Работает на Let's Encrypt",
+    "sixtySeconds": "60 секунд",
+    "noSignup": "Регистрация не требуется"
+  }
+}

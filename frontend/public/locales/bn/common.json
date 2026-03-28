@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "হোম",
+    "about": "আমাদের সম্পর্কে",
+    "blog": "ব্লগ",
+    "faq": "সাধারণ প্রশ্নোত্তর",
+    "sslChecker": "SSL পরীক্ষক",
+    "sslVsTls": "SSL বনাম TLS",
+    "guides": "গাইড",
+    "privacy": "গোপনীয়তা",
+    "terms": "শর্তাবলী",
+    "nginxGuide": "Nginx গাইড",
+    "apacheGuide": "Apache গাইড",
+    "wordpressGuide": "WordPress গাইড",
+    "nodejsGuide": "Node.js গাইড"
+  },
+  "footer": {
+    "copyright": "© {{year}} freesslcert.net · দ্বারা পরিচালিত",
+    "letsEncrypt": "Let's Encrypt"
+  },
+  "hero": {
+    "title": "বিনামূল্যে SSL সার্টিফিকেট",
+    "subtitle": "Let's Encrypt দ্বারা পরিচালিত। কোনো সাইনআপ নেই। কোনো খরচ নেই।",
+    "description": "মাত্র কয়েক সেকেন্ডে আপনার ওয়েবসাইটের জন্য বিনামূল্যে SSL/TLS সার্টিফিকেট তৈরি করুন।"
+  },
+  "cta": {
+    "generateCertificate": "সার্টিফিকেট তৈরি করুন",
+    "startOver": "নতুন করে শুরু করুন",
+    "learnMore": "আরও জানুন",
+    "readMore": "আরও পড়ুন",
+    "viewAll": "সব দেখুন",
+    "backToHome": "হোমে ফিরে যান",
+    "checkSsl": "SSL পরীক্ষা করুন",
+    "renewNow": "এখনই নবায়ন করুন",
+    "downloadCertificate": "সার্টিফিকেট ডাউনলোড করুন"
+  },
+  "wizard": {
+    "domainRequired": "ডোমেইন আবশ্যক",
+    "invalidDomain": "একটি বৈধ ডোমেইন লিখুন (যেমন, example.com)",
+    "generating": "তৈরি হচ্ছে...",
+    "generate": "তৈরি করুন",
+    "certificateIssued": "সার্টিফিকেট ইস্যু হয়েছে",
+    "certificateReady": "আপনার SSL সার্টিফিকেট প্রস্তুত। নিচের ফাইলগুলো ডাউনলোড করুন।",
+    "expiryReminderSet": "মেয়াদ শেষ হওয়ার রিমাইন্ডার সেট করা হয়েছে",
+    "notifyMe": "এই সার্টিফিকেটের মেয়াদ শেষ হওয়ার আগে আমাকে জানান",
+    "notifyDescription": "আপনার সার্টিফিকেটের মেয়াদ শেষ হওয়ার ১৪ এবং ৭ দিন আগে আমরা রিমাইন্ডার পাঠাব",
+    "subscribe": "সাবস্ক্রাইব করুন",
+    "generateAnother": "আরেকটি সার্টিফিকেট তৈরি করুন",
+    "enterDomain": "আপনার ডোমেইন লিখুন",
+    "domainPlaceholder": "example.com",
+    "singleDomain": "একক ডোমেইন",
+    "wildcard": "ওয়াইল্ডকার্ড",
+    "multiDomain": "মাল্টি-ডোমেইন",
+    "verifyOwnership": "মালিকানা যাচাই করুন",
+    "downloadFiles": "ফাইল ডাউনলোড করুন"
+  },
+  "sslChecker": {
+    "title": "বিনামূল্যে SSL সার্টিফিকেট পরীক্ষক",
+    "description": "SSL সার্টিফিকেটের অবস্থা, মেয়াদ শেষের তারিখ, ইস্যুকারী এবং কনফিগারেশন পরীক্ষা করতে একটি ডোমেইন নাম লিখুন।",
+    "checking": "পরীক্ষা করা হচ্ছে...",
+    "valid": "বৈধ",
+    "expired": "মেয়াদোত্তীর্ণ",
+    "invalid": "অবৈধ",
+    "daysUntilExpiry": "মেয়াদ শেষ পর্যন্ত দিন",
+    "issuer": "ইস্যুকারী",
+    "protocol": "প্রোটোকল",
+    "validFrom": "থেকে বৈধ",
+    "validUntil": "পর্যন্ত বৈধ",
+    "signatureAlgorithm": "সিগনেচার অ্যালগরিদম",
+    "commonName": "সাধারণ নাম",
+    "serialNumber": "সিরিয়াল নম্বর",
+    "subjectAltNames": "বিষয়ের বিকল্প নাম",
+    "certificateChain": "সার্টিফিকেট চেইন",
+    "certificateDetails": "সার্টিফিকেটের বিবরণ",
+    "generateNewCert": "একটি নতুন বিনামূল্যে SSL সার্টিফিকেট তৈরি করুন"
+  },
+  "meta": {
+    "homeTitle": "বিনামূল্যে SSL সার্টিফিকেট জেনারেটর | freesslcert.net",
+    "homeDescription": "Let's Encrypt দিয়ে ৬০ সেকেন্ডে বিনামূল্যে SSL সার্টিফিকেট তৈরি করুন। কোনো সাইনআপ প্রয়োজন নেই। একক, ওয়াইল্ডকার্ড ও মাল্টি-ডোমেইন সমর্থন।",
+    "aboutTitle": "আমাদের সম্পর্কে | freesslcert.net",
+    "faqTitle": "সাধারণ প্রশ্নোত্তর | freesslcert.net",
+    "blogTitle": "SSL সার্টিফিকেট ব্লগ | freesslcert.net",
+    "sslCheckerTitle": "বিনামূল্যে SSL সার্টিফিকেট পরীক্ষক | freesslcert.net",
+    "privacyTitle": "গোপনীয়তা নীতি | freesslcert.net",
+    "termsTitle": "সেবার শর্তাবলী | freesslcert.net"
+  },
+  "language": {
+    "en": "English",
+    "es": "Español",
+    "zh": "中文",
+    "pt": "Português",
+    "fr": "Français",
+    "de": "Deutsch",
+    "hi": "हिन्दी",
+    "ar": "العربية",
+    "bn": "বাংলা",
+    "ru": "Русский",
+    "ur": "اردو",
+    "ja": "日本語",
+    "th": "ไทย",
+    "vi": "Tiếng Việt",
+    "ko": "한국어"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "ভাষা নির্বাচন করুন"
+  },
+  "notFound": {
+    "title": "পৃষ্ঠা পাওয়া যায়নি",
+    "description": "আপনি যে পৃষ্ঠাটি খুঁজছেন তা বিদ্যমান নেই।",
+    "goHome": "হোমপেজে যান"
+  },
+  "common": {
+    "loading": "লোড হচ্ছে...",
+    "error": "একটি ত্রুটি ঘটেছে",
+    "tryAgain": "আবার চেষ্টা করুন",
+    "close": "বন্ধ করুন",
+    "noDataStored": "কোনো ডেটা সংরক্ষিত নেই",
+    "freeForever": "চিরকাল বিনামূল্যে",
+    "poweredByLetsEncrypt": "Let's Encrypt দ্বারা পরিচালিত",
+    "sixtySeconds": "৬০ সেকেন্ড",
+    "noSignup": "কোনো সাইনআপ প্রয়োজন নেই"
+  }
+}

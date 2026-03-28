@@ -1,93 +1,334 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://freesslcert.net/</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/" />
   </url>
   <url>
     <loc>https://freesslcert.net/about</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/about" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/about" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/about" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/about" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/about" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/about" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/about" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/about" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/about" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/about" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/about" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/about" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/about" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/about" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/about" />
   </url>
   <url>
     <loc>https://freesslcert.net/faq</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/faq" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/faq" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/faq" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/faq" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/faq" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/faq" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/faq" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/faq" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/faq" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/faq" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/faq" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/faq" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/faq" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/faq" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/faq" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/faq" />
   </url>
   <url>
     <loc>https://freesslcert.net/guides/nginx-ssl</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/guides/nginx-ssl" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/guides/nginx-ssl" />
   </url>
   <url>
     <loc>https://freesslcert.net/guides/apache-ssl</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/guides/apache-ssl" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/guides/apache-ssl" />
   </url>
   <url>
     <loc>https://freesslcert.net/guides/wordpress-ssl</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/guides/wordpress-ssl" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/guides/wordpress-ssl" />
   </url>
   <url>
     <loc>https://freesslcert.net/guides/nodejs-ssl</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/guides/nodejs-ssl" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/guides/nodejs-ssl" />
   </url>
   <url>
     <loc>https://freesslcert.net/ssl-vs-tls</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/ssl-vs-tls" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/ssl-vs-tls" />
   </url>
   <url>
     <loc>https://freesslcert.net/ssl-checker</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/ssl-checker" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/ssl-checker" />
   </url>
   <url>
     <loc>https://freesslcert.net/blog</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/blog" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/blog" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/blog" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/blog" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/blog" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/blog" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/blog" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/blog" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/blog" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/blog" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/blog" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/blog" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/blog" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/blog" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/blog" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/blog" />
   </url>
   <url>
     <loc>https://freesslcert.net/blog/why-https-matters-2026</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/blog/why-https-matters-2026" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/blog/why-https-matters-2026" />
   </url>
   <url>
     <loc>https://freesslcert.net/blog/lets-encrypt-guide</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/blog/lets-encrypt-guide" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/blog/lets-encrypt-guide" />
   </url>
   <url>
     <loc>https://freesslcert.net/blog/ssl-certificate-types-explained</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/blog/ssl-certificate-types-explained" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/blog/ssl-certificate-types-explained" />
   </url>
   <url>
     <loc>https://freesslcert.net/privacy</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/privacy" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/privacy" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/privacy" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/privacy" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/privacy" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/privacy" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/privacy" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/privacy" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/privacy" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/privacy" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/privacy" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/privacy" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/privacy" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/privacy" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/privacy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/privacy" />
   </url>
   <url>
     <loc>https://freesslcert.net/terms</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freesslcert.net/terms" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://freesslcert.net/es/terms" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://freesslcert.net/zh/terms" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://freesslcert.net/pt/terms" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://freesslcert.net/fr/terms" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://freesslcert.net/de/terms" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://freesslcert.net/hi/terms" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://freesslcert.net/ar/terms" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://freesslcert.net/bn/terms" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://freesslcert.net/ru/terms" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://freesslcert.net/ur/terms" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://freesslcert.net/ja/terms" />
+    <xhtml:link rel="alternate" hreflang="th" href="https://freesslcert.net/th/terms" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://freesslcert.net/vi/terms" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://freesslcert.net/ko/terms" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://freesslcert.net/terms" />
   </url>
 </urlset>

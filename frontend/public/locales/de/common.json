@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "about": "Über uns",
+    "blog": "Blog",
+    "faq": "Häufige Fragen",
+    "sslChecker": "SSL-Prüfer",
+    "sslVsTls": "SSL vs. TLS",
+    "guides": "Anleitungen",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "nginxGuide": "Nginx-Anleitung",
+    "apacheGuide": "Apache-Anleitung",
+    "wordpressGuide": "WordPress-Anleitung",
+    "nodejsGuide": "Node.js-Anleitung"
+  },
+  "footer": {
+    "copyright": "© {{year}} freesslcert.net · Betrieben von",
+    "letsEncrypt": "Let's Encrypt"
+  },
+  "hero": {
+    "title": "Kostenlose SSL-Zertifikate",
+    "subtitle": "Betrieben von Let's Encrypt. Keine Registrierung. Keine Kosten.",
+    "description": "Erstelle kostenlose SSL/TLS-Zertifikate für deine Websites in Sekunden."
+  },
+  "cta": {
+    "generateCertificate": "Zertifikat Erstellen",
+    "startOver": "Neu Starten",
+    "learnMore": "Mehr Erfahren",
+    "readMore": "Mehr Lesen",
+    "viewAll": "Alle Anzeigen",
+    "backToHome": "Zurück zur Startseite",
+    "checkSsl": "SSL Prüfen",
+    "renewNow": "Jetzt Verlängern",
+    "downloadCertificate": "Zertifikat Herunterladen"
+  },
+  "wizard": {
+    "domainRequired": "Domain ist erforderlich",
+    "invalidDomain": "Gib eine gültige Domain ein (z. B. beispiel.de)",
+    "generating": "Wird erstellt...",
+    "generate": "Erstellen",
+    "certificateIssued": "Zertifikat Ausgestellt",
+    "certificateReady": "Dein SSL-Zertifikat ist bereit. Lade die Dateien unten herunter.",
+    "expiryReminderSet": "Ablauferinnerung gesetzt",
+    "notifyMe": "Mich vor Ablauf dieses Zertifikats benachrichtigen",
+    "notifyDescription": "Wir senden eine Erinnerung 14 und 7 Tage vor Ablauf deines Zertifikats",
+    "subscribe": "Abonnieren",
+    "generateAnother": "Ein Weiteres Zertifikat Erstellen",
+    "enterDomain": "Gib deine Domain ein",
+    "domainPlaceholder": "beispiel.de",
+    "singleDomain": "Einzelne Domain",
+    "wildcard": "Wildcard",
+    "multiDomain": "Multi-Domain",
+    "verifyOwnership": "Eigentümerschaft Bestätigen",
+    "downloadFiles": "Dateien Herunterladen"
+  },
+  "sslChecker": {
+    "title": "Kostenloser SSL-Zertifikat-Prüfer",
+    "description": "Gib einen Domainnamen ein, um den SSL-Zertifikatsstatus, das Ablaufdatum, den Aussteller und die Konfiguration zu prüfen.",
+    "checking": "Wird geprüft...",
+    "valid": "Gültig",
+    "expired": "Abgelaufen",
+    "invalid": "Ungültig",
+    "daysUntilExpiry": "Tage bis zum Ablauf",
+    "issuer": "Aussteller",
+    "protocol": "Protokoll",
+    "validFrom": "Gültig Ab",
+    "validUntil": "Gültig Bis",
+    "signatureAlgorithm": "Signaturalgorithmus",
+    "commonName": "Gemeinsamer Name",
+    "serialNumber": "Seriennummer",
+    "subjectAltNames": "Alternative Antragstellernamen",
+    "certificateChain": "Zertifikatskette",
+    "certificateDetails": "Zertifikatsdetails",
+    "generateNewCert": "Ein neues kostenloses SSL-Zertifikat erstellen"
+  },
+  "meta": {
+    "homeTitle": "Kostenloser SSL-Zertifikat-Generator | freesslcert.net",
+    "homeDescription": "Erstelle kostenlose SSL-Zertifikate mit Let's Encrypt in 60 Sekunden. Keine Registrierung erforderlich. Unterstützung für Einzel-, Wildcard- und Multi-Domains.",
+    "aboutTitle": "Über uns | freesslcert.net",
+    "faqTitle": "Häufig Gestellte Fragen | freesslcert.net",
+    "blogTitle": "SSL-Zertifikat-Blog | freesslcert.net",
+    "sslCheckerTitle": "Kostenloser SSL-Zertifikat-Prüfer | freesslcert.net",
+    "privacyTitle": "Datenschutzerklärung | freesslcert.net",
+    "termsTitle": "Nutzungsbedingungen | freesslcert.net"
+  },
+  "language": {
+    "en": "English",
+    "es": "Español",
+    "zh": "中文",
+    "pt": "Português",
+    "fr": "Français",
+    "de": "Deutsch",
+    "hi": "हिन्दी",
+    "ar": "العربية",
+    "bn": "বাংলা",
+    "ru": "Русский",
+    "ur": "اردو",
+    "ja": "日本語",
+    "th": "ไทย",
+    "vi": "Tiếng Việt",
+    "ko": "한국어"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "Sprache Auswählen"
+  },
+  "notFound": {
+    "title": "Seite Nicht Gefunden",
+    "description": "Die gesuchte Seite existiert nicht.",
+    "goHome": "Zur Startseite"
+  },
+  "common": {
+    "loading": "Wird geladen...",
+    "error": "Ein Fehler ist aufgetreten",
+    "tryAgain": "Erneut Versuchen",
+    "close": "Schließen",
+    "noDataStored": "Keine Daten Gespeichert",
+    "freeForever": "Dauerhaft Kostenlos",
+    "poweredByLetsEncrypt": "Betrieben von Let's Encrypt",
+    "sixtySeconds": "60 Sekunden",
+    "noSignup": "Keine Registrierung Erforderlich"
+  }
+}

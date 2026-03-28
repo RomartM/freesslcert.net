@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "about": "حول",
+    "blog": "المدونة",
+    "faq": "الأسئلة الشائعة",
+    "sslChecker": "فاحص SSL",
+    "sslVsTls": "SSL مقابل TLS",
+    "guides": "الأدلة",
+    "privacy": "الخصوصية",
+    "terms": "الشروط",
+    "nginxGuide": "دليل Nginx",
+    "apacheGuide": "دليل Apache",
+    "wordpressGuide": "دليل WordPress",
+    "nodejsGuide": "دليل Node.js"
+  },
+  "footer": {
+    "copyright": "© {{year}} freesslcert.net · مدعوم من",
+    "letsEncrypt": "Let's Encrypt"
+  },
+  "hero": {
+    "title": "شهادات SSL مجانية",
+    "subtitle": "مدعوم من Let's Encrypt. بدون تسجيل. بدون تكلفة.",
+    "description": "أنشئ شهادات SSL/TLS مجانية لمواقعك الإلكترونية في ثوانٍ."
+  },
+  "cta": {
+    "generateCertificate": "إنشاء شهادة",
+    "startOver": "البدء من جديد",
+    "learnMore": "اعرف المزيد",
+    "readMore": "اقرأ المزيد",
+    "viewAll": "عرض الكل",
+    "backToHome": "العودة إلى الرئيسية",
+    "checkSsl": "فحص SSL",
+    "renewNow": "تجديد الآن",
+    "downloadCertificate": "تنزيل الشهادة"
+  },
+  "wizard": {
+    "domainRequired": "النطاق مطلوب",
+    "invalidDomain": "أدخل نطاقًا صحيحًا (مثلاً: example.com)",
+    "generating": "جارٍ الإنشاء...",
+    "generate": "إنشاء",
+    "certificateIssued": "تم إصدار الشهادة",
+    "certificateReady": "شهادة SSL جاهزة. قم بتنزيل الملفات أدناه.",
+    "expiryReminderSet": "تم ضبط تذكير انتهاء الصلاحية",
+    "notifyMe": "أخبرني قبل انتهاء صلاحية هذه الشهادة",
+    "notifyDescription": "سنرسل تذكيرًا قبل 14 و 7 أيام من انتهاء صلاحية شهادتك",
+    "subscribe": "اشتراك",
+    "generateAnother": "إنشاء شهادة أخرى",
+    "enterDomain": "أدخل نطاقك",
+    "domainPlaceholder": "example.com",
+    "singleDomain": "نطاق واحد",
+    "wildcard": "نطاق بطاقة البدل",
+    "multiDomain": "متعدد النطاقات",
+    "verifyOwnership": "التحقق من الملكية",
+    "downloadFiles": "تنزيل الملفات"
+  },
+  "sslChecker": {
+    "title": "فاحص شهادات SSL مجاني",
+    "description": "أدخل اسم النطاق للتحقق من حالة شهادة SSL وتاريخ انتهاء الصلاحية والجهة المصدرة والإعداد.",
+    "checking": "جارٍ الفحص...",
+    "valid": "صالحة",
+    "expired": "منتهية الصلاحية",
+    "invalid": "غير صالحة",
+    "daysUntilExpiry": "أيام حتى انتهاء الصلاحية",
+    "issuer": "الجهة المصدرة",
+    "protocol": "البروتوكول",
+    "validFrom": "صالحة من",
+    "validUntil": "صالحة حتى",
+    "signatureAlgorithm": "خوارزمية التوقيع",
+    "commonName": "الاسم الشائع",
+    "serialNumber": "الرقم التسلسلي",
+    "subjectAltNames": "الأسماء البديلة للموضوع",
+    "certificateChain": "سلسلة الشهادات",
+    "certificateDetails": "تفاصيل الشهادة",
+    "generateNewCert": "إنشاء شهادة SSL مجانية جديدة"
+  },
+  "meta": {
+    "homeTitle": "منشئ شهادات SSL مجاني | freesslcert.net",
+    "homeDescription": "أنشئ شهادات SSL مجانية مدعومة من Let's Encrypt في 60 ثانية. لا حاجة للتسجيل. يدعم النطاقات الفردية وبطاقة البدل ومتعددة النطاقات.",
+    "aboutTitle": "حول | freesslcert.net",
+    "faqTitle": "الأسئلة الشائعة | freesslcert.net",
+    "blogTitle": "مدونة شهادات SSL | freesslcert.net",
+    "sslCheckerTitle": "فاحص شهادات SSL مجاني | freesslcert.net",
+    "privacyTitle": "سياسة الخصوصية | freesslcert.net",
+    "termsTitle": "شروط الخدمة | freesslcert.net"
+  },
+  "language": {
+    "en": "English",
+    "es": "Español",
+    "zh": "中文",
+    "pt": "Português",
+    "fr": "Français",
+    "de": "Deutsch",
+    "hi": "हिन्दी",
+    "ar": "العربية",
+    "bn": "বাংলা",
+    "ru": "Русский",
+    "ur": "اردو",
+    "ja": "日本語",
+    "th": "ไทย",
+    "vi": "Tiếng Việt",
+    "ko": "한국어"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "اختر اللغة"
+  },
+  "notFound": {
+    "title": "الصفحة غير موجودة",
+    "description": "الصفحة التي تبحث عنها غير موجودة.",
+    "goHome": "الذهاب إلى الصفحة الرئيسية"
+  },
+  "common": {
+    "loading": "جارٍ التحميل...",
+    "error": "حدث خطأ",
+    "tryAgain": "حاول مجددًا",
+    "close": "إغلاق",
+    "noDataStored": "لا يتم تخزين أي بيانات",
+    "freeForever": "مجاني للأبد",
+    "poweredByLetsEncrypt": "مدعوم من Let's Encrypt",
+    "sixtySeconds": "60 ثانية",
+    "noSignup": "لا حاجة للتسجيل"
+  }
+}

@@ -57,6 +57,20 @@ backend/            # Go API server
 - **Blog data** (`src/data/blogPosts.ts`) - Blog post metadata array with helper functions
 - **IndexNow** - Key file at `/public/{key}.txt` for Bing/Yandex/Seznam instant indexing; submission script at `submit-indexnow.py`
 
+### Internationalization (i18n)
+- **Stack:** `i18next` + `react-i18next` + `i18next-http-backend` + `i18next-browser-languagedetector`
+- **15 languages:** en, es, zh, pt, fr, de, hi, ar, bn, ru, ur, ja, th, vi, ko
+- **RTL languages:** ar (Arabic), ur (Urdu) — auto `dir="rtl"` via `LocaleLayout`
+- **URL pattern:** `/:lang/page` (e.g., `/es/about`). English at root without prefix
+- **Translation files:** `public/locales/{lang}/common.json` (99 keys each)
+- **Namespaces:** common (active), home, faq, guides, blog, ssl-checker (placeholders for future content translation)
+- **Components:**
+  - `src/i18n.ts` — i18next config, exports `SUPPORTED_LANGUAGES`, `RTL_LANGUAGES`, `isSupportedLanguage()`
+  - `src/components/layout/LocaleLayout.tsx` — Syncs lang from URL, sets dir/lang on document
+  - `src/components/layout/LanguageSwitcher.tsx` — Globe dropdown in header
+  - `src/hooks/useLocalePath.ts` — Hook for locale-aware link paths
+- **hreflang:** 16 alternate links in `index.html` + full `<xhtml:link>` annotations in `sitemap.xml`
+
 ### Redirects & Canonicals
 - All `http://`, `http://www.`, `https://www.` variants 301-redirect to `https://freesslcert.net/`
 - HSTS enabled with preload (`max-age=31536000; includeSubDomains; preload`)

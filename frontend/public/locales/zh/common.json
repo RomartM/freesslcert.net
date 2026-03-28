@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "首页",
+    "about": "关于",
+    "blog": "博客",
+    "faq": "常见问题",
+    "sslChecker": "SSL 检测",
+    "sslVsTls": "SSL 与 TLS",
+    "guides": "指南",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "nginxGuide": "Nginx 指南",
+    "apacheGuide": "Apache 指南",
+    "wordpressGuide": "WordPress 指南",
+    "nodejsGuide": "Node.js 指南"
+  },
+  "footer": {
+    "copyright": "© {{year}} freesslcert.net · 技术支持：",
+    "letsEncrypt": "Let's Encrypt"
+  },
+  "hero": {
+    "title": "免费 SSL 证书",
+    "subtitle": "由 Let's Encrypt 提供支持。无需注册。完全免费。",
+    "description": "在几秒钟内为您的网站生成免费的 SSL/TLS 证书。"
+  },
+  "cta": {
+    "generateCertificate": "生成证书",
+    "startOver": "重新开始",
+    "learnMore": "了解更多",
+    "readMore": "阅读更多",
+    "viewAll": "查看全部",
+    "backToHome": "返回首页",
+    "checkSsl": "检测 SSL",
+    "renewNow": "立即续期",
+    "downloadCertificate": "下载证书"
+  },
+  "wizard": {
+    "domainRequired": "域名不能为空",
+    "invalidDomain": "请输入有效的域名（例如：example.com）",
+    "generating": "生成中...",
+    "generate": "生成",
+    "certificateIssued": "证书已签发",
+    "certificateReady": "您的 SSL 证书已准备好。请下载以下文件。",
+    "expiryReminderSet": "到期提醒已设置",
+    "notifyMe": "在证书到期前通知我",
+    "notifyDescription": "我们将在证书到期前 14 天和 7 天发送提醒",
+    "subscribe": "订阅",
+    "generateAnother": "生成另一张证书",
+    "enterDomain": "输入您的域名",
+    "domainPlaceholder": "example.com",
+    "singleDomain": "单域名",
+    "wildcard": "通配符",
+    "multiDomain": "多域名",
+    "verifyOwnership": "验证所有权",
+    "downloadFiles": "下载文件"
+  },
+  "sslChecker": {
+    "title": "免费 SSL 证书检测工具",
+    "description": "输入域名以检查其 SSL 证书状态、到期日期、颁发机构和配置信息。",
+    "checking": "检测中...",
+    "valid": "有效",
+    "expired": "已过期",
+    "invalid": "无效",
+    "daysUntilExpiry": "距到期天数",
+    "issuer": "颁发机构",
+    "protocol": "协议",
+    "validFrom": "生效日期",
+    "validUntil": "到期日期",
+    "signatureAlgorithm": "签名算法",
+    "commonName": "通用名称",
+    "serialNumber": "序列号",
+    "subjectAltNames": "主题备用名称",
+    "certificateChain": "证书链",
+    "certificateDetails": "证书详情",
+    "generateNewCert": "生成新的免费 SSL 证书"
+  },
+  "meta": {
+    "homeTitle": "免费 SSL 证书生成器 | freesslcert.net",
+    "homeDescription": "通过 Let's Encrypt 在 60 秒内生成免费 SSL 证书。无需注册。支持单域名、通配符及多域名。",
+    "aboutTitle": "关于 | freesslcert.net",
+    "faqTitle": "常见问题 | freesslcert.net",
+    "blogTitle": "SSL 证书博客 | freesslcert.net",
+    "sslCheckerTitle": "免费 SSL 证书检测工具 | freesslcert.net",
+    "privacyTitle": "隐私政策 | freesslcert.net",
+    "termsTitle": "服务条款 | freesslcert.net"
+  },
+  "language": {
+    "en": "English",
+    "es": "Español",
+    "zh": "中文",
+    "pt": "Português",
+    "fr": "Français",
+    "de": "Deutsch",
+    "hi": "हिन्दी",
+    "ar": "العربية",
+    "bn": "বাংলা",
+    "ru": "Русский",
+    "ur": "اردو",
+    "ja": "日本語",
+    "th": "ไทย",
+    "vi": "Tiếng Việt",
+    "ko": "한국어"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "选择语言"
+  },
+  "notFound": {
+    "title": "页面未找到",
+    "description": "您访问的页面不存在。",
+    "goHome": "返回首页"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "发生了错误",
+    "tryAgain": "重试",
+    "close": "关闭",
+    "noDataStored": "不存储任何数据",
+    "freeForever": "永久免费",
+    "poweredByLetsEncrypt": "由 Let's Encrypt 提供支持",
+    "sixtySeconds": "60 秒",
+    "noSignup": "无需注册"
+  }
+}

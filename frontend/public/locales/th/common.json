@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "หน้าแรก",
+    "about": "เกี่ยวกับเรา",
+    "blog": "บล็อก",
+    "faq": "คำถามที่พบบ่อย",
+    "sslChecker": "ตรวจสอบ SSL",
+    "sslVsTls": "SSL กับ TLS",
+    "guides": "คู่มือ",
+    "privacy": "นโยบายความเป็นส่วนตัว",
+    "terms": "ข้อกำหนด",
+    "nginxGuide": "คู่มือ Nginx",
+    "apacheGuide": "คู่มือ Apache",
+    "wordpressGuide": "คู่มือ WordPress",
+    "nodejsGuide": "คู่มือ Node.js"
+  },
+  "footer": {
+    "copyright": "© {{year}} freesslcert.net · ขับเคลื่อนโดย",
+    "letsEncrypt": "Let's Encrypt"
+  },
+  "hero": {
+    "title": "ใบรับรอง SSL ฟรี",
+    "subtitle": "ขับเคลื่อนโดย Let's Encrypt ไม่ต้องสมัครสมาชิก ไม่มีค่าใช้จ่าย",
+    "description": "สร้างใบรับรอง SSL/TLS ฟรีสำหรับเว็บไซต์ของคุณในไม่กี่วินาที"
+  },
+  "cta": {
+    "generateCertificate": "สร้างใบรับรอง",
+    "startOver": "เริ่มใหม่",
+    "learnMore": "เรียนรู้เพิ่มเติม",
+    "readMore": "อ่านเพิ่มเติม",
+    "viewAll": "ดูทั้งหมด",
+    "backToHome": "กลับสู่หน้าแรก",
+    "checkSsl": "ตรวจสอบ SSL",
+    "renewNow": "ต่ออายุตอนนี้",
+    "downloadCertificate": "ดาวน์โหลดใบรับรอง"
+  },
+  "wizard": {
+    "domainRequired": "กรุณากรอกโดเมน",
+    "invalidDomain": "กรอกโดเมนที่ถูกต้อง (เช่น example.com)",
+    "generating": "กำลังสร้าง...",
+    "generate": "สร้าง",
+    "certificateIssued": "ออกใบรับรองแล้ว",
+    "certificateReady": "ใบรับรอง SSL ของคุณพร้อมแล้ว ดาวน์โหลดไฟล์ด้านล่าง",
+    "expiryReminderSet": "ตั้งการแจ้งเตือนวันหมดอายุแล้ว",
+    "notifyMe": "แจ้งเตือนฉันก่อนใบรับรองนี้หมดอายุ",
+    "notifyDescription": "เราจะส่งการแจ้งเตือน 14 และ 7 วันก่อนใบรับรองของคุณหมดอายุ",
+    "subscribe": "สมัครรับข้อมูล",
+    "generateAnother": "สร้างใบรับรองอื่น",
+    "enterDomain": "กรอกโดเมนของคุณ",
+    "domainPlaceholder": "example.com",
+    "singleDomain": "โดเมนเดียว",
+    "wildcard": "วาย wildcard",
+    "multiDomain": "หลายโดเมน",
+    "verifyOwnership": "ยืนยันความเป็นเจ้าของ",
+    "downloadFiles": "ดาวน์โหลดไฟล์"
+  },
+  "sslChecker": {
+    "title": "เครื่องมือตรวจสอบใบรับรอง SSL ฟรี",
+    "description": "กรอกชื่อโดเมนเพื่อตรวจสอบสถานะใบรับรอง SSL วันหมดอายุ ผู้ออกใบรับรอง และการตั้งค่า",
+    "checking": "กำลังตรวจสอบ...",
+    "valid": "ใช้งานได้",
+    "expired": "หมดอายุ",
+    "invalid": "ไม่ถูกต้อง",
+    "daysUntilExpiry": "วันที่เหลือก่อนหมดอายุ",
+    "issuer": "ผู้ออกใบรับรอง",
+    "protocol": "โปรโตคอล",
+    "validFrom": "ใช้งานได้ตั้งแต่",
+    "validUntil": "ใช้งานได้ถึง",
+    "signatureAlgorithm": "อัลกอริทึมลายเซ็น",
+    "commonName": "ชื่อสามัญ",
+    "serialNumber": "หมายเลขซีเรียล",
+    "subjectAltNames": "ชื่อทางเลือกของ Subject",
+    "certificateChain": "ห่วงโซ่ใบรับรอง",
+    "certificateDetails": "รายละเอียดใบรับรอง",
+    "generateNewCert": "สร้างใบรับรอง SSL ฟรีใบใหม่"
+  },
+  "meta": {
+    "homeTitle": "เครื่องมือสร้างใบรับรอง SSL ฟรี | freesslcert.net",
+    "homeDescription": "สร้างใบรับรอง SSL ฟรีด้วย Let's Encrypt ใน 60 วินาที ไม่ต้องสมัครสมาชิก รองรับโดเมนเดียว wildcard และหลายโดเมน",
+    "aboutTitle": "เกี่ยวกับเรา | freesslcert.net",
+    "faqTitle": "คำถามที่พบบ่อย | freesslcert.net",
+    "blogTitle": "บล็อกใบรับรอง SSL | freesslcert.net",
+    "sslCheckerTitle": "เครื่องมือตรวจสอบใบรับรอง SSL ฟรี | freesslcert.net",
+    "privacyTitle": "นโยบายความเป็นส่วนตัว | freesslcert.net",
+    "termsTitle": "ข้อกำหนดในการให้บริการ | freesslcert.net"
+  },
+  "language": {
+    "en": "English",
+    "es": "Español",
+    "zh": "中文",
+    "pt": "Português",
+    "fr": "Français",
+    "de": "Deutsch",
+    "hi": "हिन्दी",
+    "ar": "العربية",
+    "bn": "বাংলা",
+    "ru": "Русский",
+    "ur": "اردو",
+    "ja": "日本語",
+    "th": "ไทย",
+    "vi": "Tiếng Việt",
+    "ko": "한국어"
+  },
+  "languageSwitcher": {
+    "selectLanguage": "เลือกภาษา"
+  },
+  "notFound": {
+    "title": "ไม่พบหน้าที่ต้องการ",
+    "description": "หน้าที่คุณกำลังมองหาไม่มีอยู่",
+    "goHome": "ไปยังหน้าแรก"
+  },
+  "common": {
+    "loading": "กำลังโหลด...",
+    "error": "เกิดข้อผิดพลาด",
+    "tryAgain": "ลองอีกครั้ง",
+    "close": "ปิด",
+    "noDataStored": "ไม่มีการจัดเก็บข้อมูล",
+    "freeForever": "ฟรีตลอดไป",
+    "poweredByLetsEncrypt": "ขับเคลื่อนโดย Let's Encrypt",
+    "sixtySeconds": "60 วินาที",
+    "noSignup": "ไม่ต้องสมัครสมาชิก"
+  }
+}
