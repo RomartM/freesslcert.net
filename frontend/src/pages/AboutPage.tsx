@@ -182,6 +182,24 @@ export function AboutPage() {
               to help you through the installation process.
             </li>
           </ol>
+          <p className="mt-3">
+            Want to learn more about the technology behind SSL certificates?
+            Read our article on{" "}
+            <Link
+              to="/blog/lets-encrypt-guide"
+              className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+            >
+              how Let&#39;s Encrypt works
+            </Link>{" "}
+            or explore{" "}
+            <Link
+              to="/blog/why-https-matters-2026"
+              className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+            >
+              why HTTPS matters in 2026
+            </Link>
+            .
+          </p>
         </section>
 
         <section>
@@ -238,7 +256,15 @@ export function AboutPage() {
           </h2>
           <p className="mb-3">
             Ready to secure your website with a free SSL certificate? Head to
-            our homepage to generate your certificate in minutes.
+            our homepage to generate your certificate in minutes. Or visit our{" "}
+            <Link
+              to="/blog"
+              className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+            >
+              blog
+            </Link>{" "}
+            to learn more about SSL certificates, HTTPS security, and best
+            practices.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
@@ -246,6 +272,12 @@ export function AboutPage() {
               className="inline-flex items-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 transition-colors duration-150"
             >
               Generate a Certificate
+            </Link>
+            <Link
+              to="/blog"
+              className="inline-flex items-center rounded-lg border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition-colors duration-150"
+            >
+              Read the Blog
             </Link>
             <Link
               to="/faq"

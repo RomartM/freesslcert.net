@@ -19,6 +19,9 @@ export function Footer() {
           <Link to="/about" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
             About
           </Link>
+          <Link to="/blog" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
+            Blog
+          </Link>
           <Link to="/faq" className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors duration-150">
             FAQ
           </Link>

@@ -4,6 +4,27 @@ All notable changes to freesslcert.net will be documented in this file.
 
 ## [Unreleased] - 2026-03-29
 
+### Functional SSL Checker Tool
+- **`GET /api/ssl-check?domain={domain}`** - New backend API endpoint (Go) that connects to any domain on port 443, inspects the TLS certificate, and returns structured JSON with: CN, SANs, issuer, validity dates, days until expiry, protocol version, signature algorithm, certificate chain, and validity status
+- **SSRF protection** - Blocks localhost, .local, .internal, private IP ranges; validates domain format; rejects bare IPs
+- **SSL Checker UI** - Fully functional frontend with domain input, loading skeleton, color-coded results display (valid/warning/expired), certificate details table, SAN tags, chain visualization, and CTA for expired certs
+
+### Blog Section
+- **`/blog`** - Blog index page with responsive card grid layout
+- **`/blog/why-https-matters-2026`** - "Why HTTPS Matters in 2026: Security, SEO, and Trust" (~1200 words)
+- **`/blog/lets-encrypt-guide`** - "Let's Encrypt Explained: How Free SSL Certificates Work" (~1200 words)
+- **`/blog/ssl-certificate-types-explained`** - "SSL Certificate Types Explained: DV, OV, EV" (~1200 words)
+- **Reusable `BlogPost` component** with Helmet meta tags, Article + BreadcrumbList JSON-LD, related posts, and CTA
+
+### Pre-rendering (SSG)
+- **14 routes pre-rendered at build time** - Each page now has its own HTML file with correct meta tags, structured data, and content skeleton served directly by Cloudflare Pages
+- **Post-build script** (`scripts/prerender.mjs`) generates route-specific HTML with page titles, descriptions, OG tags, and JSON-LD
+- **Massive SEO improvement** - Crawlers now receive fully formed HTML instead of generic SPA fallback
+
+### IndexNow Integration
+- **IndexNow key file** deployed for Bing, Yandex, Seznam instant indexing notifications
+- **Submission script** (`submit-indexnow.py`) for future URL submissions
+
 ### SEO & Visibility Overhaul
 
 #### New Content Pages

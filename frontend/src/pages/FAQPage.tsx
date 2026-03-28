@@ -32,7 +32,15 @@ const FAQ_ITEMS: FaqItem[] = [
         by malicious actors. Beyond security, SSL certificates are now essential
         for SEO rankings, as Google uses HTTPS as a ranking signal. Modern
         browsers also display &ldquo;Not Secure&rdquo; warnings for HTTP-only
-        sites, which can erode visitor trust and increase bounce rates.
+        sites, which can erode visitor trust and increase bounce rates. Read our
+        in-depth article on{" "}
+        <Link
+          to="/blog/why-https-matters-2026"
+          className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+        >
+          why HTTPS matters in 2026
+        </Link>{" "}
+        for a comprehensive overview.
       </p>
     ),
   },
@@ -98,7 +106,15 @@ const FAQ_ITEMS: FaqItem[] = [
           issues DV certificates through Let&#39;s Encrypt. For the vast
           majority of websites, DV certificates provide the same level of
           encryption as OV and EV. The encryption strength is identical; only the
-          level of identity verification differs.
+          level of identity verification differs. For a detailed comparison with
+          cost and feature tables, see our guide to{" "}
+          <Link
+            to="/blog/ssl-certificate-types-explained"
+            className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+          >
+            SSL certificate types explained
+          </Link>
+          .
         </p>
       </>
     ),
@@ -174,6 +190,14 @@ const FAQ_ITEMS: FaqItem[] = [
           return to freesslcert.net
         </Link>{" "}
         at any time to generate a new certificate for your domain at no cost.
+        Learn more about the reasoning behind 90-day lifetimes in our{" "}
+        <Link
+          to="/blog/lets-encrypt-guide"
+          className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+        >
+          Let&#39;s Encrypt guide
+        </Link>
+        .
       </p>
     ),
   },
@@ -200,7 +224,15 @@ const FAQ_ITEMS: FaqItem[] = [
           registrar, so for blog.example.com the registered domain is
           example.com. Subdomains do not count separately. These limits are
           generous for most use cases. If you encounter rate limits, wait for the
-          limit window to reset (usually one week).
+          limit window to reset (usually one week). For a complete breakdown, see
+          our{" "}
+          <Link
+            to="/blog/lets-encrypt-guide"
+            className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+          >
+            Let&#39;s Encrypt guide
+          </Link>
+          .
         </p>
       </>
     ),
@@ -251,7 +283,14 @@ const FAQ_ITEMS: FaqItem[] = [
         free and paid certificates lies in validation level (DV vs OV/EV),
         warranty coverage, and customer support. For most websites, blogs, and
         web applications, a free DV certificate provides all the security you
-        need.
+        need. See our{" "}
+        <Link
+          to="/blog/ssl-certificate-types-explained"
+          className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+        >
+          SSL certificate types comparison
+        </Link>{" "}
+        for more details.
       </p>
     ),
   },
@@ -400,7 +439,15 @@ const FAQ_ITEMS: FaqItem[] = [
           certificate) alongside your server certificate. You must install both
           on your server. If you only install the leaf certificate without the
           intermediate, some browsers and devices will show security warnings
-          because they cannot verify the full chain of trust.
+          because they cannot verify the full chain of trust. Learn more about
+          the ISRG Root X1 trust chain in our{" "}
+          <Link
+            to="/blog/lets-encrypt-guide"
+            className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+          >
+            Let&#39;s Encrypt guide
+          </Link>
+          .
         </p>
       </>
     ),
@@ -749,7 +796,7 @@ export function FAQPage() {
             >
               generate your certificate now
             </Link>{" "}
-            and follow the guided process, or check our installation guides for{" "}
+            and follow the guided process, check our installation guides for{" "}
             <Link
               to="/guides/nginx-ssl"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
@@ -763,7 +810,14 @@ export function FAQPage() {
             >
               Apache
             </Link>
-            .
+            , or read our{" "}
+            <Link
+              to="/blog"
+              className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+            >
+              blog
+            </Link>{" "}
+            for in-depth articles on SSL certificates and HTTPS security.
           </p>
           <Link
             to="/"

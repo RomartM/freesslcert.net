@@ -134,6 +134,7 @@ func run(logger *slog.Logger) error {
 	// Initialise handlers.
 	certHandler := handler.NewCertificateHandler(acmeSvc, certRepo, notifRepo, cfg.CORSAllowedOrigins)
 	healthHandler := handler.NewHealthHandler()
+	sslCheckHandler := handler.NewSSLCheckHandler()
 
 	// Create rate limiter and start its background cleanup.
 	rateLimiter := middleware.NewRateLimiter(cfg)
@@ -147,7 +148,7 @@ func run(logger *slog.Logger) error {
 	engine.Use(gin.Recovery())
 	engine.Use(gin.Logger())
 
-	router.Setup(engine, cfg, certHandler, healthHandler, rateLimiter)
+	router.Setup(engine, cfg, certHandler, healthHandler, sslCheckHandler, rateLimiter)
 
 	// Start HTTP server.
 	srv := &http.Server{

@@ -14,6 +14,7 @@ func Setup(
 	cfg *config.Config,
 	certHandler *handler.CertificateHandler,
 	healthHandler *handler.HealthHandler,
+	sslCheckHandler *handler.SSLCheckHandler,
 	rateLimiter *middleware.RateLimiter,
 ) {
 	// Global middleware.
@@ -36,6 +37,9 @@ func Setup(
 
 	// Apply rate limiting to all subsequent routes.
 	engine.Use(rateLimiter.Middleware())
+
+	// SSL certificate check endpoint (rate limited).
+	engine.GET("/api/ssl-check", sslCheckHandler.Check)
 
 	// API v1.
 	v1 := engine.Group("/api/v1")

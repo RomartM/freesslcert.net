@@ -50,6 +50,26 @@ const SSLCheckerPage = lazy(() =>
     default: m.SSLCheckerPage,
   }))
 );
+const BlogIndexPage = lazy(() =>
+  import("@/pages/BlogIndexPage").then((m) => ({
+    default: m.BlogIndexPage,
+  }))
+);
+const WhyHTTPSMatters = lazy(() =>
+  import("@/pages/blog/WhyHTTPSMatters").then((m) => ({
+    default: m.WhyHTTPSMatters,
+  }))
+);
+const LetsEncryptGuide = lazy(() =>
+  import("@/pages/blog/LetsEncryptGuide").then((m) => ({
+    default: m.LetsEncryptGuide,
+  }))
+);
+const SSLCertificateTypes = lazy(() =>
+  import("@/pages/blog/SSLCertificateTypes").then((m) => ({
+    default: m.SSLCertificateTypes,
+  }))
+);
 
 function App() {
   return (
@@ -77,6 +97,19 @@ function App() {
               />
               <Route path="/ssl-vs-tls" element={<SSLvsTLSPage />} />
               <Route path="/ssl-checker" element={<SSLCheckerPage />} />
+              <Route path="/blog" element={<BlogIndexPage />} />
+              <Route
+                path="/blog/why-https-matters-2026"
+                element={<WhyHTTPSMatters />}
+              />
+              <Route
+                path="/blog/lets-encrypt-guide"
+                element={<LetsEncryptGuide />}
+              />
+              <Route
+                path="/blog/ssl-certificate-types-explained"
+                element={<SSLCertificateTypes />}
+              />
               <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/terms" element={<TermsPage />} />
               <Route path="*" element={<NotFoundPage />} />

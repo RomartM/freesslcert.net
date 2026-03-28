@@ -38,6 +38,10 @@ backend/            # Go API server
 | `/guides/nodejs-ssl` | NodejsSSLGuidePage | 0.8 | Dynamic (Helmet) | HowTo, BreadcrumbList |
 | `/ssl-vs-tls` | SSLvsTLSPage | 0.7 | Dynamic (Helmet) | Article, BreadcrumbList |
 | `/ssl-checker` | SSLCheckerPage | 0.9 | Dynamic (Helmet) | WebApplication, BreadcrumbList |
+| `/blog` | BlogIndexPage | 0.8 | Dynamic (Helmet) | Blog, BreadcrumbList |
+| `/blog/why-https-matters-2026` | WhyHTTPSMatters | 0.7 | Dynamic (Helmet) | Article, BreadcrumbList |
+| `/blog/lets-encrypt-guide` | LetsEncryptGuide | 0.7 | Dynamic (Helmet) | Article, BreadcrumbList |
+| `/blog/ssl-certificate-types-explained` | SSLCertificateTypes | 0.7 | Dynamic (Helmet) | Article, BreadcrumbList |
 | `/privacy` | PrivacyPage | 0.3 | Dynamic (Helmet) | BreadcrumbList |
 | `/terms` | TermsPage | 0.3 | Dynamic (Helmet) | BreadcrumbList |
 | `*` | NotFoundPage | - | noindex,follow | None |
@@ -48,6 +52,10 @@ backend/            # Go API server
 - **`StructuredData` component** (`src/components/seo/StructuredData.tsx`) - Reusable JSON-LD renderer
 - **Static fallback content** in `index.html` for crawlers before React hydrates (includes hero, features, FAQ, how-it-works)
 - **JSON-LD schemas** in `index.html` head: WebApplication, FAQPage (11 Q&As), HowTo (3 steps), BreadcrumbList, Organization
+- **Pre-rendering** - `scripts/prerender.mjs` generates 14 route-specific HTML files at build time with correct meta tags, OG tags, structured data, and content. Served directly by Cloudflare Pages before SPA fallback
+- **BlogPost component** (`src/components/blog/BlogPost.tsx`) - Reusable blog layout with Helmet, Article JSON-LD, breadcrumbs, related posts, CTA
+- **Blog data** (`src/data/blogPosts.ts`) - Blog post metadata array with helper functions
+- **IndexNow** - Key file at `/public/{key}.txt` for Bing/Yandex/Seznam instant indexing; submission script at `submit-indexnow.py`
 
 ### Redirects & Canonicals
 - All `http://`, `http://www.`, `https://www.` variants 301-redirect to `https://freesslcert.net/`
@@ -56,7 +64,7 @@ backend/            # Go API server
 - 404 pages are `noindex, follow`
 
 ### Sitemap & Robots
-- `sitemap.xml` at `/public/sitemap.xml` - 7 URLs with priorities
+- `sitemap.xml` at `/public/sitemap.xml` - 15 URLs with priorities
 - `robots.txt` allows all crawlers, disallows `/api/`, references sitemap
 
 ### Performance
