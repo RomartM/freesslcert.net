@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { StructuredData } from "@/components/seo/StructuredData";
 import type { JsonLdSchema } from "@/components/seo/StructuredData";
+import { useCanonicalUrl, useHreflangUrls } from "@/hooks/useLocaleUrl";
 
 const articleSchema: JsonLdSchema = {
   "@context": "https://schema.org",
@@ -45,6 +46,9 @@ const breadcrumbSchema: JsonLdSchema = {
 };
 
 export function SSLvsTLSPage() {
+  const canonicalUrl = useCanonicalUrl("/ssl-vs-tls");
+  const hreflangUrls = useHreflangUrls("/ssl-vs-tls");
+
   return (
     <div className="max-w-2xl mx-auto">
       <Helmet>
@@ -53,7 +57,11 @@ export function SSLvsTLSPage() {
           name="description"
           content="Learn the differences between SSL and TLS, their version history, why we still say 'SSL' when we mean TLS, and which protocol versions are secure. Includes a comparison table of all SSL/TLS versions."
         />
-        <link rel="canonical" href="https://freesslcert.net/ssl-vs-tls" />
+        <link rel="canonical" href={canonicalUrl} />
+
+        {hreflangUrls.map(({ hreflang, href }) => (
+          <link key={hreflang} rel="alternate" hrefLang={hreflang} href={href} />
+        ))}
       </Helmet>
       <StructuredData data={[articleSchema, breadcrumbSchema]} />
 

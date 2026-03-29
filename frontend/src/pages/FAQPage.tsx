@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { StructuredData } from "@/components/seo/StructuredData";
 import type { JsonLdSchema } from "@/components/seo/StructuredData";
+import { useCanonicalUrl, useHreflangUrls } from "@/hooks/useLocaleUrl";
 
 interface FaqItem {
   question: string;
@@ -737,6 +738,9 @@ const faqSchema: JsonLdSchema = {
 };
 
 export function FAQPage() {
+  const canonicalUrl = useCanonicalUrl("/faq");
+  const hreflangUrls = useHreflangUrls("/faq");
+
   return (
     <div className="max-w-2xl mx-auto">
       <Helmet>
@@ -747,7 +751,11 @@ export function FAQPage() {
           name="description"
           content="Answers to common questions about SSL/TLS certificates, Let's Encrypt, wildcard certs, SAN certificates, HSTS, certificate chains, renewal, and more."
         />
-        <link rel="canonical" href="https://freesslcert.net/faq" />
+        <link rel="canonical" href={canonicalUrl} />
+
+        {hreflangUrls.map(({ hreflang, href }) => (
+          <link key={hreflang} rel="alternate" hrefLang={hreflang} href={href} />
+        ))}
       </Helmet>
       <StructuredData data={faqSchema} />
 

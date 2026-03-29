@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { StructuredData } from "@/components/seo/StructuredData";
 import type { JsonLdSchema } from "@/components/seo/StructuredData";
 import { getRelatedPosts } from "@/data/blogPosts";
+import { useCanonicalUrl, useHreflangUrls } from "@/hooks/useLocaleUrl";
 
 export interface BlogPostProps {
   title: string;
@@ -34,7 +35,9 @@ export function BlogPost({
   children,
 }: BlogPostProps) {
   const relatedPosts = getRelatedPosts(slug);
-  const canonicalUrl = `https://freesslcert.net/blog/${slug}`;
+  const pagePath = `/blog/${slug}`;
+  const canonicalUrl = useCanonicalUrl(pagePath);
+  const hreflangUrls = useHreflangUrls(pagePath);
 
   const articleSchema: JsonLdSchema = {
     "@context": "https://schema.org",
@@ -98,6 +101,10 @@ export function BlogPost({
         <meta property="og:type" content="article" />
         <meta property="article:published_time" content={date} />
         <meta property="article:modified_time" content={date} />
+
+        {hreflangUrls.map(({ hreflang, href }) => (
+          <link key={hreflang} rel="alternate" hrefLang={hreflang} href={href} />
+        ))}
       </Helmet>
       <StructuredData data={[articleSchema, breadcrumbSchema]} />
 

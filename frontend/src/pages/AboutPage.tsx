@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { StructuredData } from "@/components/seo/StructuredData";
 import type { JsonLdSchema } from "@/components/seo/StructuredData";
+import { useCanonicalUrl, useHreflangUrls } from "@/hooks/useLocaleUrl";
 
 const aboutSchema: JsonLdSchema = {
   "@context": "https://schema.org",
@@ -26,6 +27,9 @@ const aboutSchema: JsonLdSchema = {
 };
 
 export function AboutPage() {
+  const canonicalUrl = useCanonicalUrl("/about");
+  const hreflangUrls = useHreflangUrls("/about");
+
   return (
     <div className="max-w-2xl mx-auto">
       <Helmet>
@@ -34,7 +38,11 @@ export function AboutPage() {
           name="description"
           content="Learn how freesslcert.net provides free SSL/TLS certificates through Let's Encrypt. Browser-based ACME client, no server-side key storage, no signup required."
         />
-        <link rel="canonical" href="https://freesslcert.net/about" />
+        <link rel="canonical" href={canonicalUrl} />
+
+        {hreflangUrls.map(({ hreflang, href }) => (
+          <link key={hreflang} rel="alternate" hrefLang={hreflang} href={href} />
+        ))}
       </Helmet>
       <StructuredData data={aboutSchema} />
 

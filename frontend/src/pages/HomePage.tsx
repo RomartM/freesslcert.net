@@ -3,8 +3,12 @@ import { WizardContainer } from "@/components/wizard/WizardContainer";
 import { TrustSection } from "@/components/marketing/TrustSection";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
 import { FaqSection } from "@/components/marketing/FaqSection";
+import { useCanonicalUrl, useHreflangUrls } from "@/hooks/useLocaleUrl";
 
 export function HomePage() {
+  const canonicalUrl = useCanonicalUrl("/");
+  const hreflangUrls = useHreflangUrls("/");
+
   return (
     <>
       <Helmet>
@@ -13,10 +17,10 @@ export function HomePage() {
           name="description"
           content="Generate free SSL certificates powered by Let's Encrypt in 60 seconds. No signup required. Single, wildcard & multi-domain support."
         />
-        <link rel="canonical" href="https://freesslcert.net/" />
+        <link rel="canonical" href={canonicalUrl} />
 
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://freesslcert.net/" />
+        <meta property="og:url" content={canonicalUrl} />
         <meta
           property="og:title"
           content="Free SSL Certificate Generator | freesslcert.net"
@@ -31,7 +35,7 @@ export function HomePage() {
         />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://freesslcert.net/" />
+        <meta name="twitter:url" content={canonicalUrl} />
         <meta
           name="twitter:title"
           content="Free SSL Certificate Generator | freesslcert.net"
@@ -44,6 +48,10 @@ export function HomePage() {
           name="twitter:image"
           content="https://freesslcert.net/og-image.svg"
         />
+
+        {hreflangUrls.map(({ hreflang, href }) => (
+          <link key={hreflang} rel="alternate" hrefLang={hreflang} href={href} />
+        ))}
       </Helmet>
 
       <div className="text-center mb-10">

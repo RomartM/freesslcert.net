@@ -29,6 +29,7 @@ import type {
   SSLCheckStatus,
   SSLChainEntry,
 } from "@/types/ssl-check";
+import { useCanonicalUrl, useHreflangUrls } from "@/hooks/useLocaleUrl";
 
 const webAppSchema: JsonLdSchema = {
   "@context": "https://schema.org",
@@ -623,6 +624,9 @@ export function SSLCheckerPage() {
     [domain]
   );
 
+  const canonicalUrl = useCanonicalUrl("/ssl-checker");
+  const hreflangUrls = useHreflangUrls("/ssl-checker");
+
   return (
     <div className="max-w-2xl mx-auto">
       <Helmet>
@@ -634,7 +638,11 @@ export function SSLCheckerPage() {
           name="description"
           content="Check any website's SSL certificate status for free. Verify expiration dates, certificate chain, issuer details, and identify common SSL problems like mixed content and hostname mismatches."
         />
-        <link rel="canonical" href="https://freesslcert.net/ssl-checker" />
+        <link rel="canonical" href={canonicalUrl} />
+
+        {hreflangUrls.map(({ hreflang, href }) => (
+          <link key={hreflang} rel="alternate" hrefLang={hreflang} href={href} />
+        ))}
       </Helmet>
       <StructuredData data={[webAppSchema, breadcrumbSchema]} />
 

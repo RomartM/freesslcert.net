@@ -2,8 +2,12 @@ import { Helmet } from "react-helmet-async";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { StructuredData } from "@/components/seo/StructuredData";
+import { useCanonicalUrl, useHreflangUrls } from "@/hooks/useLocaleUrl";
 
 export function TermsPage() {
+  const canonicalUrl = useCanonicalUrl("/terms");
+  const hreflangUrls = useHreflangUrls("/terms");
+
   return (
     <div className="max-w-2xl mx-auto">
       <Helmet>
@@ -12,10 +16,10 @@ export function TermsPage() {
           name="description"
           content="Terms of service for freesslcert.net free SSL certificate generator. Powered by Let's Encrypt ACME protocol."
         />
-        <link rel="canonical" href="https://freesslcert.net/terms" />
+        <link rel="canonical" href={canonicalUrl} />
 
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://freesslcert.net/terms" />
+        <meta property="og:url" content={canonicalUrl} />
         <meta
           property="og:title"
           content="Terms of Service | freesslcert.net"
@@ -30,7 +34,7 @@ export function TermsPage() {
         />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://freesslcert.net/terms" />
+        <meta name="twitter:url" content={canonicalUrl} />
         <meta
           name="twitter:title"
           content="Terms of Service | freesslcert.net"
@@ -43,6 +47,10 @@ export function TermsPage() {
           name="twitter:image"
           content="https://freesslcert.net/og-image.svg"
         />
+
+        {hreflangUrls.map(({ hreflang, href }) => (
+          <link key={hreflang} rel="alternate" hrefLang={hreflang} href={href} />
+        ))}
       </Helmet>
 
       <StructuredData

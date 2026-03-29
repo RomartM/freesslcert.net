@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { StructuredData } from "@/components/seo/StructuredData";
 import type { JsonLdSchema } from "@/components/seo/StructuredData";
+import { useCanonicalUrl, useHreflangUrls } from "@/hooks/useLocaleUrl";
 
 const howToSchema: JsonLdSchema = {
   "@context": "https://schema.org",
@@ -97,6 +98,9 @@ function CodeBlock({ children }: { children: string }) {
 }
 
 export function WordPressSSLGuidePage() {
+  const canonicalUrl = useCanonicalUrl("/guides/wordpress-ssl");
+  const hreflangUrls = useHreflangUrls("/guides/wordpress-ssl");
+
   return (
     <div className="max-w-2xl mx-auto">
       <Helmet>
@@ -108,10 +112,11 @@ export function WordPressSSLGuidePage() {
           name="description"
           content="Complete guide to installing a free SSL certificate on WordPress. Covers cPanel installation, updating WordPress URLs, fixing mixed content, and forcing HTTPS redirects."
         />
-        <link
-          rel="canonical"
-          href="https://freesslcert.net/guides/wordpress-ssl"
-        />
+        <link rel="canonical" href={canonicalUrl} />
+
+        {hreflangUrls.map(({ hreflang, href }) => (
+          <link key={hreflang} rel="alternate" hrefLang={hreflang} href={href} />
+        ))}
       </Helmet>
       <StructuredData data={[howToSchema, breadcrumbSchema]} />
 

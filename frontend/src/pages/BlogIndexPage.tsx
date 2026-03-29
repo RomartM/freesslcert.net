@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { StructuredData } from "@/components/seo/StructuredData";
 import type { JsonLdSchema } from "@/components/seo/StructuredData";
 import { BLOG_POSTS } from "@/data/blogPosts";
+import { useCanonicalUrl, useHreflangUrls } from "@/hooks/useLocaleUrl";
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString + "T00:00:00");
@@ -59,6 +60,9 @@ const breadcrumbSchema: JsonLdSchema = {
 };
 
 export function BlogIndexPage() {
+  const canonicalUrl = useCanonicalUrl("/blog");
+  const hreflangUrls = useHreflangUrls("/blog");
+
   return (
     <div className="max-w-2xl mx-auto">
       <Helmet>
@@ -71,7 +75,11 @@ export function BlogIndexPage() {
           name="keywords"
           content="SSL certificate blog, HTTPS security blog, free SSL guides, Let's Encrypt tutorials, website security"
         />
-        <link rel="canonical" href="https://freesslcert.net/blog" />
+        <link rel="canonical" href={canonicalUrl} />
+
+        {hreflangUrls.map(({ hreflang, href }) => (
+          <link key={hreflang} rel="alternate" hrefLang={hreflang} href={href} />
+        ))}
       </Helmet>
       <StructuredData data={[blogSchema, breadcrumbSchema]} />
 

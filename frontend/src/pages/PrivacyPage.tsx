@@ -2,8 +2,12 @@ import { Helmet } from "react-helmet-async";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { StructuredData } from "@/components/seo/StructuredData";
+import { useCanonicalUrl, useHreflangUrls } from "@/hooks/useLocaleUrl";
 
 export function PrivacyPage() {
+  const canonicalUrl = useCanonicalUrl("/privacy");
+  const hreflangUrls = useHreflangUrls("/privacy");
+
   return (
     <div className="max-w-2xl mx-auto">
       <Helmet>
@@ -12,10 +16,10 @@ export function PrivacyPage() {
           name="description"
           content="Privacy policy for freesslcert.net. Learn how we handle your data when generating free SSL certificates. No data stored, no signup required."
         />
-        <link rel="canonical" href="https://freesslcert.net/privacy" />
+        <link rel="canonical" href={canonicalUrl} />
 
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://freesslcert.net/privacy" />
+        <meta property="og:url" content={canonicalUrl} />
         <meta
           property="og:title"
           content="Privacy Policy | freesslcert.net"
@@ -30,7 +34,7 @@ export function PrivacyPage() {
         />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://freesslcert.net/privacy" />
+        <meta name="twitter:url" content={canonicalUrl} />
         <meta
           name="twitter:title"
           content="Privacy Policy | freesslcert.net"
@@ -43,6 +47,10 @@ export function PrivacyPage() {
           name="twitter:image"
           content="https://freesslcert.net/og-image.svg"
         />
+
+        {hreflangUrls.map(({ hreflang, href }) => (
+          <link key={hreflang} rel="alternate" hrefLang={hreflang} href={href} />
+        ))}
       </Helmet>
 
       <StructuredData

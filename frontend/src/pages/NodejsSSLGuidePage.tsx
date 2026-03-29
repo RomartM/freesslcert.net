@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { StructuredData } from "@/components/seo/StructuredData";
 import type { JsonLdSchema } from "@/components/seo/StructuredData";
+import { useCanonicalUrl, useHreflangUrls } from "@/hooks/useLocaleUrl";
 
 const howToSchema: JsonLdSchema = {
   "@context": "https://schema.org",
@@ -91,6 +92,9 @@ function CodeBlock({ children }: { children: string }) {
 }
 
 export function NodejsSSLGuidePage() {
+  const canonicalUrl = useCanonicalUrl("/guides/nodejs-ssl");
+  const hreflangUrls = useHreflangUrls("/guides/nodejs-ssl");
+
   return (
     <div className="max-w-2xl mx-auto">
       <Helmet>
@@ -101,10 +105,11 @@ export function NodejsSSLGuidePage() {
           name="description"
           content="Complete guide to setting up a free SSL certificate with Node.js. Includes HTTPS server configuration, Express.js SSL setup, HTTP-to-HTTPS redirect, and certificate renewal."
         />
-        <link
-          rel="canonical"
-          href="https://freesslcert.net/guides/nodejs-ssl"
-        />
+        <link rel="canonical" href={canonicalUrl} />
+
+        {hreflangUrls.map(({ hreflang, href }) => (
+          <link key={hreflang} rel="alternate" hrefLang={hreflang} href={href} />
+        ))}
       </Helmet>
       <StructuredData data={[howToSchema, breadcrumbSchema]} />
 
