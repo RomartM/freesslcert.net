@@ -213,12 +213,15 @@ type orderState struct {
 
 // ACMEService orchestrates ACME certificate issuance via the lego library.
 type ACMEService struct {
-	user      *acmeUser
-	cfg       *config.Config
-	repo      repository.CertificateRepository
-	acmeRepo  repository.AcmeAccountRepository
-	logger    *slog.Logger
-	orders    sync.Map // map[orderID]*orderState
+	user     *acmeUser
+	cfg      *config.Config
+	repo     repository.CertificateRepository
+	acmeRepo repository.AcmeAccountRepository
+	logger   *slog.Logger
+	// region is a snapshot of cfg.Region captured at construction time. It
+	// is read by background goroutines without holding a reference to cfg.
+	region string
+	orders sync.Map // map[orderID]*orderState
 }
 
 // NewACMEService initialises the ACME client, registering a new account when
@@ -259,6 +262,7 @@ func NewACMEService(ctx context.Context, cfg *config.Config, repo repository.Cer
 		repo:     repo,
 		acmeRepo: acmeRepo,
 		logger:   logger,
+		region:   cfg.Region,
 	}, nil
 }
 
@@ -270,7 +274,13 @@ func NewACMEService(ctx context.Context, cfg *config.Config, repo repository.Cer
 // data directly to the database; on failure it sets the order status to failed.
 // There is no separate FinalizeCertificate step -- clients poll GET /orders/:id
 // until the status transitions to "issued" or "failed".
-func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequest) (*model.CertificateOrder, error) {
+//
+// The country parameter is populated from the Cloudflare CF-IPCountry header
+// by the HTTP handler and is stored in the initial "pending" domain_log row
+// for per-country usage metrics. It is intentionally not re-captured on the
+// subsequent "issued" / "failed" rows — a single pending row per request is
+// sufficient for the geographic breakdown.
+func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequest, country string) (*model.CertificateOrder, error) {
 	orderID := uuid.New().String()
 
 	privKey, err := generatePrivateKey(req.KeyType)
@@ -332,6 +342,26 @@ func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequ
 		return nil, fmt.Errorf("persist certificate order: %w", err)
 	}
 
+	// Log a "pending" domain_log row per domain as soon as the order is
+	// persisted. This row is the permanent record of the request and is
+	// retained indefinitely for usage metrics, even if the order later fails
+	// or the sensitive data is purged from certificate_orders.
+	for _, d := range order.Domains {
+		if logErr := s.repo.LogDomainEvent(ctx, repository.DomainLogEvent{
+			OrderID:         order.ID,
+			Domain:          d,
+			CertificateType: order.CertificateType,
+			KeyType:         order.KeyType,
+			Status:          model.StatusPending,
+			Country:         country,
+			Region:          s.region,
+		}); logErr != nil {
+			// Non-fatal: metrics are a nice-to-have; the order itself succeeded.
+			s.logger.Error("log domain event (pending) failed",
+				"order_id", order.ID, "domain", d, "error", logErr)
+		}
+	}
+
 	s.orders.Store(orderID, &orderState{
 		PrivateKey:   privKey,
 		Domains:      req.Domains,
@@ -358,6 +388,24 @@ func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequ
 		if obtainErr != nil {
 			s.logger.Error("certificate obtain failed", "order_id", orderID, "error", obtainErr)
 			_ = s.repo.UpdateStatus(bgCtx, orderID, model.StatusFailed)
+
+			// Record a "failed" row per domain so we can break down failures
+			// by reason for operational dashboards.
+			reason := classifyACMEError(obtainErr)
+			for _, d := range req.Domains {
+				if logErr := s.repo.LogDomainEvent(bgCtx, repository.DomainLogEvent{
+					OrderID:         orderID,
+					Domain:          d,
+					CertificateType: req.CertificateType,
+					KeyType:         req.KeyType,
+					Status:          model.StatusFailed,
+					FailureReason:   reason,
+					Region:          s.region,
+				}); logErr != nil {
+					s.logger.Error("log domain event (failed) failed",
+						"order_id", orderID, "domain", d, "error", logErr)
+				}
+			}
 			return
 		}
 
@@ -397,9 +445,22 @@ func (s *ACMEService) CreateOrder(ctx context.Context, req model.CreateOrderRequ
 			return
 		}
 
-		// Log successful domain issuance for permanent audit trail.
-		if err := s.repo.LogDomain(bgCtx, certOrder); err != nil {
-			s.logger.Error("log domain failed", "order_id", orderID, "error", err)
+		// Log a permanent "issued" row per domain. Country is not available
+		// in this goroutine — it was captured on the earlier pending row.
+		for _, d := range req.Domains {
+			if logErr := s.repo.LogDomainEvent(bgCtx, repository.DomainLogEvent{
+				OrderID:         orderID,
+				Domain:          d,
+				CertificateType: req.CertificateType,
+				KeyType:         req.KeyType,
+				Status:          model.StatusIssued,
+				IssuedAt:        &issueTime,
+				ExpiresAt:       &expiry,
+				Region:          s.region,
+			}); logErr != nil {
+				s.logger.Error("log domain event (issued) failed",
+					"order_id", orderID, "domain", d, "error", logErr)
+			}
 		}
 
 		s.logger.Info("certificate issued", "order_id", orderID, "domains", req.Domains)
@@ -449,6 +510,32 @@ done:
 	)
 
 	return order, nil
+}
+
+// classifyACMEError maps a lego/ACME error to a short stable reason code
+// that is stored verbatim in domain_log.failure_reason. The codes are
+// intended for dashboards and grouping, not for end-user display.
+func classifyACMEError(err error) string {
+	if err == nil {
+		return ""
+	}
+	msg := strings.ToLower(err.Error())
+	switch {
+	case strings.Contains(msg, "challenge") && strings.Contains(msg, "timeout"):
+		return "challenge_timeout"
+	case strings.Contains(msg, "challenge"), strings.Contains(msg, "timeout"):
+		return "challenge_timeout"
+	case strings.Contains(msg, "dns"):
+		return "dns_failed"
+	case strings.Contains(msg, "rate limit") || strings.Contains(msg, "ratelimit") || strings.Contains(msg, "too many"):
+		return "rate_limited"
+	case strings.Contains(msg, "server error") || strings.Contains(msg, "internal server"):
+		return "acme_server_error"
+	case strings.Contains(msg, "invalid") || strings.Contains(msg, "unable to resolve") || strings.Contains(msg, "no such host"):
+		return "invalid_domain"
+	default:
+		return "other"
+	}
 }
 
 // ValidateChallenge updates the challenge status for a given domain within an

@@ -39,7 +39,7 @@ export function SSLCertificateTypes() {
           DV certificates are typically issued within minutes, cost nothing
           from providers like{" "}
           <Link
-            to="/blog/lets-encrypt-guide"
+            to="/blog/lets-encrypt-guide/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Let&#39;s Encrypt
@@ -344,35 +344,35 @@ export function SSLCertificateTypes() {
           Once you have your certificate, check out our installation guides
           for{" "}
           <Link
-            to="/guides/nginx-ssl"
+            to="/guides/nginx-ssl/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Nginx
           </Link>
           ,{" "}
           <Link
-            to="/guides/apache-ssl"
+            to="/guides/apache-ssl/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Apache
           </Link>
           ,{" "}
           <Link
-            to="/guides/wordpress-ssl"
+            to="/guides/wordpress-ssl/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             WordPress
           </Link>
           , and{" "}
           <Link
-            to="/guides/nodejs-ssl"
+            to="/guides/nodejs-ssl/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Node.js
           </Link>{" "}
           to get your site running on HTTPS. And if you want to understand{" "}
           <Link
-            to="/blog/why-https-matters-2026"
+            to="/blog/why-https-matters-2026/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             why HTTPS matters

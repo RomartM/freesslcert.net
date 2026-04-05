@@ -1,5 +1,6 @@
 import { Globe, ShieldCheck, Download } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLocalePath } from "@/hooks/useLocalePath";
 
 const steps = [
   {
@@ -20,6 +21,8 @@ const steps = [
 ];
 
 export function HowItWorks() {
+  const localePath = useLocalePath();
+
   return (
     <section className="mt-16" aria-labelledby="how-it-works-heading">
       <h2
@@ -45,33 +48,50 @@ export function HowItWorks() {
       <p className="text-center mt-6 text-sm text-neutral-500">
         Need help installing your certificate? See our step-by-step guides for{" "}
         <Link
-          to="/guides/nginx-ssl"
+          to={localePath("/guides/nginx-ssl")}
           className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
         >
           Nginx
         </Link>
         ,{" "}
         <Link
-          to="/guides/apache-ssl"
+          to={localePath("/guides/apache-ssl")}
           className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
         >
           Apache
         </Link>
         ,{" "}
         <Link
-          to="/guides/wordpress-ssl"
+          to={localePath("/guides/wordpress-ssl")}
           className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
         >
           WordPress
         </Link>
         , and{" "}
         <Link
-          to="/guides/nodejs-ssl"
+          to={localePath("/guides/nodejs-ssl")}
           className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
         >
           Node.js
         </Link>
         .
+      </p>
+      <p className="text-center mt-3 text-sm text-neutral-500">
+        Already have a certificate installed? Use our{" "}
+        <Link
+          to={localePath("/ssl-checker")}
+          className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+        >
+          SSL Checker
+        </Link>{" "}
+        to verify it, or read{" "}
+        <Link
+          to={localePath("/ssl-vs-tls")}
+          className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
+        >
+          SSL vs TLS
+        </Link>{" "}
+        to understand the difference.
       </p>
     </section>
   );

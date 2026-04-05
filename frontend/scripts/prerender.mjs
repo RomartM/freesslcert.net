@@ -20,6 +20,23 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = join(__dirname, "..", "dist");
 const BASE_URL = "https://freesslcert.net";
 
+/**
+ * Ensures a path is canonicalized with a trailing slash.
+ * Root ("") and "/" are treated as the bare site root and returned as "/".
+ * All other paths get a trailing slash appended if missing.
+ */
+function ensureTrailingSlash(path) {
+  if (!path || path === "/") return "/";
+  return path.endsWith("/") ? path : path + "/";
+}
+
+/**
+ * Build a canonical URL for a given route path (e.g., "/about" -> "https://freesslcert.net/about/").
+ */
+function routeUrl(routePath) {
+  return BASE_URL + ensureTrailingSlash(routePath);
+}
+
 // ---------------------------------------------------------------------------
 // Route definitions: meta tags + body content for each pre-rendered page
 // ---------------------------------------------------------------------------
@@ -34,7 +51,7 @@ const ROUTES = [
     title: "About freesslcert.net - Free SSL Certificate Generator",
     description:
       "Learn how freesslcert.net provides free SSL/TLS certificates through Let's Encrypt. Browser-based ACME client, no server-side key storage, no signup required.",
-    canonical: `${BASE_URL}/about`,
+    canonical: routeUrl("/about"),
     structuredData: [
       {
         "@context": "https://schema.org",
@@ -42,11 +59,11 @@ const ROUTES = [
         name: "About freesslcert.net",
         description:
           "Learn how freesslcert.net provides free SSL/TLS certificates through Let's Encrypt with a simple browser-based interface.",
-        url: `${BASE_URL}/about`,
+        url: routeUrl("/about"),
         mainEntity: {
           "@type": "WebApplication",
           name: "freesslcert.net",
-          url: BASE_URL,
+          url: routeUrl("/"),
           applicationCategory: "SecurityApplication",
           operatingSystem: "Any",
           offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -56,12 +73,12 @@ const ROUTES = [
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 1, name: "Home", item: routeUrl("/") },
           {
             "@type": "ListItem",
             position: 2,
             name: "About",
-            item: `${BASE_URL}/about`,
+            item: routeUrl("/about"),
           },
         ],
       },
@@ -106,7 +123,7 @@ const ROUTES = [
         <h2>Get Started</h2>
         <p>Ready to secure your website with a free SSL certificate? Head to our homepage to generate your certificate in minutes.</p>
         <a href="/">Generate a Certificate</a>
-        <a href="/faq">Read the FAQ</a>
+        <a href="/faq/">Read the FAQ</a>
       </section>
     `,
   },
@@ -117,7 +134,7 @@ const ROUTES = [
     title: "SSL Certificate FAQ - Frequently Asked Questions | freesslcert.net",
     description:
       "Answers to common questions about free SSL certificates, Let's Encrypt, wildcard certificates, certificate installation, renewal, and troubleshooting.",
-    canonical: `${BASE_URL}/faq`,
+    canonical: routeUrl("/faq"),
     structuredData: [
       {
         "@context": "https://schema.org",
@@ -169,12 +186,12 @@ const ROUTES = [
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 1, name: "Home", item: routeUrl("/") },
           {
             "@type": "ListItem",
             position: 2,
             name: "FAQ",
-            item: `${BASE_URL}/faq`,
+            item: routeUrl("/faq"),
           },
         ],
       },
@@ -242,7 +259,7 @@ const ROUTES = [
       "How to Install a Free SSL Certificate on Nginx - Step-by-Step Guide",
     description:
       "Complete guide to installing a free Let's Encrypt SSL certificate on Nginx. Includes server block configuration, HTTPS redirect, security headers, and testing.",
-    canonical: `${BASE_URL}/guides/nginx-ssl`,
+    canonical: routeUrl("/guides/nginx-ssl"),
     structuredData: [
       {
         "@context": "https://schema.org",
@@ -288,12 +305,12 @@ const ROUTES = [
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 1, name: "Home", item: routeUrl("/") },
           {
             "@type": "ListItem",
             position: 2,
             name: "Nginx SSL Guide",
-            item: `${BASE_URL}/guides/nginx-ssl`,
+            item: routeUrl("/guides/nginx-ssl"),
           },
         ],
       },
@@ -348,11 +365,11 @@ const ROUTES = [
       <section>
         <h2>Related Resources</h2>
         <ul>
-          <li><a href="/guides/apache-ssl">How to Install SSL on Apache</a></li>
-          <li><a href="/guides/wordpress-ssl">How to Install SSL on WordPress</a></li>
-          <li><a href="/guides/nodejs-ssl">How to Set Up SSL with Node.js</a></li>
-          <li><a href="/ssl-vs-tls">SSL vs TLS: What's the Difference?</a></li>
-          <li><a href="/faq">SSL Certificate FAQ</a></li>
+          <li><a href="/guides/apache-ssl/">How to Install SSL on Apache</a></li>
+          <li><a href="/guides/wordpress-ssl/">How to Install SSL on WordPress</a></li>
+          <li><a href="/guides/nodejs-ssl/">How to Set Up SSL with Node.js</a></li>
+          <li><a href="/ssl-vs-tls/">SSL vs TLS: What's the Difference?</a></li>
+          <li><a href="/faq/">SSL Certificate FAQ</a></li>
         </ul>
       </section>
     `,
@@ -365,7 +382,7 @@ const ROUTES = [
       "How to Install a Free SSL Certificate on Apache - Step-by-Step Guide",
     description:
       "Complete guide to installing a free Let's Encrypt SSL certificate on Apache. Includes VirtualHost configuration, HTTPS redirect, mod_ssl setup, and testing.",
-    canonical: `${BASE_URL}/guides/apache-ssl`,
+    canonical: routeUrl("/guides/apache-ssl"),
     structuredData: [
       {
         "@context": "https://schema.org",
@@ -411,12 +428,12 @@ const ROUTES = [
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 1, name: "Home", item: routeUrl("/") },
           {
             "@type": "ListItem",
             position: 2,
             name: "Apache SSL Guide",
-            item: `${BASE_URL}/guides/apache-ssl`,
+            item: routeUrl("/guides/apache-ssl"),
           },
         ],
       },
@@ -471,11 +488,11 @@ const ROUTES = [
       <section>
         <h2>Related Resources</h2>
         <ul>
-          <li><a href="/guides/nginx-ssl">How to Install SSL on Nginx</a></li>
-          <li><a href="/guides/wordpress-ssl">How to Install SSL on WordPress</a></li>
-          <li><a href="/guides/nodejs-ssl">How to Set Up SSL with Node.js</a></li>
-          <li><a href="/ssl-vs-tls">SSL vs TLS: What's the Difference?</a></li>
-          <li><a href="/faq">SSL Certificate FAQ</a></li>
+          <li><a href="/guides/nginx-ssl/">How to Install SSL on Nginx</a></li>
+          <li><a href="/guides/wordpress-ssl/">How to Install SSL on WordPress</a></li>
+          <li><a href="/guides/nodejs-ssl/">How to Set Up SSL with Node.js</a></li>
+          <li><a href="/ssl-vs-tls/">SSL vs TLS: What's the Difference?</a></li>
+          <li><a href="/faq/">SSL Certificate FAQ</a></li>
         </ul>
       </section>
     `,
@@ -488,7 +505,7 @@ const ROUTES = [
       "How to Install a Free SSL Certificate on WordPress - Step-by-Step Guide",
     description:
       "Complete guide to installing a free Let's Encrypt SSL certificate on WordPress. Includes cPanel installation, URL updates, mixed content fixes, and HTTPS redirects.",
-    canonical: `${BASE_URL}/guides/wordpress-ssl`,
+    canonical: routeUrl("/guides/wordpress-ssl"),
     structuredData: [
       {
         "@context": "https://schema.org",
@@ -534,12 +551,12 @@ const ROUTES = [
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 1, name: "Home", item: routeUrl("/") },
           {
             "@type": "ListItem",
             position: 2,
             name: "WordPress SSL Guide",
-            item: `${BASE_URL}/guides/wordpress-ssl`,
+            item: routeUrl("/guides/wordpress-ssl"),
           },
         ],
       },
@@ -589,10 +606,10 @@ const ROUTES = [
       <section>
         <h2>Related Resources</h2>
         <ul>
-          <li><a href="/guides/nginx-ssl">How to Install SSL on Nginx</a></li>
-          <li><a href="/guides/apache-ssl">How to Install SSL on Apache</a></li>
-          <li><a href="/guides/nodejs-ssl">How to Set Up SSL with Node.js</a></li>
-          <li><a href="/faq">SSL Certificate FAQ</a></li>
+          <li><a href="/guides/nginx-ssl/">How to Install SSL on Nginx</a></li>
+          <li><a href="/guides/apache-ssl/">How to Install SSL on Apache</a></li>
+          <li><a href="/guides/nodejs-ssl/">How to Set Up SSL with Node.js</a></li>
+          <li><a href="/faq/">SSL Certificate FAQ</a></li>
         </ul>
       </section>
     `,
@@ -605,7 +622,7 @@ const ROUTES = [
       "How to Set Up a Free SSL Certificate with Node.js - Step-by-Step Guide",
     description:
       "Complete guide to setting up a free Let's Encrypt SSL certificate with Node.js. Includes HTTPS server configuration, Express.js setup, and HTTP-to-HTTPS redirect.",
-    canonical: `${BASE_URL}/guides/nodejs-ssl`,
+    canonical: routeUrl("/guides/nodejs-ssl"),
     structuredData: [
       {
         "@context": "https://schema.org",
@@ -651,12 +668,12 @@ const ROUTES = [
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 1, name: "Home", item: routeUrl("/") },
           {
             "@type": "ListItem",
             position: 2,
             name: "Node.js SSL Guide",
-            item: `${BASE_URL}/guides/nodejs-ssl`,
+            item: routeUrl("/guides/nodejs-ssl"),
           },
         ],
       },
@@ -706,11 +723,11 @@ const ROUTES = [
       <section>
         <h2>Related Resources</h2>
         <ul>
-          <li><a href="/guides/nginx-ssl">How to Install SSL on Nginx</a></li>
-          <li><a href="/guides/apache-ssl">How to Install SSL on Apache</a></li>
-          <li><a href="/guides/wordpress-ssl">How to Install SSL on WordPress</a></li>
-          <li><a href="/ssl-vs-tls">SSL vs TLS: What's the Difference?</a></li>
-          <li><a href="/faq">SSL Certificate FAQ</a></li>
+          <li><a href="/guides/nginx-ssl/">How to Install SSL on Nginx</a></li>
+          <li><a href="/guides/apache-ssl/">How to Install SSL on Apache</a></li>
+          <li><a href="/guides/wordpress-ssl/">How to Install SSL on WordPress</a></li>
+          <li><a href="/ssl-vs-tls/">SSL vs TLS: What's the Difference?</a></li>
+          <li><a href="/faq/">SSL Certificate FAQ</a></li>
         </ul>
       </section>
     `,
@@ -723,7 +740,7 @@ const ROUTES = [
       "SSL vs TLS: What's the Difference? A Complete Guide | freesslcert.net",
     description:
       "Understand the differences between SSL and TLS protocols. Learn about SSL 3.0, TLS 1.0 through 1.3, why TLS replaced SSL, and why we still say 'SSL certificate'.",
-    canonical: `${BASE_URL}/ssl-vs-tls`,
+    canonical: routeUrl("/ssl-vs-tls"),
     structuredData: [
       {
         "@context": "https://schema.org",
@@ -734,14 +751,14 @@ const ROUTES = [
         author: {
           "@type": "Organization",
           name: "freesslcert.net",
-          url: BASE_URL,
+          url: routeUrl("/"),
         },
         publisher: {
           "@type": "Organization",
           name: "freesslcert.net",
-          url: BASE_URL,
+          url: routeUrl("/"),
         },
-        mainEntityOfPage: `${BASE_URL}/ssl-vs-tls`,
+        mainEntityOfPage: routeUrl("/ssl-vs-tls"),
         datePublished: "2025-01-15",
         dateModified: "2025-01-15",
       },
@@ -749,12 +766,12 @@ const ROUTES = [
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 1, name: "Home", item: routeUrl("/") },
           {
             "@type": "ListItem",
             position: 2,
             name: "SSL vs TLS",
-            item: `${BASE_URL}/ssl-vs-tls`,
+            item: routeUrl("/ssl-vs-tls"),
           },
         ],
       },
@@ -796,7 +813,7 @@ const ROUTES = [
 
       <section>
         <a href="/">Generate a Free SSL/TLS Certificate</a>
-        <a href="/faq">Read the FAQ</a>
+        <a href="/faq/">Read the FAQ</a>
       </section>
     `,
   },
@@ -808,7 +825,7 @@ const ROUTES = [
       "Free SSL Certificate Checker - Check SSL Certificate Status | freesslcert.net",
     description:
       "Check any website's SSL certificate status for free. Verify expiration dates, certificate chain, issuer details, and identify common SSL problems like mixed content and hostname mismatches.",
-    canonical: `${BASE_URL}/ssl-checker`,
+    canonical: routeUrl("/ssl-checker"),
     structuredData: [
       {
         "@context": "https://schema.org",
@@ -816,7 +833,7 @@ const ROUTES = [
         name: "Free SSL Certificate Checker",
         description:
           "Check any website's SSL/TLS certificate status, expiration date, issuer, and configuration.",
-        url: `${BASE_URL}/ssl-checker`,
+        url: routeUrl("/ssl-checker"),
         applicationCategory: "SecurityApplication",
         operatingSystem: "Any",
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -825,12 +842,12 @@ const ROUTES = [
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 1, name: "Home", item: routeUrl("/") },
           {
             "@type": "ListItem",
             position: 2,
             name: "SSL Checker",
-            item: `${BASE_URL}/ssl-checker`,
+            item: routeUrl("/ssl-checker"),
           },
         ],
       },
@@ -858,7 +875,7 @@ const ROUTES = [
           <li><strong>Issuer</strong> - The Certificate Authority that issued the certificate</li>
           <li><strong>Domain coverage</strong> - Which domain names are covered by the certificate</li>
           <li><strong>Certificate chain</strong> - Whether the full chain of trust is properly configured</li>
-          <li><strong>Protocol support</strong> - Which <a href="/ssl-vs-tls">TLS versions</a> the server supports</li>
+          <li><strong>Protocol support</strong> - Which <a href="/ssl-vs-tls/">TLS versions</a> the server supports</li>
           <li><strong>Key size</strong> - The bit length of the certificate's public key</li>
         </ul>
       </section>
@@ -877,7 +894,7 @@ const ROUTES = [
         <h2>Need a New SSL Certificate?</h2>
         <p>If your SSL check reveals an expired or misconfigured certificate, get a free replacement in minutes.</p>
         <a href="/">Generate a Free Certificate</a>
-        <a href="/faq">Read the FAQ</a>
+        <a href="/faq/">Read the FAQ</a>
       </section>
     `,
   },
@@ -887,8 +904,8 @@ const ROUTES = [
     route: "/privacy",
     title: "Privacy Policy | freesslcert.net",
     description:
-      "Privacy policy for freesslcert.net. Learn how we handle your data when generating free SSL certificates. No data stored, no signup required.",
-    canonical: `${BASE_URL}/privacy`,
+      "Privacy policy for freesslcert.net. Learn how we handle your data when generating free SSL certificates. Private keys auto-purged within 24 hours.",
+    canonical: routeUrl("/privacy"),
     structuredData: [
       {
         "@context": "https://schema.org",
@@ -898,13 +915,13 @@ const ROUTES = [
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: `${BASE_URL}/`,
+            item: routeUrl("/"),
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Privacy Policy",
-            item: `${BASE_URL}/privacy`,
+            item: routeUrl("/privacy"),
           },
         ],
       },
@@ -912,7 +929,7 @@ const ROUTES = [
     bodyContent: `
       <a href="/">Back to Home</a>
       <h1>Privacy Policy</h1>
-      <p>Last updated: March 2026</p>
+      <p>Last updated: April 2026</p>
 
       <p>freesslcert.net is a free SSL/TLS certificate generation service powered by Let's Encrypt. We are committed to transparency about how we handle your data.</p>
 
@@ -932,6 +949,19 @@ const ROUTES = [
           <li>We do not store your certificates or keys permanently</li>
           <li>Rate limiting data is held in memory only and cleared on service restart</li>
         </ul>
+      </section>
+
+      <section>
+        <h2>What We Retain for Analytics</h2>
+        <p>We retain non-sensitive domain request metadata in an audit log indefinitely for usage analytics and service improvement. This metadata includes:</p>
+        <ul>
+          <li>Domain name requested (not private keys)</li>
+          <li>Certificate type (single, wildcard, multi-domain)</li>
+          <li>Country (derived from IP via Cloudflare, ISO country code only)</li>
+          <li>Timestamp</li>
+          <li>Success or failure status (and failure reason if applicable)</li>
+        </ul>
+        <p>We never retain private keys, certificates, CA bundles, email addresses, IP addresses, or any other personal information beyond the 24-hour purge window described above. The metadata we retain contains no personally identifiable information and is used only to understand aggregate usage patterns, measure reliability, and prioritize which SSL-related content to create.</p>
       </section>
 
       <section>
@@ -966,7 +996,7 @@ const ROUTES = [
     title: "Terms of Service | freesslcert.net",
     description:
       "Terms of service for freesslcert.net free SSL certificate generator. Powered by Let's Encrypt ACME protocol.",
-    canonical: `${BASE_URL}/terms`,
+    canonical: routeUrl("/terms"),
     structuredData: [
       {
         "@context": "https://schema.org",
@@ -976,13 +1006,13 @@ const ROUTES = [
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: `${BASE_URL}/`,
+            item: routeUrl("/"),
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Terms of Service",
-            item: `${BASE_URL}/terms`,
+            item: routeUrl("/terms"),
           },
         ],
       },
@@ -990,7 +1020,7 @@ const ROUTES = [
     bodyContent: `
       <a href="/">Back to Home</a>
       <h1>Terms of Service</h1>
-      <p>Last updated: March 2026</p>
+      <p>Last updated: April 2026</p>
 
       <p>These terms govern your use of freesslcert.net, a free SSL/TLS certificate generation service.</p>
 
@@ -1032,7 +1062,7 @@ const ROUTES = [
     title: "SSL Certificate Blog | freesslcert.net",
     description:
       "Learn about SSL certificates, HTTPS security, Let's Encrypt, and website encryption. Guides, tutorials, and best practices from freesslcert.net.",
-    canonical: `${BASE_URL}/blog`,
+    canonical: routeUrl("/blog"),
     structuredData: [
       {
         "@context": "https://schema.org",
@@ -1040,23 +1070,23 @@ const ROUTES = [
         name: "SSL Certificate Blog",
         description:
           "Learn about SSL certificates, HTTPS security, Let's Encrypt, and website encryption. Guides, tutorials, and best practices from freesslcert.net.",
-        url: `${BASE_URL}/blog`,
+        url: routeUrl("/blog"),
         publisher: {
           "@type": "Organization",
           name: "freesslcert.net",
-          url: BASE_URL,
+          url: routeUrl("/"),
         },
       },
       {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 1, name: "Home", item: routeUrl("/") },
           {
             "@type": "ListItem",
             position: 2,
             name: "Blog",
-            item: `${BASE_URL}/blog`,
+            item: routeUrl("/blog"),
           },
         ],
       },
@@ -1069,17 +1099,17 @@ const ROUTES = [
       <section>
         <h2>Latest Articles</h2>
         <article>
-          <h3><a href="/blog/why-https-matters-2026">Why HTTPS Matters in 2026: Security, SEO, and Trust</a></h3>
+          <h3><a href="/blog/why-https-matters-2026/">Why HTTPS Matters in 2026: Security, SEO, and Trust</a></h3>
           <p>HTTPS is no longer optional. Learn how SSL certificates impact your search rankings, protect user data, and why every website needs encryption in 2026.</p>
           <p>March 15, 2026 - 8 min read</p>
         </article>
         <article>
-          <h3><a href="/blog/lets-encrypt-guide">Let's Encrypt Explained: How Free SSL Certificates Work</a></h3>
+          <h3><a href="/blog/lets-encrypt-guide/">Let's Encrypt Explained: How Free SSL Certificates Work</a></h3>
           <p>A comprehensive guide to Let's Encrypt, the nonprofit Certificate Authority that has issued billions of free SSL certificates. Learn how ACME works and how to get started.</p>
           <p>March 1, 2026 - 9 min read</p>
         </article>
         <article>
-          <h3><a href="/blog/ssl-certificate-types-explained">SSL Certificate Types Explained: DV, OV, EV - Which Do You Need?</a></h3>
+          <h3><a href="/blog/ssl-certificate-types-explained/">SSL Certificate Types Explained: DV, OV, EV - Which Do You Need?</a></h3>
           <p>Not all SSL certificates are the same. Understand the differences between DV, OV, and EV certificates, plus wildcard and multi-domain options.</p>
           <p>February 15, 2026 - 10 min read</p>
         </article>
@@ -1097,7 +1127,7 @@ const ROUTES = [
     title: "Why HTTPS Matters in 2026: Security, SEO, and Trust | freesslcert.net",
     description:
       "Discover why HTTPS is essential in 2026 for SEO rankings, browser trust, data protection, and modern web API access. Learn how to get a free SSL certificate.",
-    canonical: `${BASE_URL}/blog/why-https-matters-2026`,
+    canonical: routeUrl("/blog/why-https-matters-2026"),
     structuredData: [
       {
         "@context": "https://schema.org",
@@ -1107,44 +1137,44 @@ const ROUTES = [
           "Discover why HTTPS is essential in 2026 for SEO rankings, browser trust, data protection, and modern web API access.",
         datePublished: "2026-03-15",
         dateModified: "2026-03-15",
-        url: `${BASE_URL}/blog/why-https-matters-2026`,
+        url: routeUrl("/blog/why-https-matters-2026"),
         author: {
           "@type": "Organization",
           name: "freesslcert.net",
-          url: BASE_URL,
+          url: routeUrl("/"),
         },
         publisher: {
           "@type": "Organization",
           name: "freesslcert.net",
-          url: BASE_URL,
+          url: routeUrl("/"),
         },
         mainEntityOfPage: {
           "@type": "WebPage",
-          "@id": `${BASE_URL}/blog/why-https-matters-2026`,
+          "@id": routeUrl("/blog/why-https-matters-2026"),
         },
       },
       {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 1, name: "Home", item: routeUrl("/") },
           {
             "@type": "ListItem",
             position: 2,
             name: "Blog",
-            item: `${BASE_URL}/blog`,
+            item: routeUrl("/blog"),
           },
           {
             "@type": "ListItem",
             position: 3,
             name: "Why HTTPS Matters in 2026",
-            item: `${BASE_URL}/blog/why-https-matters-2026`,
+            item: routeUrl("/blog/why-https-matters-2026"),
           },
         ],
       },
     ],
     bodyContent: `
-      <nav aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/blog">Blog</a> &gt; Why HTTPS Matters in 2026</nav>
+      <nav aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/blog/">Blog</a> &gt; Why HTTPS Matters in 2026</nav>
 
       <h1>Why HTTPS Matters in 2026: Security, SEO, and Trust</h1>
       <p>March 15, 2026 - 8 min read</p>
@@ -1181,12 +1211,12 @@ const ROUTES = [
       <section>
         <h2>Related Articles</h2>
         <ul>
-          <li><a href="/blog/lets-encrypt-guide">Let's Encrypt Explained: How Free SSL Certificates Work</a></li>
-          <li><a href="/blog/ssl-certificate-types-explained">SSL Certificate Types Explained: DV, OV, EV</a></li>
+          <li><a href="/blog/lets-encrypt-guide/">Let's Encrypt Explained: How Free SSL Certificates Work</a></li>
+          <li><a href="/blog/ssl-certificate-types-explained/">SSL Certificate Types Explained: DV, OV, EV</a></li>
         </ul>
       </section>
 
-      <a href="/blog">Back to Blog</a>
+      <a href="/blog/">Back to Blog</a>
     `,
   },
 
@@ -1196,7 +1226,7 @@ const ROUTES = [
     title: "Let's Encrypt Explained: How Free SSL Certificates Work | freesslcert.net",
     description:
       "Learn how Let's Encrypt provides free SSL certificates using the ACME protocol. Covers domain validation, 90-day lifetimes, rate limits, and alternatives to certbot.",
-    canonical: `${BASE_URL}/blog/lets-encrypt-guide`,
+    canonical: routeUrl("/blog/lets-encrypt-guide"),
     structuredData: [
       {
         "@context": "https://schema.org",
@@ -1206,44 +1236,44 @@ const ROUTES = [
           "Learn how Let's Encrypt provides free SSL certificates using the ACME protocol.",
         datePublished: "2026-03-01",
         dateModified: "2026-03-01",
-        url: `${BASE_URL}/blog/lets-encrypt-guide`,
+        url: routeUrl("/blog/lets-encrypt-guide"),
         author: {
           "@type": "Organization",
           name: "freesslcert.net",
-          url: BASE_URL,
+          url: routeUrl("/"),
         },
         publisher: {
           "@type": "Organization",
           name: "freesslcert.net",
-          url: BASE_URL,
+          url: routeUrl("/"),
         },
         mainEntityOfPage: {
           "@type": "WebPage",
-          "@id": `${BASE_URL}/blog/lets-encrypt-guide`,
+          "@id": routeUrl("/blog/lets-encrypt-guide"),
         },
       },
       {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 1, name: "Home", item: routeUrl("/") },
           {
             "@type": "ListItem",
             position: 2,
             name: "Blog",
-            item: `${BASE_URL}/blog`,
+            item: routeUrl("/blog"),
           },
           {
             "@type": "ListItem",
             position: 3,
             name: "Let's Encrypt Guide",
-            item: `${BASE_URL}/blog/lets-encrypt-guide`,
+            item: routeUrl("/blog/lets-encrypt-guide"),
           },
         ],
       },
     ],
     bodyContent: `
-      <nav aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/blog">Blog</a> &gt; Let's Encrypt Guide</nav>
+      <nav aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/blog/">Blog</a> &gt; Let's Encrypt Guide</nav>
 
       <h1>Let's Encrypt Explained: How Free SSL Certificates Work</h1>
       <p>March 1, 2026 - 9 min read</p>
@@ -1285,12 +1315,12 @@ const ROUTES = [
       <section>
         <h2>Related Articles</h2>
         <ul>
-          <li><a href="/blog/why-https-matters-2026">Why HTTPS Matters in 2026</a></li>
-          <li><a href="/blog/ssl-certificate-types-explained">SSL Certificate Types Explained</a></li>
+          <li><a href="/blog/why-https-matters-2026/">Why HTTPS Matters in 2026</a></li>
+          <li><a href="/blog/ssl-certificate-types-explained/">SSL Certificate Types Explained</a></li>
         </ul>
       </section>
 
-      <a href="/blog">Back to Blog</a>
+      <a href="/blog/">Back to Blog</a>
     `,
   },
 
@@ -1300,7 +1330,7 @@ const ROUTES = [
     title: "SSL Certificate Types Explained: DV, OV, EV - Which Do You Need? | freesslcert.net",
     description:
       "Compare SSL certificate types: Domain Validated (DV), Organization Validated (OV), and Extended Validation (EV). Includes wildcard and SAN certificates explained.",
-    canonical: `${BASE_URL}/blog/ssl-certificate-types-explained`,
+    canonical: routeUrl("/blog/ssl-certificate-types-explained"),
     structuredData: [
       {
         "@context": "https://schema.org",
@@ -1310,44 +1340,44 @@ const ROUTES = [
           "Compare SSL certificate types: Domain Validated (DV), Organization Validated (OV), and Extended Validation (EV).",
         datePublished: "2026-02-15",
         dateModified: "2026-02-15",
-        url: `${BASE_URL}/blog/ssl-certificate-types-explained`,
+        url: routeUrl("/blog/ssl-certificate-types-explained"),
         author: {
           "@type": "Organization",
           name: "freesslcert.net",
-          url: BASE_URL,
+          url: routeUrl("/"),
         },
         publisher: {
           "@type": "Organization",
           name: "freesslcert.net",
-          url: BASE_URL,
+          url: routeUrl("/"),
         },
         mainEntityOfPage: {
           "@type": "WebPage",
-          "@id": `${BASE_URL}/blog/ssl-certificate-types-explained`,
+          "@id": routeUrl("/blog/ssl-certificate-types-explained"),
         },
       },
       {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 1, name: "Home", item: routeUrl("/") },
           {
             "@type": "ListItem",
             position: 2,
             name: "Blog",
-            item: `${BASE_URL}/blog`,
+            item: routeUrl("/blog"),
           },
           {
             "@type": "ListItem",
             position: 3,
             name: "SSL Certificate Types",
-            item: `${BASE_URL}/blog/ssl-certificate-types-explained`,
+            item: routeUrl("/blog/ssl-certificate-types-explained"),
           },
         ],
       },
     ],
     bodyContent: `
-      <nav aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/blog">Blog</a> &gt; SSL Certificate Types</nav>
+      <nav aria-label="Breadcrumb"><a href="/">Home</a> &gt; <a href="/blog/">Blog</a> &gt; SSL Certificate Types</nav>
 
       <h1>SSL Certificate Types Explained: DV, OV, EV - Which Do You Need?</h1>
       <p>February 15, 2026 - 10 min read</p>
@@ -1356,7 +1386,7 @@ const ROUTES = [
 
       <section>
         <h2>Domain Validated (DV) Certificates</h2>
-        <p>Domain Validated certificates are the most common type. The CA verifies only that you control the domain name. DV certificates are typically issued within minutes and cost nothing from providers like <a href="/blog/lets-encrypt-guide">Let's Encrypt</a>. The encryption strength is identical to more expensive certificate types.</p>
+        <p>Domain Validated certificates are the most common type. The CA verifies only that you control the domain name. DV certificates are typically issued within minutes and cost nothing from providers like <a href="/blog/lets-encrypt-guide/">Let's Encrypt</a>. The encryption strength is identical to more expensive certificate types.</p>
         <p>Best for: personal websites, blogs, small business sites, web applications, APIs, and the vast majority of websites.</p>
       </section>
 
@@ -1391,12 +1421,12 @@ const ROUTES = [
       <section>
         <h2>Related Articles</h2>
         <ul>
-          <li><a href="/blog/why-https-matters-2026">Why HTTPS Matters in 2026</a></li>
-          <li><a href="/blog/lets-encrypt-guide">Let's Encrypt Explained</a></li>
+          <li><a href="/blog/why-https-matters-2026/">Why HTTPS Matters in 2026</a></li>
+          <li><a href="/blog/lets-encrypt-guide/">Let's Encrypt Explained</a></li>
         </ul>
       </section>
 
-      <a href="/blog">Back to Blog</a>
+      <a href="/blog/">Back to Blog</a>
     `,
   },
 
@@ -1538,13 +1568,13 @@ ${route.bodyContent}
       <footer style="border-top:1px solid #e5e5e5;padding:24px;text-align:center;font-size:12px;color:#a3a3a3">
         <p>&copy; 2026 freesslcert.net &middot; Powered by <a href="https://letsencrypt.org" style="color:#a3a3a3">Let's Encrypt</a></p>
         <nav>
-          <a href="/about" style="color:#a3a3a3;margin:0 8px">About</a>
-          <a href="/faq" style="color:#a3a3a3;margin:0 8px">FAQ</a>
-          <a href="/ssl-checker" style="color:#a3a3a3;margin:0 8px">SSL Checker</a>
-          <a href="/guides/nginx-ssl" style="color:#a3a3a3;margin:0 8px">Nginx Guide</a>
-          <a href="/guides/apache-ssl" style="color:#a3a3a3;margin:0 8px">Apache Guide</a>
-          <a href="/privacy" style="color:#a3a3a3;margin:0 8px">Privacy</a>
-          <a href="/terms" style="color:#a3a3a3;margin:0 8px">Terms</a>
+          <a href="/about/" style="color:#a3a3a3;margin:0 8px">About</a>
+          <a href="/faq/" style="color:#a3a3a3;margin:0 8px">FAQ</a>
+          <a href="/ssl-checker/" style="color:#a3a3a3;margin:0 8px">SSL Checker</a>
+          <a href="/guides/nginx-ssl/" style="color:#a3a3a3;margin:0 8px">Nginx Guide</a>
+          <a href="/guides/apache-ssl/" style="color:#a3a3a3;margin:0 8px">Apache Guide</a>
+          <a href="/privacy/" style="color:#a3a3a3;margin:0 8px">Privacy</a>
+          <a href="/terms/" style="color:#a3a3a3;margin:0 8px">Terms</a>
         </nav>
       </footer>`;
 }

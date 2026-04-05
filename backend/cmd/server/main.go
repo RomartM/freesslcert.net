@@ -49,6 +49,7 @@ func run(logger *slog.Logger) error {
 		"env", cfg.AppEnv,
 		"port", cfg.AppPort,
 		"acme_dir", cfg.ACMEDirectoryURL,
+		"region", cfg.Region,
 	)
 
 	// Open Turso/libSQL database.
@@ -102,6 +103,11 @@ func run(logger *slog.Logger) error {
 	}
 
 	// Start background purge job.
+	//
+	// PurgeSensitiveData blanks cert/key columns in certificate_orders after
+	// 24 hours. DeleteExpired hard-deletes expired certificate_orders rows.
+	// Neither job touches the domain_log table, which is the permanent
+	// record for usage metrics. See repository/certificate.go for details.
 	go func() {
 		ticker := time.NewTicker(1 * time.Hour)
 		defer ticker.Stop()

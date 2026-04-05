@@ -72,13 +72,13 @@ const breadcrumbSchema: JsonLdSchema = {
       "@type": "ListItem",
       position: 2,
       name: "Guides",
-      item: "https://freesslcert.net/guides/nodejs-ssl",
+      item: "https://freesslcert.net/guides/nodejs-ssl/",
     },
     {
       "@type": "ListItem",
       position: 3,
       name: "Node.js SSL Setup",
-      item: "https://freesslcert.net/guides/nodejs-ssl",
+      item: "https://freesslcert.net/guides/nodejs-ssl/",
     },
   ],
 };
@@ -155,14 +155,14 @@ export function NodejsSSLGuidePage() {
           <strong className="text-neutral-900">Note:</strong> In production,
           many Node.js applications sit behind a reverse proxy like{" "}
           <Link
-            to="/guides/nginx-ssl"
+            to="/guides/nginx-ssl/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Nginx
           </Link>{" "}
           or{" "}
           <Link
-            to="/guides/apache-ssl"
+            to="/guides/apache-ssl/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Apache
@@ -262,7 +262,7 @@ export function NodejsSSLGuidePage() {
             </code>
             . For more details on what these files are, see our{" "}
             <Link
-              to="/faq"
+              to="/faq/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               FAQ on certificate chains
@@ -687,7 +687,7 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
           <ul className="space-y-2">
             <li>
               <Link
-                to="/guides/nginx-ssl"
+                to="/guides/nginx-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Install SSL on Nginx
@@ -696,7 +696,7 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
             </li>
             <li>
               <Link
-                to="/guides/apache-ssl"
+                to="/guides/apache-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Install SSL on Apache
@@ -705,7 +705,7 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
             </li>
             <li>
               <Link
-                to="/guides/wordpress-ssl"
+                to="/guides/wordpress-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Install SSL on WordPress
@@ -714,7 +714,7 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
             </li>
             <li>
               <Link
-                to="/ssl-vs-tls"
+                to="/ssl-vs-tls/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 SSL vs TLS: What&#39;s the Difference?
@@ -723,7 +723,7 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
             </li>
             <li>
               <Link
-                to="/faq"
+                to="/faq/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 SSL Certificate FAQ

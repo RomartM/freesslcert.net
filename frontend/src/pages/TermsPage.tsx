@@ -59,7 +59,7 @@ export function TermsPage() {
           "@type": "BreadcrumbList",
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://freesslcert.net/" },
-            { "@type": "ListItem", "position": 2, "name": "Terms of Service", "item": "https://freesslcert.net/terms" },
+            { "@type": "ListItem", "position": 2, "name": "Terms of Service", "item": "https://freesslcert.net/terms/" },
           ],
         }}
       />

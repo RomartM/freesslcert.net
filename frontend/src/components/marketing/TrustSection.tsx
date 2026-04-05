@@ -3,7 +3,7 @@ import { Shield, Lock, Timer, ShieldCheck } from "lucide-react";
 const badges = [
   { icon: Shield, label: "100% Free" },
   { icon: Lock, label: "Let's Encrypt" },
-  { icon: Timer, label: "No Data Stored" },
+  { icon: Timer, label: "Keys Auto-Purged" },
   { icon: ShieldCheck, label: "ACME Standard" },
 ];
 

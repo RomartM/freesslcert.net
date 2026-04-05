@@ -181,7 +181,7 @@ export function WhyHTTPSMatters() {
         <p>
           The growth of free Certificate Authorities like{" "}
           <Link
-            to="/blog/lets-encrypt-guide"
+            to="/blog/lets-encrypt-guide/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Let&#39;s Encrypt
@@ -202,7 +202,7 @@ export function WhyHTTPSMatters() {
           Securing your website with HTTPS has never been easier or more
           affordable. Free{" "}
           <Link
-            to="/blog/ssl-certificate-types-explained"
+            to="/blog/ssl-certificate-types-explained/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Domain Validated (DV) certificates
@@ -226,28 +226,28 @@ export function WhyHTTPSMatters() {
           HTTP or DNS validation, and download your certificate files. We
           provide step-by-step installation guides for{" "}
           <Link
-            to="/guides/nginx-ssl"
+            to="/guides/nginx-ssl/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Nginx
           </Link>
           ,{" "}
           <Link
-            to="/guides/apache-ssl"
+            to="/guides/apache-ssl/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Apache
           </Link>
           ,{" "}
           <Link
-            to="/guides/wordpress-ssl"
+            to="/guides/wordpress-ssl/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             WordPress
           </Link>
           , and{" "}
           <Link
-            to="/guides/nodejs-ssl"
+            to="/guides/nodejs-ssl/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Node.js

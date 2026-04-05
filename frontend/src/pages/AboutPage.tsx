@@ -11,7 +11,7 @@ const aboutSchema: JsonLdSchema = {
   name: "About freesslcert.net",
   description:
     "Learn how freesslcert.net provides free SSL/TLS certificates through Let's Encrypt with a simple browser-based interface.",
-  url: "https://freesslcert.net/about",
+  url: "https://freesslcert.net/about/",
   mainEntity: {
     "@type": "WebApplication",
     name: "freesslcert.net",
@@ -161,28 +161,28 @@ export function AboutPage() {
               </strong>{" "}
               and install them on your web server. We provide detailed guides for{" "}
               <Link
-                to="/guides/nginx-ssl"
+                to="/guides/nginx-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 Nginx
               </Link>
               ,{" "}
               <Link
-                to="/guides/apache-ssl"
+                to="/guides/apache-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 Apache
               </Link>
               ,{" "}
               <Link
-                to="/guides/wordpress-ssl"
+                to="/guides/wordpress-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 WordPress
               </Link>
               , and{" "}
               <Link
-                to="/guides/nodejs-ssl"
+                to="/guides/nodejs-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 Node.js
@@ -194,14 +194,14 @@ export function AboutPage() {
             Want to learn more about the technology behind SSL certificates?
             Read our article on{" "}
             <Link
-              to="/blog/lets-encrypt-guide"
+              to="/blog/lets-encrypt-guide/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               how Let&#39;s Encrypt works
             </Link>{" "}
             or explore{" "}
             <Link
-              to="/blog/why-https-matters-2026"
+              to="/blog/why-https-matters-2026/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               why HTTPS matters in 2026
@@ -242,7 +242,7 @@ export function AboutPage() {
               not use analytics trackers, advertising cookies, or any third-party
               scripts that monitor your behavior. See our{" "}
               <Link
-                to="/privacy"
+                to="/privacy/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 Privacy Policy
@@ -266,7 +266,7 @@ export function AboutPage() {
             Ready to secure your website with a free SSL certificate? Head to
             our homepage to generate your certificate in minutes. Or visit our{" "}
             <Link
-              to="/blog"
+              to="/blog/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               blog
@@ -282,13 +282,13 @@ export function AboutPage() {
               Generate a Certificate
             </Link>
             <Link
-              to="/blog"
+              to="/blog/"
               className="inline-flex items-center rounded-lg border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition-colors duration-150"
             >
               Read the Blog
             </Link>
             <Link
-              to="/faq"
+              to="/faq/"
               className="inline-flex items-center rounded-lg border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition-colors duration-150"
             >
               Read the FAQ
@@ -303,14 +303,14 @@ export function AboutPage() {
           <p>
             By using freesslcert.net, you agree to our{" "}
             <Link
-              to="/terms"
+              to="/terms/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               Terms of Use
             </Link>{" "}
             and acknowledge our{" "}
             <Link
-              to="/privacy"
+              to="/privacy/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               Privacy Policy

@@ -21,7 +21,7 @@ const blogSchema: JsonLdSchema = {
   name: "SSL Certificate Blog",
   description:
     "Learn about SSL certificates, HTTPS security, Let's Encrypt, and website encryption. Guides, tutorials, and best practices from freesslcert.net.",
-  url: "https://freesslcert.net/blog",
+  url: "https://freesslcert.net/blog/",
   publisher: {
     "@type": "Organization",
     name: "freesslcert.net",
@@ -32,7 +32,7 @@ const blogSchema: JsonLdSchema = {
     headline: post.title,
     description: post.description,
     datePublished: post.date,
-    url: `https://freesslcert.net/blog/${post.slug}`,
+    url: `https://freesslcert.net/blog/${post.slug}/`,
     author: {
       "@type": "Organization",
       name: "freesslcert.net",
@@ -54,7 +54,7 @@ const breadcrumbSchema: JsonLdSchema = {
       "@type": "ListItem",
       position: 2,
       name: "Blog",
-      item: "https://freesslcert.net/blog",
+      item: "https://freesslcert.net/blog/",
     },
   ],
 };
@@ -103,7 +103,7 @@ export function BlogIndexPage() {
         {BLOG_POSTS.map((post) => (
           <Link
             key={post.slug}
-            to={`/blog/${post.slug}`}
+            to={`/blog/${post.slug}/`}
             className="group rounded-lg border border-neutral-200/60 p-5 hover:bg-neutral-50/50 transition-colors duration-150"
           >
             <div className="flex items-center gap-3 text-xs text-neutral-400 mb-3">

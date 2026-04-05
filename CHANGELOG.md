@@ -2,6 +2,34 @@
 
 All notable changes to freesslcert.net will be documented in this file.
 
+## [Unreleased] - 2026-04-05
+
+### Domain Metrics Persistence (critical)
+- **`domain_log` now records every outcome** — pending, issued, and failed. Previously only successful issuances were logged, and since no certificate had ever successfully issued, the table was empty.
+- **Schema extended** with `status`, `failure_reason`, `country`, `region` columns and supporting indexes. Migration uses `PRAGMA table_info` + `ALTER TABLE ADD COLUMN` so existing tables are upgraded in place.
+- **`LogDomainEvent(ctx, DomainLogEvent)`** replaces the old `LogDomain` method. Called at three points in `acme.go`: immediately after order creation (`pending`), on successful issuance (`issued`), and on obtain failure (`failed`).
+- **`classifyACMEError`** maps ACME/lego errors into a small enum (`challenge_timeout`, `dns_failed`, `rate_limited`, `acme_server_error`, `invalid_domain`, `other`) for failure analytics.
+- **Country captured** from the `CF-IPCountry` header on every request.
+- **Region captured** from a new `REGION` environment variable so we can break down usage by serving region (`us-east`, `eu-west`, `uk`, `sg`, `jp`, `au-syd`).
+- **`DeleteExpired` explicitly does not touch `domain_log`** — added a code comment and a regression test (`TestDeleteExpiredDoesNotTouchDomainLog`).
+- **`classifyACMEError` unit tests** — 11 table-driven cases covering every bucket and the fallback.
+- **Metrics queries documented** at `backend/docs/metrics-queries.md` (total by status, top countries, daily trend, failure breakdown, success rate).
+
+### SEO Fixes from Weekly Audit
+- **www → apex 301 redirect** via new Cloudflare Worker at `infrastructure/worker/freesslcert-www-redirect/`. Cloudflare Pages' `_redirects` does not apply to custom domain aliases, so `https://www.freesslcert.net/` was serving 200 directly and Google was indexing it as a separate canonical. Verified: `curl -I https://www.freesslcert.net/` now returns `HTTP/2 301` to apex with path + query preserved.
+- **Trailing slash canonicalization** — all non-root URLs now use trailing slashes (sitemap, canonicals, hreflangs, internal links). Eliminates the 308 redirect hop Cloudflare Pages was issuing for directory-based prerendered files (`dist/about/index.html`).
+  - `ensureTrailingSlash()` helper in `useLocaleUrl.ts`, applied centrally in `useCanonicalUrl`, `useHreflangUrls`, and `useLocalePath`.
+  - `sitemap.xml` — 15 `<loc>` URLs and 240 `<xhtml:link>` alternates updated.
+  - `prerender.mjs` — `routeUrl()` helper ensures all canonical, OG, Twitter, and structured-data URLs carry trailing slashes.
+  - 20+ page/component files swept to update `<Link to>` props and hardcoded breadcrumb URLs.
+- **Internal linking boost** for `/ssl-vs-tls/` and `/ssl-checker/` — Google had not discovered these pages because they were only linked from the footer.
+  - New `RelatedTools.tsx` component on the homepage with two prominent clickable cards.
+  - `HowItWorks.tsx` extended with an inline paragraph linking to both pages.
+  - Static fallback content in `index.html` updated so crawlers see the links even before hydration.
+- **Trust badge honesty** — `TrustSection.tsx` badge changed from "No Data Stored" to **"Keys Auto-Purged"** to accurately reflect that private keys/certs are purged at 24h but non-sensitive domain metadata is retained for analytics.
+- **Privacy policy disclosure** — new "What We Retain for Analytics" section in `PrivacyPage.tsx` listing exactly what's logged (domain, cert type, country, timestamp, status) and what's never retained (keys, certs, emails, IPs).
+- **Stale credentials path** — `CLAUDE.md` and memory updated from `/Users/dev/Downloads/updl-490718-6ac63a60d724.json` to `/Users/dev/Downloads/Security/gcp-service-account-seo-automation.json`.
+
 ## [Unreleased] - 2026-03-29
 
 ### Internationalization (i18n) — 15 Languages

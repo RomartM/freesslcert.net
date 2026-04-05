@@ -86,7 +86,13 @@ func (h *CertificateHandler) CreateOrder(c *gin.Context) {
 		}
 	}
 
-	order, err := h.acme.CreateOrder(c.Request.Context(), req)
+	// Extract country from the Cloudflare-injected header. This is a
+	// two-letter ISO-3166 country code (e.g. "US", "DE") or "XX" for unknown
+	// origins. Requests that bypass Cloudflare (local curl, internal probes)
+	// will have no header, which we store as NULL in domain_log.
+	country := c.GetHeader("CF-IPCountry")
+
+	order, err := h.acme.CreateOrder(c.Request.Context(), req, country)
 	if err != nil {
 		handleError(c, err)
 		return

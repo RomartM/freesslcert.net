@@ -14,7 +14,7 @@ export function PrivacyPage() {
         <title>Privacy Policy | freesslcert.net</title>
         <meta
           name="description"
-          content="Privacy policy for freesslcert.net. Learn how we handle your data when generating free SSL certificates. No data stored, no signup required."
+          content="Privacy policy for freesslcert.net. Learn how we handle your data when generating free SSL certificates. Private keys auto-purged within 24 hours."
         />
         <link rel="canonical" href={canonicalUrl} />
 
@@ -26,7 +26,7 @@ export function PrivacyPage() {
         />
         <meta
           property="og:description"
-          content="Privacy policy for freesslcert.net. Learn how we handle your data when generating free SSL certificates. No data stored, no signup required."
+          content="Privacy policy for freesslcert.net. Learn how we handle your data when generating free SSL certificates. Private keys auto-purged within 24 hours."
         />
         <meta
           property="og:image"
@@ -41,7 +41,7 @@ export function PrivacyPage() {
         />
         <meta
           name="twitter:description"
-          content="Privacy policy for freesslcert.net. Learn how we handle your data when generating free SSL certificates. No data stored, no signup required."
+          content="Privacy policy for freesslcert.net. Learn how we handle your data when generating free SSL certificates. Private keys auto-purged within 24 hours."
         />
         <meta
           name="twitter:image"
@@ -59,7 +59,7 @@ export function PrivacyPage() {
           "@type": "BreadcrumbList",
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://freesslcert.net/" },
-            { "@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": "https://freesslcert.net/privacy" },
+            { "@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": "https://freesslcert.net/privacy/" },
           ],
         }}
       />
@@ -75,7 +75,7 @@ export function PrivacyPage() {
       <h1 className="text-3xl font-semibold tracking-tight text-neutral-900 mb-2">
         Privacy Policy
       </h1>
-      <p className="text-sm text-neutral-500 mb-8">Last updated: March 2026</p>
+      <p className="text-sm text-neutral-500 mb-8">Last updated: April 2026</p>
 
       <div className="space-y-6 text-sm text-neutral-600 leading-relaxed">
         <p>
@@ -99,6 +99,28 @@ export function PrivacyPage() {
             <li>We do not store your certificates or keys permanently</li>
             <li>Rate limiting data is held in memory only and cleared on service restart</li>
           </ul>
+        </section>
+
+        <section>
+          <h2 className="text-base font-semibold tracking-tight text-neutral-900 mb-3">What We Retain for Analytics</h2>
+          <p className="mb-3">
+            We retain non-sensitive domain request metadata in an audit log indefinitely for usage
+            analytics and service improvement. This metadata includes:
+          </p>
+          <ul className="list-disc pl-5 space-y-1.5">
+            <li>Domain name requested (not private keys)</li>
+            <li>Certificate type (single, wildcard, multi-domain)</li>
+            <li>Country (derived from IP via Cloudflare, ISO country code only)</li>
+            <li>Timestamp</li>
+            <li>Success or failure status (and failure reason if applicable)</li>
+          </ul>
+          <p className="mt-3">
+            We never retain private keys, certificates, CA bundles, email addresses, IP addresses,
+            or any other personal information beyond the 24-hour purge window described above. The
+            metadata we retain contains no personally identifiable information and is used only to
+            understand aggregate usage patterns, measure reliability, and prioritize which
+            SSL-related content to create.
+          </p>
         </section>
 
         <section>

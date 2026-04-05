@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { WizardContainer } from "@/components/wizard/WizardContainer";
 import { TrustSection } from "@/components/marketing/TrustSection";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
+import { RelatedTools } from "@/components/marketing/RelatedTools";
 import { FaqSection } from "@/components/marketing/FaqSection";
 import { useCanonicalUrl, useHreflangUrls } from "@/hooks/useLocaleUrl";
 
@@ -67,6 +68,7 @@ export function HomePage() {
 
       <TrustSection />
       <HowItWorks />
+      <RelatedTools />
       <FaqSection />
     </>
   );

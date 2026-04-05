@@ -36,7 +36,7 @@ const FAQ_ITEMS: FaqItem[] = [
         sites, which can erode visitor trust and increase bounce rates. Read our
         in-depth article on{" "}
         <Link
-          to="/blog/why-https-matters-2026"
+          to="/blog/why-https-matters-2026/"
           className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
         >
           why HTTPS matters in 2026
@@ -110,7 +110,7 @@ const FAQ_ITEMS: FaqItem[] = [
           level of identity verification differs. For a detailed comparison with
           cost and feature tables, see our guide to{" "}
           <Link
-            to="/blog/ssl-certificate-types-explained"
+            to="/blog/ssl-certificate-types-explained/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             SSL certificate types explained
@@ -193,7 +193,7 @@ const FAQ_ITEMS: FaqItem[] = [
         at any time to generate a new certificate for your domain at no cost.
         Learn more about the reasoning behind 90-day lifetimes in our{" "}
         <Link
-          to="/blog/lets-encrypt-guide"
+          to="/blog/lets-encrypt-guide/"
           className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
         >
           Let&#39;s Encrypt guide
@@ -228,7 +228,7 @@ const FAQ_ITEMS: FaqItem[] = [
           limit window to reset (usually one week). For a complete breakdown, see
           our{" "}
           <Link
-            to="/blog/lets-encrypt-guide"
+            to="/blog/lets-encrypt-guide/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Let&#39;s Encrypt guide
@@ -286,7 +286,7 @@ const FAQ_ITEMS: FaqItem[] = [
         web applications, a free DV certificate provides all the security you
         need. See our{" "}
         <Link
-          to="/blog/ssl-certificate-types-explained"
+          to="/blog/ssl-certificate-types-explained/"
           className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
         >
           SSL certificate types comparison
@@ -341,14 +341,14 @@ const FAQ_ITEMS: FaqItem[] = [
           you cannot easily switch back to HTTP without visitors experiencing
           errors. See our{" "}
           <Link
-            to="/guides/nginx-ssl"
+            to="/guides/nginx-ssl/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Nginx
           </Link>{" "}
           and{" "}
           <Link
-            to="/guides/apache-ssl"
+            to="/guides/apache-ssl/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Apache
@@ -443,7 +443,7 @@ const FAQ_ITEMS: FaqItem[] = [
           because they cannot verify the full chain of trust. Learn more about
           the ISRG Root X1 trust chain in our{" "}
           <Link
-            to="/blog/lets-encrypt-guide"
+            to="/blog/lets-encrypt-guide/"
             className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
           >
             Let&#39;s Encrypt guide
@@ -557,7 +557,7 @@ const FAQ_ITEMS: FaqItem[] = [
         <ul className="list-disc pl-5 space-y-1.5 mb-2">
           <li>
             <Link
-              to="/guides/nginx-ssl"
+              to="/guides/nginx-ssl/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               How to Install SSL on Nginx
@@ -574,7 +574,7 @@ const FAQ_ITEMS: FaqItem[] = [
           </li>
           <li>
             <Link
-              to="/guides/apache-ssl"
+              to="/guides/apache-ssl/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               How to Install SSL on Apache
@@ -638,7 +638,7 @@ const FAQ_ITEMS: FaqItem[] = [
         send it via email, and restrict file permissions on your server so only
         the web server process can read it. See our{" "}
         <Link
-          to="/privacy"
+          to="/privacy/"
           className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
         >
           Privacy Policy
@@ -806,21 +806,21 @@ export function FAQPage() {
             </Link>{" "}
             and follow the guided process, check our installation guides for{" "}
             <Link
-              to="/guides/nginx-ssl"
+              to="/guides/nginx-ssl/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               Nginx
             </Link>{" "}
             and{" "}
             <Link
-              to="/guides/apache-ssl"
+              to="/guides/apache-ssl/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               Apache
             </Link>
             , or read our{" "}
             <Link
-              to="/blog"
+              to="/blog/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               blog

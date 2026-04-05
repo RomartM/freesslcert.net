@@ -72,13 +72,13 @@ const breadcrumbSchema: JsonLdSchema = {
       "@type": "ListItem",
       position: 2,
       name: "Guides",
-      item: "https://freesslcert.net/guides/apache-ssl",
+      item: "https://freesslcert.net/guides/apache-ssl/",
     },
     {
       "@type": "ListItem",
       position: 3,
       name: "Apache SSL Installation",
-      item: "https://freesslcert.net/guides/apache-ssl",
+      item: "https://freesslcert.net/guides/apache-ssl/",
     },
   ],
 };
@@ -230,7 +230,7 @@ export function ApacheSSLGuidePage() {
             (the intermediate certificate chain). To understand what these files
             are and why each matters, check our{" "}
             <Link
-              to="/faq"
+              to="/faq/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               FAQ on certificate chains and formats
@@ -416,7 +416,7 @@ SSLStaplingCache shmcb:/var/run/ocsp(128000)`}
             with your actual domain name throughout the configuration. Note that
             unlike{" "}
             <Link
-              to="/guides/nginx-ssl"
+              to="/guides/nginx-ssl/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               Nginx
@@ -639,7 +639,7 @@ sudo ss -tlnp | grep 443`}
             directive points to the correct CA bundle file and that the file is
             not empty. See our{" "}
             <Link
-              to="/faq"
+              to="/faq/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               FAQ on certificate chains
@@ -656,7 +656,7 @@ sudo ss -tlnp | grep 443`}
           <ul className="space-y-2">
             <li>
               <Link
-                to="/guides/nginx-ssl"
+                to="/guides/nginx-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Install SSL on Nginx
@@ -665,7 +665,7 @@ sudo ss -tlnp | grep 443`}
             </li>
             <li>
               <Link
-                to="/guides/wordpress-ssl"
+                to="/guides/wordpress-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Install SSL on WordPress
@@ -674,7 +674,7 @@ sudo ss -tlnp | grep 443`}
             </li>
             <li>
               <Link
-                to="/guides/nodejs-ssl"
+                to="/guides/nodejs-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Set Up SSL with Node.js
@@ -683,7 +683,7 @@ sudo ss -tlnp | grep 443`}
             </li>
             <li>
               <Link
-                to="/ssl-vs-tls"
+                to="/ssl-vs-tls/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 SSL vs TLS: What&#39;s the Difference?
@@ -692,7 +692,7 @@ sudo ss -tlnp | grep 443`}
             </li>
             <li>
               <Link
-                to="/faq"
+                to="/faq/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 SSL Certificate FAQ

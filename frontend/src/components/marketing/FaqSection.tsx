@@ -84,7 +84,7 @@ export function FaqSection() {
       </Accordion>
       <p className="text-center mt-4">
         <Link
-          to="/faq"
+          to="/faq/"
           className="text-sm text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
         >
           View all frequently asked questions

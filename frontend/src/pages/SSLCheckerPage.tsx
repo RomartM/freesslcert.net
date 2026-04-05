@@ -37,7 +37,7 @@ const webAppSchema: JsonLdSchema = {
   name: "Free SSL Certificate Checker",
   description:
     "Check any website's SSL/TLS certificate status, expiration date, issuer, and configuration. Identify common SSL problems like expired certificates, self-signed certificates, and incomplete certificate chains.",
-  url: "https://freesslcert.net/ssl-checker",
+  url: "https://freesslcert.net/ssl-checker/",
   applicationCategory: "SecurityApplication",
   operatingSystem: "Any",
   offers: {
@@ -61,7 +61,7 @@ const breadcrumbSchema: JsonLdSchema = {
       "@type": "ListItem",
       position: 2,
       name: "SSL Checker",
-      item: "https://freesslcert.net/ssl-checker",
+      item: "https://freesslcert.net/ssl-checker/",
     },
   ],
 };
@@ -829,7 +829,7 @@ export function SSLCheckerPage() {
               <strong className="text-neutral-900">Protocol support</strong>{" "}
               &mdash; Which{" "}
               <Link
-                to="/ssl-vs-tls"
+                to="/ssl-vs-tls/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 TLS versions
@@ -921,21 +921,21 @@ export function SSLCheckerPage() {
             other clients often cannot. Always include the CA bundle when
             installing your certificate. See our installation guides for{" "}
             <Link
-              to="/guides/nginx-ssl"
+              to="/guides/nginx-ssl/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               Nginx
             </Link>
             ,{" "}
             <Link
-              to="/guides/apache-ssl"
+              to="/guides/apache-ssl/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               Apache
             </Link>
             , or{" "}
             <Link
-              to="/guides/wordpress-ssl"
+              to="/guides/wordpress-ssl/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               WordPress
@@ -952,7 +952,7 @@ export function SSLCheckerPage() {
             offer AEAD cipher suites (AES-GCM, ChaCha20-Poly1305) with TLS
             1.2 or TLS 1.3. Read our{" "}
             <Link
-              to="/ssl-vs-tls"
+              to="/ssl-vs-tls/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               SSL vs TLS comparison
@@ -1027,14 +1027,14 @@ export function SSLCheckerPage() {
               ciphers and enable only TLS 1.2+ with AEAD cipher suites. See
               our{" "}
               <Link
-                to="/guides/nginx-ssl"
+                to="/guides/nginx-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 Nginx
               </Link>{" "}
               or{" "}
               <Link
-                to="/guides/apache-ssl"
+                to="/guides/apache-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 Apache
@@ -1049,7 +1049,7 @@ export function SSLCheckerPage() {
               Check your HTML, CSS, and JavaScript for hardcoded HTTP URLs. See
               our{" "}
               <Link
-                to="/faq"
+                to="/faq/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 FAQ on mixed content
@@ -1078,7 +1078,7 @@ export function SSLCheckerPage() {
               Generate a Free Certificate
             </Link>
             <Link
-              to="/faq"
+              to="/faq/"
               className="inline-flex items-center rounded-lg border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition-colors duration-150"
             >
               Read the FAQ

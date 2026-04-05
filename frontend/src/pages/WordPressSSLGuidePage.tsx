@@ -78,13 +78,13 @@ const breadcrumbSchema: JsonLdSchema = {
       "@type": "ListItem",
       position: 2,
       name: "Guides",
-      item: "https://freesslcert.net/guides/wordpress-ssl",
+      item: "https://freesslcert.net/guides/wordpress-ssl/",
     },
     {
       "@type": "ListItem",
       position: 3,
       name: "WordPress SSL Installation",
-      item: "https://freesslcert.net/guides/wordpress-ssl",
+      item: "https://freesslcert.net/guides/wordpress-ssl/",
     },
   ],
 };
@@ -246,7 +246,7 @@ export function WordPressSSLGuidePage() {
             (the intermediate certificate chain). Keep these files safe. For
             more details on what these files are, see our{" "}
             <Link
-              to="/faq"
+              to="/faq/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               FAQ on certificate chains
@@ -627,7 +627,7 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]`}
             resources, update them to use HTTPS or protocol-relative URLs. See
             our{" "}
             <Link
-              to="/faq"
+              to="/faq/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               FAQ on mixed content
@@ -734,7 +734,7 @@ define('WP_SITEURL', 'http://yourdomain.com');`}
           <ul className="space-y-2">
             <li>
               <Link
-                to="/guides/nginx-ssl"
+                to="/guides/nginx-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Install SSL on Nginx
@@ -743,7 +743,7 @@ define('WP_SITEURL', 'http://yourdomain.com');`}
             </li>
             <li>
               <Link
-                to="/guides/apache-ssl"
+                to="/guides/apache-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Install SSL on Apache
@@ -752,7 +752,7 @@ define('WP_SITEURL', 'http://yourdomain.com');`}
             </li>
             <li>
               <Link
-                to="/guides/nodejs-ssl"
+                to="/guides/nodejs-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Set Up SSL with Node.js
@@ -761,7 +761,7 @@ define('WP_SITEURL', 'http://yourdomain.com');`}
             </li>
             <li>
               <Link
-                to="/ssl-vs-tls"
+                to="/ssl-vs-tls/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 SSL vs TLS: What&#39;s the Difference?
@@ -770,7 +770,7 @@ define('WP_SITEURL', 'http://yourdomain.com');`}
             </li>
             <li>
               <Link
-                to="/faq"
+                to="/faq/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 SSL Certificate FAQ

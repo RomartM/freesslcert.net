@@ -72,13 +72,13 @@ const breadcrumbSchema: JsonLdSchema = {
       "@type": "ListItem",
       position: 2,
       name: "Guides",
-      item: "https://freesslcert.net/guides/nginx-ssl",
+      item: "https://freesslcert.net/guides/nginx-ssl/",
     },
     {
       "@type": "ListItem",
       position: 3,
       name: "Nginx SSL Installation",
-      item: "https://freesslcert.net/guides/nginx-ssl",
+      item: "https://freesslcert.net/guides/nginx-ssl/",
     },
   ],
 };
@@ -230,7 +230,7 @@ export function NginxSSLGuidePage() {
             (the intermediate certificate chain). For more details on what these
             files are, see our{" "}
             <Link
-              to="/faq"
+              to="/faq/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               FAQ on certificate chains
@@ -298,7 +298,7 @@ sudo cat /etc/ssl/example.com/certificate.crt \\
             intermediate certificate, some browsers and devices may show security
             warnings. Learn more about this in our{" "}
             <Link
-              to="/faq"
+              to="/faq/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               FAQ on certificate chains
@@ -561,7 +561,7 @@ sudo head -1 /etc/ssl/example.com/private.key
             your browser&#39;s developer console for mixed content warnings. See
             our{" "}
             <Link
-              to="/faq"
+              to="/faq/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               FAQ on mixed content
@@ -578,7 +578,7 @@ sudo head -1 /etc/ssl/example.com/private.key
           <ul className="space-y-2">
             <li>
               <Link
-                to="/guides/apache-ssl"
+                to="/guides/apache-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Install SSL on Apache
@@ -587,7 +587,7 @@ sudo head -1 /etc/ssl/example.com/private.key
             </li>
             <li>
               <Link
-                to="/guides/wordpress-ssl"
+                to="/guides/wordpress-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Install SSL on WordPress
@@ -596,7 +596,7 @@ sudo head -1 /etc/ssl/example.com/private.key
             </li>
             <li>
               <Link
-                to="/guides/nodejs-ssl"
+                to="/guides/nodejs-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Set Up SSL with Node.js
@@ -605,7 +605,7 @@ sudo head -1 /etc/ssl/example.com/private.key
             </li>
             <li>
               <Link
-                to="/ssl-vs-tls"
+                to="/ssl-vs-tls/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 SSL vs TLS: What&#39;s the Difference?
@@ -614,7 +614,7 @@ sudo head -1 /etc/ssl/example.com/private.key
             </li>
             <li>
               <Link
-                to="/faq"
+                to="/faq/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 SSL Certificate FAQ

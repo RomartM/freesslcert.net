@@ -21,7 +21,7 @@ const articleSchema: JsonLdSchema = {
     name: "freesslcert.net",
     url: "https://freesslcert.net",
   },
-  mainEntityOfPage: "https://freesslcert.net/ssl-vs-tls",
+  mainEntityOfPage: "https://freesslcert.net/ssl-vs-tls/",
   datePublished: "2025-01-15",
   dateModified: "2025-01-15",
 };
@@ -40,7 +40,7 @@ const breadcrumbSchema: JsonLdSchema = {
       "@type": "ListItem",
       position: 2,
       name: "SSL vs TLS",
-      item: "https://freesslcert.net/ssl-vs-tls",
+      item: "https://freesslcert.net/ssl-vs-tls/",
     },
   ],
 };
@@ -436,28 +436,28 @@ export function SSLvsTLSPage() {
             recommend configuring your server to support only these versions.
             See our installation guides for{" "}
             <Link
-              to="/guides/nginx-ssl"
+              to="/guides/nginx-ssl/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               Nginx
             </Link>
             ,{" "}
             <Link
-              to="/guides/apache-ssl"
+              to="/guides/apache-ssl/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               Apache
             </Link>
             ,{" "}
             <Link
-              to="/guides/wordpress-ssl"
+              to="/guides/wordpress-ssl/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               WordPress
             </Link>
             , and{" "}
             <Link
-              to="/guides/nodejs-ssl"
+              to="/guides/nodejs-ssl/"
               className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
             >
               Node.js
@@ -615,7 +615,7 @@ export function SSLvsTLSPage() {
               Generate a Free Certificate
             </Link>
             <Link
-              to="/faq"
+              to="/faq/"
               className="inline-flex items-center rounded-lg border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition-colors duration-150"
             >
               Read the FAQ
@@ -631,7 +631,7 @@ export function SSLvsTLSPage() {
           <ul className="space-y-2">
             <li>
               <Link
-                to="/guides/nginx-ssl"
+                to="/guides/nginx-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Install SSL on Nginx
@@ -640,7 +640,7 @@ export function SSLvsTLSPage() {
             </li>
             <li>
               <Link
-                to="/guides/apache-ssl"
+                to="/guides/apache-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Install SSL on Apache
@@ -649,7 +649,7 @@ export function SSLvsTLSPage() {
             </li>
             <li>
               <Link
-                to="/guides/wordpress-ssl"
+                to="/guides/wordpress-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Install SSL on WordPress
@@ -658,7 +658,7 @@ export function SSLvsTLSPage() {
             </li>
             <li>
               <Link
-                to="/guides/nodejs-ssl"
+                to="/guides/nodejs-ssl/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 How to Set Up SSL with Node.js
@@ -667,7 +667,7 @@ export function SSLvsTLSPage() {
             </li>
             <li>
               <Link
-                to="/ssl-checker"
+                to="/ssl-checker/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 SSL Certificate Checker
@@ -676,7 +676,7 @@ export function SSLvsTLSPage() {
             </li>
             <li>
               <Link
-                to="/faq"
+                to="/faq/"
                 className="text-primary-600 underline underline-offset-2 hover:text-primary-700 transition-colors duration-150"
               >
                 SSL Certificate FAQ

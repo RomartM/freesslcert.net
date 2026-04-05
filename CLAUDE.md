@@ -107,7 +107,7 @@ backend/            # Go API server
 
 ## Google API Access
 - Service account: `seo-automation@updl-490718.iam.gserviceaccount.com`
-- Credentials: `/Users/dev/Downloads/updl-490718-6ac63a60d724.json`
+- Credentials: `/Users/dev/Downloads/Security/gcp-service-account-seo-automation.json`
 - Access to: Google Search Console (`sc-domain:freesslcert.net`) + GA4 (Property ID: 529693668)
 
 ## Current SEO Status (as of 2026-03-29)

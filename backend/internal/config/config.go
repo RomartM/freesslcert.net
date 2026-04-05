@@ -20,6 +20,11 @@ type Config struct {
 	RateLimitRequests  int
 	RateLimitWindow    time.Duration
 	ResendAPIKey       string
+	// Region identifies which deployment region handled a request. It is
+	// written verbatim into the domain_log.region column for usage metrics,
+	// allowing us to break down traffic by region (e.g., "us-east",
+	// "eu-west", "sg", "jp", "uk", "au-syd"). Defaults to "unknown".
+	Region string
 }
 
 // Load reads configuration from environment variables. For any variable FOO,
@@ -32,6 +37,7 @@ func Load() (*Config, error) {
 		DatabaseURL:      envOrSecret("DATABASE_URL"),
 		ACMEEmail:        envOrSecret("ACME_EMAIL"),
 		ACMEDirectoryURL: envOrDefault("ACME_DIRECTORY_URL", "https://acme-staging-v02.api.letsencrypt.org/directory"),
+		Region:           envOrDefault("REGION", "unknown"),
 	}
 
 	cfg.CloudflareAPIToken = envOrSecret("CLOUDFLARE_API_TOKEN")

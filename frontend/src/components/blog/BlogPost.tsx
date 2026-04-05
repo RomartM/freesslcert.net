@@ -77,7 +77,7 @@ export function BlogPost({
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "https://freesslcert.net/blog",
+        item: "https://freesslcert.net/blog/",
       },
       {
         "@type": "ListItem",
@@ -121,7 +121,7 @@ export function BlogPost({
         </Link>
         <ChevronRight className="size-3.5" aria-hidden="true" />
         <Link
-          to="/blog"
+          to="/blog/"
           className="hover:text-neutral-600 transition-colors duration-150"
         >
           Blog
@@ -182,7 +182,7 @@ export function BlogPost({
               {relatedPosts.map((post) => (
                 <Link
                   key={post.slug}
-                  to={`/blog/${post.slug}`}
+                  to={`/blog/${post.slug}/`}
                   className="block rounded-lg border border-neutral-200/60 p-4 hover:bg-neutral-50/50 transition-colors duration-150"
                 >
                   <h3 className="text-sm font-medium text-neutral-900 mb-1">
@@ -198,7 +198,7 @@ export function BlogPost({
         {/* Back to blog */}
         <div className="mt-10 pt-6 border-t border-neutral-100">
           <Link
-            to="/blog"
+            to="/blog/"
             className="inline-flex min-h-11 items-center gap-1.5 text-sm text-neutral-500 hover:text-neutral-900 transition-colors duration-150"
           >
             <ArrowLeft className="size-4" />
