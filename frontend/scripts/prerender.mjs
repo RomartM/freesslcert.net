@@ -1496,8 +1496,13 @@ function buildPageHtml(template, route) {
   );
 
   // --- Page-specific structured data ---
-  // Insert route-specific JSON-LD right before </head>, in addition to the
-  // global schemas that are already in index.html.
+  // Strip all existing JSON-LD blocks inherited from index.html (homepage
+  // schemas like WebApplication, FAQPage, HowTo) so subpages don't serve
+  // duplicate/irrelevant schemas. Then inject only the page-specific ones.
+  html = html.replace(
+    /<script type="application\/ld\+json">[\s\S]*?<\/script>\s*/g,
+    ""
+  );
   if (route.structuredData && route.structuredData.length > 0) {
     const jsonLdTags = route.structuredData
       .map(
