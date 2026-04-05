@@ -30,6 +30,21 @@ All notable changes to freesslcert.net will be documented in this file.
 - **Privacy policy disclosure** — new "What We Retain for Analytics" section in `PrivacyPage.tsx` listing exactly what's logged (domain, cert type, country, timestamp, status) and what's never retained (keys, certs, emails, IPs).
 - **Stale credentials path** — `CLAUDE.md` and memory updated from `/Users/dev/Downloads/updl-490718-6ac63a60d724.json` to `/Users/dev/Downloads/Security/gcp-service-account-seo-automation.json`.
 
+### Post-deploy Operations (2026-04-05)
+
+Actions taken after the initial deploy to complete verification and fix issues discovered in production:
+
+- **`REGION` env var set on all 6 production servers** — the new `Region` config field defaulted to `"unknown"` because no `REGION` was set in any server's `.env`. Set `REGION=us-east`, `eu-west`, `uk`, `sg`, `jp`, `au-syd` on `/opt/freesslcert/.env` (via deploy user Tailscale SSH), then `docker compose up -d --force-recreate` on each to reload. Verified `region=<region>` appears in the startup log.
+- **Schema migration bug discovered and fixed** — the pre-existing `domain_log` table on the production Turso DB was created with `issued_at DATETIME NOT NULL`. The migration helper (`addColumnIfMissing`) only adds new columns via `ALTER TABLE ADD COLUMN`; it does not relax `NOT NULL` constraints on existing columns. First test insert failed with `NOT NULL constraint failed: domain_log.issued_at`. Fix: since the table was empty (0 rows, confirmed), dropped and recreated via Turso HTTP pipeline with the correct nullable schema. Next backend restart would have done the same via `CREATE TABLE IF NOT EXISTS`, but the direct fix avoided a restart cycle.
+- **End-to-end metrics verification** — triggered a test order with `CF-IPCountry: PH` for an invalid TLD (`test-metrics-audit-2.example`). Confirmed two rows written to `domain_log`:
+  - Row 1: `status=pending`, `country=PH`, `region=sg`
+  - Row 2: `status=failed`, `failure_reason=invalid_domain`, `region=sg`
+  - Test rows cleaned up afterward, final count: 0.
+- **Google Search Console resubmission** — resubmitted sitemap + URL-inspected all 15 trailing-slash URLs. Two key wins:
+  - `/ssl-vs-tls/` and `/ssl-checker/` transitioned from **"URL unknown to Google"** to **"Discovered - currently not indexed"** — the new homepage `RelatedTools` section and HowItWorks links successfully gave Google enough link equity to discover these pages.
+  - `https://www.freesslcert.net/` now reports **"Alternate page with proper canonical tag"** (canonical = apex), and `http://www.freesslcert.net/` reports **"Page with redirect"** — confirming the new Cloudflare Worker is correctly consolidating authority.
+- **IndexNow resubmission** — all 4 endpoints (api.indexnow.org, Bing, Yandex, Seznam) returned 200/202 for all 15 trailing-slash URLs.
+
 ## [Unreleased] - 2026-03-29
 
 ### Internationalization (i18n) — 15 Languages
