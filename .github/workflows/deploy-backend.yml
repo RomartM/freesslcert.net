@@ -5,13 +5,16 @@ on:
     branches: [main]
     paths:
       - 'backend/**'
-      - 'docker-compose.yml'
+      - '.github/workflows/deploy-backend.yml'
   workflow_dispatch:
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/api
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  IMAGE: ghcr.io/romartm/freesslcert.net/api
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   test:
@@ -22,70 +25,62 @@ jobs:
         with:
           go-version: '1.25'
           cache-dependency-path: backend/go.sum
-      - run: cd backend && go test ./... -v -race
+      - run: cd backend && go test ./... -race
 
-  build-and-push:
+  build:
     needs: test
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
       - uses: actions/checkout@v4
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
+      - uses: docker/build-push-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=sha
-            type=raw,value=latest
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./backend
+          context: backend
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   deploy:
-    needs: build-and-push
+    needs: build
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        server:
-          - { name: us-east, host: "100.111.72.8" }
-          - { name: eu-west, host: "100.121.100.24" }
-          - { name: uk, host: "100.115.122.115" }
-          - { name: sg, host: "100.104.55.72" }
-          - { name: jp, host: "100.73.47.28" }
-          - { name: au-syd, host: "100.120.168.37" }
+        include:
+          - { region: SG, ip: 100.121.108.71 }
+          - { region: US, ip: 100.92.20.87 }
+          - { region: EU, ip: 100.73.213.46 }
     steps:
-      - name: Connect to Tailscale
-        uses: tailscale/github-action@v3
+      - uses: tailscale/github-action@v3
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
-
-      - name: Set up SSH key
+      - name: SSH key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-
-      - name: Deploy to ${{ matrix.server.name }}
+      - name: Pull + restart
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key \
-            deploy-freesslcert@${{ matrix.server.host }} \
-            'cd /opt/freesslcert && docker compose pull && docker compose up -d --force-recreate && docker image prune -f'
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+            freesslcert@${{ matrix.ip }} \
+            'cd /opt/freesslcert && docker compose pull && docker compose up -d && docker image prune -f'
+      - name: Health check
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf --max-time 10 --resolve origin-${{ matrix.region }}.freesslcert.net:443:${{ matrix.ip }} \
+               https://origin-${{ matrix.region }}.freesslcert.net/health >/dev/null; then
+              echo "Healthy."; exit 0
+            fi
+            sleep 5
+          done
+          echo "Health check failed in ${{ matrix.region }}"; exit 1
