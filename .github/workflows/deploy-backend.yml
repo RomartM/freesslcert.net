@@ -66,20 +66,13 @@ jobs:
       fail-fast: false
       matrix:
         server:
-          - { name: us-east, host: "100.111.72.8" }
-          - { name: eu-west, host: "100.121.100.24" }
-          - { name: uk, host: "100.115.122.115" }
-          - { name: sg, host: "100.104.55.72" }
-          - { name: jp, host: "100.73.47.28" }
-          - { name: au-syd, host: "100.120.168.37" }
+          - { name: us-east, host: "100.92.20.87" }
+          - { name: eu-west, host: "100.73.213.46" }
+          - { name: uk, host: "100.73.213.46" }
+          - { name: sg, host: "100.121.108.71" }
+          - { name: jp, host: "100.121.108.71" }
+          - { name: au-syd, host: "100.121.108.71" }
     steps:
-      - name: Connect to Tailscale
-        uses: tailscale/github-action@v3
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
-
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
@@ -89,5 +82,5 @@ jobs:
       - name: Deploy to ${{ matrix.server.name }}
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key \
-            deploy-freesslcert@${{ matrix.server.host }} \
+            freesslcert@${{ matrix.server.host }} \
             'cd /opt/freesslcert && docker compose pull && docker compose up -d --force-recreate && docker image prune -f'
