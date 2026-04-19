@@ -13,9 +13,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}/api
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
-concurrency:
-  group: pg-service-on-runner
-  cancel-in-progress: false
+jobs:
 
 
   test:
